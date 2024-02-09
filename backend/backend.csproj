@@ -23,4 +23,10 @@
     <PackageReference Include="SyrianBallaS.AutoMapper.Extensions.Microsoft.DependencyInjection.Signed" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="MyStaticFiles\Images\Books\" />
+    <Folder Include="MyStaticFiles\Images\Authors\" />
+  </ItemGroup>
+
 </Project>

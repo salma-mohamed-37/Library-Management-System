@@ -181,10 +181,6 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -262,14 +258,12 @@ namespace backend.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Author_id")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Category_id")
-                        .HasColumnType("int");
+                    b.Property<string>("CoverName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -292,10 +286,10 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Borrowed", b =>
                 {
-                    b.Property<int>("User_id")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Book_id")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BorrowDate")
@@ -304,17 +298,9 @@ namespace backend.Migrations
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("User_id", "Book_id", "BorrowDate", "ReturnDate");
+                    b.HasKey("UserId", "BookId", "BorrowDate", "ReturnDate");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Borrowed");
                 });
@@ -412,23 +398,35 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Models.Borrowed", b =>
                 {
                     b.HasOne("backend.Models.Book", "Book")
-                        .WithMany()
+                        .WithMany("Borrowed")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backend.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("Borrowed")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backend.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Borrowed");
+                });
+
             modelBuilder.Entity("backend.Models.Author", b =>
                 {
                     b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("backend.Models.Book", b =>
+                {
+                    b.Navigation("Borrowed");
                 });
 
             modelBuilder.Entity("backend.Models.Category", b =>

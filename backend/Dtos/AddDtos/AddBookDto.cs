@@ -5,7 +5,8 @@ namespace backend.Dtos.AddDtos
     {
         public string Name { get; set; }
         public DateTime PublishDate { get; set; }
-        public int Category_id { get; set; }
-        public int Author_id { get; set; }
+        public IFormFile CoverFile { get; set; }
+        public int CategoryId { get; set; }
+        public int AuthorId { get; set; }
     }
 }

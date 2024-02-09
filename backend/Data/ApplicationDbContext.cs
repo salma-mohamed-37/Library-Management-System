@@ -27,8 +27,26 @@ namespace backend.Data
 
             builder.Entity<Book>().HasIndex(x => x.Name).IsUnique();
             builder.Entity<Book>().Property(x => x.Name).IsRequired();
+            builder.Entity<Book>()
+                .HasOne(b => b.Category)
+                .WithMany(b => b.Books)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Book>()
+               .HasOne(b => b.Author)
+               .WithMany(b => b.Books)
+               .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Borrowed>().HasKey(x => new { x.User_id, x.Book_id, x.BorrowDate, x.ReturnDate });
+            builder.Entity<Borrowed>()
+               .HasOne(b => b.Book)
+               .WithMany(b => b.Borrowed)
+               .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Borrowed>()
+               .HasOne(b => b.User)
+               .WithMany(b => b.Borrowed)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Borrowed>().HasKey(x => new { x.UserId, x.BookId, x.BorrowDate, x.ReturnDate });
+            
             base.OnModelCreating(builder);
         }
     }

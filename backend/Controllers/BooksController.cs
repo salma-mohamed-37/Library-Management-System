@@ -9,7 +9,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static System.Reflection.Metadata.BlobBuilder;
+using System.Net;
 
 namespace backend.Controllers
 {
@@ -34,7 +34,45 @@ namespace backend.Controllers
         public async Task<ActionResult<IEnumerable<GetBookDto>>> GetBooks([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
         {
             var books = await _bookRepository.GetAllAsync(pageSize, pageNumber);
-            var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
+
+            var bookDtos = new List<GetBookDto>();
+            foreach (var book in books)
+            {
+                var details = await _bookRepository.GetBorrowDetails(book.Id);
+                GetBookDto bookDto;
+                if(details is null)
+                {
+                    bookDto = new GetBookDto
+                    {
+                        Id = book.Id,
+                        Name = book.Name,
+                        PublishDate = book.PublishDate,
+                        Category_name = book.Category.Name,
+                        Author_name = book.Author.Name,
+                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
+                        currently_borrowed = false,
+                        UserEmail = null
+                    };
+                }
+                else
+                {
+                    bookDto = new GetBookDto
+                    {
+                        Id = book.Id,
+                        Name = book.Name,
+                        PublishDate = book.PublishDate,
+                        Category_name = book.Category.Name,
+                        Author_name = book.Author.Name,
+                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
+                        currently_borrowed = details.currently_borrowed,
+                        UserEmail = details.User.Email
+                    };
+                }
+                
+                bookDtos.Add(bookDto);
+            }
+            
+            //var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
             return Ok(bookDtos);
         }
 
@@ -46,7 +84,39 @@ namespace backend.Controllers
             if (book is null)
                 return NotFound();
 
-            var bookDto = _mapper.Map<GetBookDto>(book);
+            //var bookDto = _mapper.Map<GetBookDto>(book);
+            var details = await _bookRepository.GetBorrowDetails(book.Id);
+            GetBookDto bookDto;
+            if (details is null)
+            {
+                bookDto = new GetBookDto
+                {
+                    Id = book.Id,
+                    Name = book.Name,
+                    PublishDate = book.PublishDate,
+                    Category_name = book.Category.Name,
+                    Author_name = book.Author.Name,
+                    ImagePath = Path.Combine("Images", "Books", book.CoverName),
+                    currently_borrowed = false,
+                    UserEmail = null
+                };
+            }
+            else
+            {
+                bookDto = new GetBookDto
+                {
+                    Id = book.Id,
+                    Name = book.Name,
+                    PublishDate = book.PublishDate,
+                    Category_name = book.Category.Name,
+                    Author_name = book.Author.Name,
+                    ImagePath = Path.Combine("Images", "Books", book.CoverName),
+                    currently_borrowed = details.currently_borrowed,
+                    UserEmail = details.User.Email
+                };
+            }
+
+
             return bookDto;
         }
 
@@ -54,7 +124,43 @@ namespace backend.Controllers
         public async Task<ActionResult<GetBookDto>> GetBooks(string name)
         {
             var books = await _bookRepository.GetBooksbyName(name);
-            var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
+            // var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
+            var bookDtos = new List<GetBookDto>();
+            foreach (var book in books)
+            {
+                var details = await _bookRepository.GetBorrowDetails(book.Id);
+                GetBookDto bookDto;
+                if (details is null)
+                {
+                    bookDto = new GetBookDto
+                    {
+                        Id = book.Id,
+                        Name = book.Name,
+                        PublishDate = book.PublishDate,
+                        Category_name = book.Category.Name,
+                        Author_name = book.Author.Name,
+                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
+                        currently_borrowed = false,
+                        UserEmail = null
+                    };
+                }
+                else
+                {
+                    bookDto = new GetBookDto
+                    {
+                        Id = book.Id,
+                        Name = book.Name,
+                        PublishDate = book.PublishDate,
+                        Category_name = book.Category.Name,
+                        Author_name = book.Author.Name,
+                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
+                        currently_borrowed = details.currently_borrowed,
+                        UserEmail = details.User.Email
+                    };
+                }
+
+                bookDtos.Add(bookDto);
+            }
             return Ok(bookDtos);
 
         }

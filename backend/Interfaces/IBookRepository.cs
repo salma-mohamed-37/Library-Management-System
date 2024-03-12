@@ -6,5 +6,6 @@ namespace backend.Interfaces
     public interface IBookRepository: IAsyncRepository<Book>
     {
         public Task<List<Book>> GetBooksbyName(string name);
+        public Task<Borrowed> GetBorrowDetails(int bookId);
     }
 }

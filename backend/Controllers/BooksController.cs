@@ -38,7 +38,7 @@ namespace backend.Controllers
             return Ok(bookDtos);
         }
 
-        // GET: api/Categories/5
+        // GET: api/books/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GetBookDto>> GetBook(int id)
         {
@@ -59,7 +59,7 @@ namespace backend.Controllers
 
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/books/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromForm] AddBookDto bookDto)
         {
@@ -94,7 +94,7 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Books
+        // POST: api/books
 
         [HttpPost]
         public async Task<ActionResult> AddBook([FromForm] AddBookDto bookDto)

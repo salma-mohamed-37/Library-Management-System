@@ -80,7 +80,7 @@ namespace backend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByNameAsync(loginDto.UserName);
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             {
                 return Unauthorized("Invalid credentials");
@@ -94,7 +94,7 @@ namespace backend.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,user.UserName),
+                new Claim(ClaimTypes.Name,user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim ("JWTID", Guid.NewGuid().ToString())
             };
@@ -106,10 +106,9 @@ namespace backend.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, r));
             }
 
-           var jwt = _tokenService.GenerateNewJsonWebToken(claims);
+            var jwt = _tokenService.GenerateNewJsonWebToken(claims);
 
             return Ok(jwt);
         }
-
     }
 }

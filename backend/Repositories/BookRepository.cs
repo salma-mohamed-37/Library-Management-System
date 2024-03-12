@@ -39,5 +39,15 @@ namespace backend.Repositories
                 .Include(book => book.Author)
                 .FirstOrDefaultAsync(book => book.Id == id);
         }
+
+        public async Task<Borrowed> GetBorrowDetails(int bookId)
+        {
+            return await _context.Borrowed
+                .Include(b => b.User)
+                .Include(b => b.Book)
+                .Where(b => b.BookId == bookId)
+                .OrderByDescending(b => b.ReturnDate)
+                .FirstOrDefaultAsync();
+        }
     }
 }

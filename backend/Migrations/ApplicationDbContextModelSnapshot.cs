@@ -244,7 +244,7 @@ namespace backend.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.Book", b =>
@@ -281,7 +281,7 @@ namespace backend.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.Borrowed", b =>
@@ -302,7 +302,7 @@ namespace backend.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Borrowed");
+                    b.ToTable("Borrowed", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.Category", b =>
@@ -322,7 +322,7 @@ namespace backend.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

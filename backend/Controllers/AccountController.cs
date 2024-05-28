@@ -2,6 +2,7 @@
 using backend.Interfaces;
 using backend.Models;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,8 @@ namespace backend.Controllers
         {
             await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.USER));
             await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.lIBRARIAN));
+            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.ADMIN));
+
             return Ok();
         }
 
@@ -69,12 +72,51 @@ namespace backend.Controllers
                 }
                 return BadRequest(error);
             }
-            if (registerDto.Type == "librarian")
-                await _userManager.AddToRoleAsync(appUser, StaticUserRoles.lIBRARIAN);
-            else
                 await _userManager.AddToRoleAsync(appUser, StaticUserRoles.USER);
 
             return Ok("User created successfully");
+        }
+
+        [Authorize(Roles ="ADMIN")]
+        [HttpPost("registerLibrarian")]
+        public async Task<IActionResult> RegisterAsLibrarian([FromBody] RegisterDto registerDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var is_user_exists = await _userManager.FindByNameAsync(registerDto.Username);
+            if (is_user_exists is not null)
+            {
+                return BadRequest("Username already exists");
+            }
+
+
+            var appUser = new ApplicationUser
+            {
+                UserName = registerDto.Username,
+                Email = registerDto.Email,
+                FullName = registerDto.Fullname,
+                DateOfBirth = registerDto.DateOfBirth
+            };
+
+            var is_succeeded = await _userManager.CreateAsync(appUser, registerDto.Password);
+
+            if (!is_succeeded.Succeeded)
+            {
+                var error = "User creation failed because: ";
+
+                foreach (var e in is_succeeded.Errors)
+                {
+                    error += " ";
+                    error += e.Description;
+                }
+                return BadRequest(error);
+            }
+                await _userManager.AddToRoleAsync(appUser, StaticUserRoles.lIBRARIAN);
+
+            return Ok("Librarian created successfully");
         }
 
         [HttpPost("login")]
@@ -109,6 +151,47 @@ namespace backend.Controllers
             var jwt = _tokenService.GenerateNewJsonWebToken(claims);
 
             return Ok(jwt);
+        }
+
+        [HttpPost("checkForAdmin")]
+        public async Task<IActionResult>AddAdminIfNotExists()
+        {
+            var admin = new ApplicationUser
+            {
+                UserName = "admin111",
+                Email = "admin@gmail.com",
+                FullName = "admin"
+            };
+
+            var is_admin_exists = await _userManager.FindByNameAsync(admin.UserName);
+
+            if (is_admin_exists is not null)
+            {
+                return Ok("Admin already exists");
+            }
+            else
+            {
+                var is_succeeded = await _userManager.CreateAsync(admin, "admin111");
+                if (is_succeeded.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(admin, StaticUserRoles.ADMIN);
+                    return Ok();
+
+                }
+                else
+                {
+                    var error = "User creation failed because: ";
+
+                    foreach (var e in is_succeeded.Errors)
+                    {
+                        error += " ";
+                        error += e.Description;
+                    }
+                    return BadRequest(error);
+                }
+
+            }
+            
         }
     }
 }

@@ -4,5 +4,6 @@
     {
         public const string USER = "USER";
         public const string lIBRARIAN = "lIBRARIAN";
+        public const string ADMIN = "ADMIN";
     }
 }

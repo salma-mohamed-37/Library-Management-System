@@ -1,6 +1,6 @@
 ﻿using backend.Models;
 
-namespace backend.Dtos.GetDtos
+namespace backend.Dtos.GetDtos.Book
 {
     public class GetBookDto
     {
@@ -9,10 +9,8 @@ namespace backend.Dtos.GetDtos
         public DateTime PublishDate { get; set; }
         public string Category_name { get; set; }
         public string Author_name { get; set; }
-        public string ImagePath { get; set; } 
+        public string ImagePath { get; set; }
         public bool currently_borrowed { get; set; }
-        public DateTime BorrowDate { get; set; }
-        public DateTime ReturnDate { get; set; }
-        public string UserEmail { get; set; }
+
     }
 }

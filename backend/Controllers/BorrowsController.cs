@@ -1,10 +1,12 @@
 ﻿using backend.Data;
 using backend.Dtos.AddDtos;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace backend.Controllers
 {
@@ -21,6 +23,7 @@ namespace backend.Controllers
             _userManager = userManager;
         }
         [HttpPost("borrow")]
+        [Authorize(Roles = "lIBRARIAN")]
         public async Task<IActionResult> BorrowBook([FromBody] AddBorrowDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.UserEmail);

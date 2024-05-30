@@ -17,6 +17,7 @@ namespace backend.Repositories
                 .AsNoTracking()
                 .Include(book => book.Category)
                 .Include(book => book.Author)
+                .Include(book=>book.Borrowed)
                 .Where(c => c.Name.Contains(name))
                 .ToListAsync();
         }
@@ -27,6 +28,21 @@ namespace backend.Repositories
                 .AsNoTracking()
                 .Include(book => book.Category)
                 .Include(book => book.Author)
+                .Include(book=>book.Borrowed)
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
+                .ToListAsync();
+            return res;
+        }
+
+        public async Task<List<Book>> GetAllForLibrarianAsync(int pageSize, int pageNumber)
+        {
+            var res = await _context.Books
+                .AsNoTracking()
+                .Include(book => book.Category)
+                .Include(book => book.Author)
+                .Include(book => book.Borrowed)
+                .ThenInclude(borrow => borrow.User)
                 .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
                 .ToListAsync();
@@ -37,6 +53,7 @@ namespace backend.Repositories
             return await _context.Books
                 .Include(book => book.Category)
                 .Include(book => book.Author)
+                .Include(book => book.Borrowed)
                 .FirstOrDefaultAsync(book => book.Id == id);
         }
 

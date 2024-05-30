@@ -7,5 +7,6 @@ namespace backend.Interfaces
     {
         public Task<List<Book>> GetBooksbyName(string name);
         public Task<Borrowed> GetBorrowDetails(int bookId);
+        public Task<List<Book>> GetAllForLibrarianAsync(int pageSize, int pageNumber);
     }
 }

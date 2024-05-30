@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using backend.Dtos.AddDtos;
-using backend.Dtos.GetDtos;
+using backend.Dtos.GetDtos.Book;
 using backend.Handlers;
 using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,94 +30,33 @@ namespace backend.Controllers
             _imageHandler = handler;
         }
 
-        //GET /api/books?pageSize=10&pageNumber=1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetBookDto>>> GetBooks([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
+        public async Task<ActionResult<IEnumerable<GetBookDto>>> GetBooksForUsers([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
         {
             var books = await _bookRepository.GetAllAsync(pageSize, pageNumber);
 
-            var bookDtos = new List<GetBookDto>();
-            foreach (var book in books)
-            {
-                var details = await _bookRepository.GetBorrowDetails(book.Id);
-                GetBookDto bookDto;
-                if(details is null)
-                {
-                    bookDto = new GetBookDto
-                    {
-                        Id = book.Id,
-                        Name = book.Name,
-                        PublishDate = book.PublishDate,
-                        Category_name = book.Category.Name,
-                        Author_name = book.Author.Name,
-                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
-                        currently_borrowed = false,
-                        UserEmail = null
-                    };
-                }
-                else
-                {
-                    bookDto = new GetBookDto
-                    {
-                        Id = book.Id,
-                        Name = book.Name,
-                        PublishDate = book.PublishDate,
-                        Category_name = book.Category.Name,
-                        Author_name = book.Author.Name,
-                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
-                        currently_borrowed = details.currently_borrowed,
-                        UserEmail = details.User.Email
-                    };
-                }
-                
-                bookDtos.Add(bookDto);
-            }
-            
-            //var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
+            var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
             return Ok(bookDtos);
         }
 
-        // GET: api/books/5
+        [Authorize(Roles ="lIBRARIAN")]
+        [HttpGet("librarian")]
+        public async Task<ActionResult<IEnumerable<GetBookDto>>> GetBooksForLibrarian([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
+        {
+            var books = await _bookRepository.GetAllForLibrarianAsync(pageSize, pageNumber);
+
+            var bookDtos = _mapper.Map<IEnumerable<GetBookForLibrarianDto>>(books);
+            return Ok(bookDtos);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<GetBookDto>> GetBook(int id)
         {
             var book = await _bookRepository.GetbyIdAsync(id);
             if (book is null)
                 return NotFound();
-
-            //var bookDto = _mapper.Map<GetBookDto>(book);
-            var details = await _bookRepository.GetBorrowDetails(book.Id);
-            GetBookDto bookDto;
-            if (details is null)
-            {
-                bookDto = new GetBookDto
-                {
-                    Id = book.Id,
-                    Name = book.Name,
-                    PublishDate = book.PublishDate,
-                    Category_name = book.Category.Name,
-                    Author_name = book.Author.Name,
-                    ImagePath = Path.Combine("Images", "Books", book.CoverName),
-                    currently_borrowed = false,
-                    UserEmail = null
-                };
-            }
-            else
-            {
-                bookDto = new GetBookDto
-                {
-                    Id = book.Id,
-                    Name = book.Name,
-                    PublishDate = book.PublishDate,
-                    Category_name = book.Category.Name,
-                    Author_name = book.Author.Name,
-                    ImagePath = Path.Combine("Images", "Books", book.CoverName),
-                    currently_borrowed = details.currently_borrowed,
-                    UserEmail = details.User.Email
-                };
-            }
-
-
+            var bookDto = _mapper.Map<GetBookDto>(book);
             return bookDto;
         }
 
@@ -124,48 +64,12 @@ namespace backend.Controllers
         public async Task<ActionResult<GetBookDto>> GetBooks(string name)
         {
             var books = await _bookRepository.GetBooksbyName(name);
-            // var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
-            var bookDtos = new List<GetBookDto>();
-            foreach (var book in books)
-            {
-                var details = await _bookRepository.GetBorrowDetails(book.Id);
-                GetBookDto bookDto;
-                if (details is null)
-                {
-                    bookDto = new GetBookDto
-                    {
-                        Id = book.Id,
-                        Name = book.Name,
-                        PublishDate = book.PublishDate,
-                        Category_name = book.Category.Name,
-                        Author_name = book.Author.Name,
-                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
-                        currently_borrowed = false,
-                        UserEmail = null
-                    };
-                }
-                else
-                {
-                    bookDto = new GetBookDto
-                    {
-                        Id = book.Id,
-                        Name = book.Name,
-                        PublishDate = book.PublishDate,
-                        Category_name = book.Category.Name,
-                        Author_name = book.Author.Name,
-                        ImagePath = Path.Combine("Images", "Books", book.CoverName),
-                        currently_borrowed = details.currently_borrowed,
-                        UserEmail = details.User.Email
-                    };
-                }
-
-                bookDtos.Add(bookDto);
-            }
+            var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
             return Ok(bookDtos);
-
         }
 
         // PUT: api/books/5
+        [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromForm] AddBookDto bookDto)
         {
@@ -203,6 +107,7 @@ namespace backend.Controllers
         // POST: api/books
 
         [HttpPost]
+        [Authorize(Roles = "lIBRARIAN")]
         public async Task<ActionResult> AddBook([FromForm] AddBookDto bookDto)
         {
             var validationResult = await _validator.ValidateAsync(bookDto);
@@ -218,6 +123,7 @@ namespace backend.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "lIBRARIAN")]
         public async Task<IActionResult> DeleteBook(int id)
         {
             var existingBook = await _bookRepository.GetbyIdAsync(id);

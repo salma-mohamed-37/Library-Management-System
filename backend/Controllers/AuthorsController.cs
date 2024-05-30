@@ -5,8 +5,10 @@ using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace backend.Controllers
 {
@@ -55,6 +57,7 @@ namespace backend.Controllers
         }
 
         // PUT: api/Authors/5
+        [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(int id, [FromBody] AddAuthorDto authorDto)
         {
@@ -77,7 +80,7 @@ namespace backend.Controllers
         }
 
         // POST: api/Categories
-
+        [Authorize(Roles = "lIBRARIAN")]
         [HttpPost]
         public async Task<ActionResult> AddAuthor([FromBody] AddAuthorDto authorDto)
         {
@@ -91,7 +94,7 @@ namespace backend.Controllers
             return Ok();
         }
 
-
+        [Authorize(Roles = "lIBRARIAN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {

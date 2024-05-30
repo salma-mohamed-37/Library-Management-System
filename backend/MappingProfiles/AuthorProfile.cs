@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.Account;
 using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos;
 using backend.Models;
@@ -11,6 +12,8 @@ namespace backend.MappingProfiles
         {
             CreateMap<AddAuthorDto,Author>();
             CreateMap<Author, GetAuthorDto>();
+
+            CreateMap<ApplicationUser, UserDto>();
         }
 
 

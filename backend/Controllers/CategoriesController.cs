@@ -6,6 +6,8 @@ using backend.Dtos.AddDtos;
 using AutoMapper;
 using backend.Dtos.GetDtos;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace backend.Controllers
 {
@@ -54,6 +56,7 @@ namespace backend.Controllers
         }
 
         // PUT: api/Categories/5
+        [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id,[FromBody] AddCategoryDto categoryDto)
         {
@@ -76,7 +79,7 @@ namespace backend.Controllers
         }
 
         // POST: api/Categories
-        
+        [Authorize(Roles = "lIBRARIAN")]
         [HttpPost]
         public async Task<ActionResult<Category>> AddCategory([FromBody]AddCategoryDto categoryDto)
         {
@@ -90,7 +93,7 @@ namespace backend.Controllers
             return Ok();
         }
 
-
+        [Authorize(Roles = "lIBRARIAN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {

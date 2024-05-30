@@ -22,6 +22,19 @@ namespace backend.Repositories
                 .ToListAsync();
         }
 
+        async public Task<List<Book>> GetBooksbyNameForLibrarian(string name)
+        {
+            return await _context.Books
+                .AsNoTracking()
+                .Include(book => book.Category)
+                .Include(book => book.Author)
+                .Include(book => book.Borrowed)
+                .ThenInclude(borrow => borrow.User)
+                .Where(book => book.Borrowed.Any(borrow => borrow.currently_borrowed == true))
+                .Where(b => b.Name.Contains(name))
+                .ToListAsync();
+        }
+
         public async Task<List<Book>> GetAllAsync(int pageSize, int pageNumber)
         {
             var res = await _context.Books
@@ -43,6 +56,7 @@ namespace backend.Repositories
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
                 .ThenInclude(borrow => borrow.User)
+                .Where(book => book.Borrowed.Any(borrow => borrow.currently_borrowed == true))
                 .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
                 .ToListAsync();
@@ -57,14 +71,6 @@ namespace backend.Repositories
                 .FirstOrDefaultAsync(book => book.Id == id);
         }
 
-        public async Task<Borrowed> GetBorrowDetails(int bookId)
-        {
-            return await _context.Borrowed
-                .Include(b => b.User)
-                .Include(b => b.Book)
-                .Where(b => b.BookId == bookId)
-                .OrderByDescending(b => b.ReturnDate)
-                .FirstOrDefaultAsync();
-        }
+
     }
 }

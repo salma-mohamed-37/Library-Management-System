@@ -68,6 +68,15 @@ namespace backend.Controllers
             return Ok(bookDtos);
         }
 
+        [Authorize(Roles = "lIBRARIAN")]
+        [HttpGet("librarian/search/{name}")]
+        public async Task<ActionResult<GetBookDto>> GetBooksByLibrarian(string name)
+        {
+            var books = await _bookRepository.GetBooksbyNameForLibrarian(name);
+            var bookDtos = _mapper.Map<IEnumerable<GetBookForLibrarianDto>>(books);
+            return Ok(bookDtos);
+        }
+
         // PUT: api/books/5
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]

@@ -1,6 +1,9 @@
-﻿using backend.Data;
+﻿using AutoMapper;
+using backend.Data;
 using backend.Dtos.AddDtos;
+using backend.Interfaces;
 using backend.Models;
+using backend.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,48 +17,44 @@ namespace backend.Controllers
     [ApiController]
     public class BorrowsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;  
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IBorrowedRepository _borrowedRepository;
 
-        public BorrowsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public BorrowsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper, IBorrowedRepository borrowedRepository)
         {
             _context =context;
             _userManager = userManager;
+            _mapper = mapper;
+            _borrowedRepository = borrowedRepository;
         }
         [HttpPost("borrow")]
         [Authorize(Roles = "lIBRARIAN")]
         public async Task<IActionResult> BorrowBook([FromBody] AddBorrowDto dto)
         {
-            var user = await _userManager.FindByEmailAsync(dto.UserEmail);
+            var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {
                 return BadRequest("User doesn't exist");
             }
 
-            var borrow = new Borrowed
-            {
-                UserId = user.Id,
-                BookId = dto.BookId,
-                BorrowDate = dto.BorrowDate,
-                ReturnDate = dto.ReturnDate,
-                currently_borrowed = true
-            };
-            await _context.Borrowed.AddAsync(borrow);
-            await _context.SaveChangesAsync();
+            var borrow = _mapper.Map<Borrowed>(dto);
+
+            await _borrowedRepository.AddAsync(borrow);
             return Ok("Book borrowed successfully");
         }
 
         [HttpPut("return")]
-        public async Task<IActionResult>ReturnBook([FromBody] AddReturnDto dto)
+        [Authorize(Roles = "lIBRARIAN")]
+        public async Task<IActionResult>ReturnBook([FromBody] AddBorrowDto dto)
         {
-            var user = await _userManager.FindByEmailAsync(dto.UserEmail);
+            var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {
                 return BadRequest("User doesn't exist");
             }
-            var b = await _context.Borrowed.FirstOrDefaultAsync(b => b.UserId == user.Id && b.BookId == dto.BookId);
-            b.currently_borrowed = false;
-            await _context.SaveChangesAsync();
+            await _borrowedRepository.Return(dto.BookId, dto.UserId);
 
             return Ok("Book returned successfully");
         }

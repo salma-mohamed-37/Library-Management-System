@@ -98,6 +98,7 @@ builder.Services
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IBorrowedRepository, BorrowedRepository>();
 builder.Services.AddScoped<ImageHandler>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);

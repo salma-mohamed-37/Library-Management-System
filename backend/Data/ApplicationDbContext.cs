@@ -45,7 +45,7 @@ namespace backend.Data
                .WithMany(b => b.Borrowed)
                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Borrowed>().HasKey(x => new { x.UserId, x.BookId, x.BorrowDate, x.ReturnDate });
+            builder.Entity<Borrowed>().HasKey(x => new { x.UserId, x.BookId, x.BorrowDate });
             
             base.OnModelCreating(builder);
         }

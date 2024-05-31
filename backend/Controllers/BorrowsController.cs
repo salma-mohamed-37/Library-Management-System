@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend.Data;
 using backend.Dtos.AddDtos;
+using backend.Dtos.GetDtos.Book;
 using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Security.Claims;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace backend.Controllers
 {
@@ -58,5 +61,26 @@ namespace backend.Controllers
 
             return Ok("Book returned successfully");
         }
+
+        [HttpGet("current-borrow")]
+        [Authorize(Roles ="USER")]
+        public async Task<IActionResult> GetCurrentlyBorrowedBooksByUser()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId);
+            var bookDtos = _mapper.Map<IEnumerable<GetBorrowedBookForUserDto>>(res);
+            return Ok(bookDtos);
+        }
+
+        [HttpGet("librarian/current-borrow")]
+        [Authorize(Roles = "lIBRARIAN")]
+        public async Task<IActionResult> GetCurrentlyBorrowedBooksByUser([FromQuery]string userId)
+        {
+            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId);
+            var bookDtos = _mapper.Map<IEnumerable<GetBorrowedBookForUserDto>>(res);
+            return Ok(bookDtos);
+        }
+
+
     }
 }

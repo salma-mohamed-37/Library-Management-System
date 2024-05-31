@@ -12,7 +12,6 @@ namespace backend.Repositories
         }
 
         /*
-        public Task Return(int bookId, Guid userId);
         public Task<List<Borrowed>> GetCurrentlyBorrowedBokksByUser(Guid UserId);
         public Task<List<Borrowed>> GetUserBorrowHistory(Guid userId);
         public Task<List<Borrowed>> GetbookBorrowHistory(int bookId);
@@ -25,6 +24,18 @@ namespace backend.Repositories
             b.ReturnDate = DateTime.Now;
             b.currently_borrowed = false;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Borrowed>> GetCurrentlyBorrowedBooksByUser(string UserId)
+        {
+            var b = await _context.Borrowed
+                .Where(b => b.currently_borrowed == true)
+                .Include(b => b.User)
+                .Where(b => b.User.Id == UserId)
+                .Include(b => b.Book)
+                .ToListAsync();
+            return b;
+
         }
     }
 }

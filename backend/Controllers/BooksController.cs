@@ -70,7 +70,7 @@ namespace backend.Controllers
 
         [Authorize(Roles = "lIBRARIAN")]
         [HttpGet("librarian/search/{name}")]
-        public async Task<ActionResult<GetBookDto>> GetBooksByLibrarian(string name)
+        public async Task<ActionResult<GetBookDto>> GetBooksByLibrarian([FromRoute] string name)
         {
             var books = await _bookRepository.GetBooksbyNameForLibrarian(name);
             var bookDtos = _mapper.Map<IEnumerable<GetBookForLibrarianDto>>(books);

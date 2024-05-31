@@ -25,7 +25,7 @@ namespace backend.MappingProfiles
                 .ForMember(des => des.BorrowDate, opt => opt.MapFrom(src => src.Borrowed.FirstOrDefault() != null ? src.Borrowed.FirstOrDefault().BorrowDate : (DateTime?)null))
                 .ForMember(des => des.ReturnDate, opt => opt.MapFrom(src => src.Borrowed.FirstOrDefault() != null ? src.Borrowed.FirstOrDefault().ReturnDate : (DateTime?)null))
                 .ForMember(des => des.DueDate, opt => opt.MapFrom(src => src.Borrowed.FirstOrDefault() != null ? src.Borrowed.FirstOrDefault().DueDate : (DateTime?)null))
-                .ForMember(des => des.User, opt => opt.MapFrom(src => src.Borrowed.FirstOrDefault() != null ? src.Borrowed.FirstOrDefault().User : null));
+                .ForMember(des => des.User, opt => opt.MapFrom(src => src.Borrowed.FirstOrDefault() != null && src.Borrowed.FirstOrDefault().currently_borrowed == true ? src.Borrowed.FirstOrDefault().User : null));
 
             CreateMap<Borrowed, GetBorrowedBookForUserDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Book.Id))

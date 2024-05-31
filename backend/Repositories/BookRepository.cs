@@ -30,7 +30,6 @@ namespace backend.Repositories
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
                 .ThenInclude(borrow => borrow.User)
-                .Where(book => book.Borrowed.Any(borrow => borrow.currently_borrowed == true))
                 .Where(b => b.Name.Contains(name))
                 .ToListAsync();
         }
@@ -56,7 +55,6 @@ namespace backend.Repositories
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
                 .ThenInclude(borrow => borrow.User)
-                .Where(book => book.Borrowed.Any(borrow => borrow.currently_borrowed == true))
                 .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
                 .ToListAsync();

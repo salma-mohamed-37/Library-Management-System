@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using backend.Dtos.AddDtos;
+using backend.Dtos.GetDtos;
 using backend.Dtos.GetDtos.Book;
 using backend.Handlers;
 using backend.Interfaces;
@@ -22,12 +23,14 @@ namespace backend.Controllers
         private readonly IMapper _mapper;
         private readonly IValidator<AddBookDto> _validator;
         private readonly ImageHandler _imageHandler;
-        public BooksController(IBookRepository bookRepository, IMapper mapper, IValidator<AddBookDto> validator, ImageHandler handler)
+        private readonly IBorrowedRepository _borrowedRepository;
+        public BooksController(IBookRepository bookRepository, IMapper mapper, IValidator<AddBookDto> validator, ImageHandler handler, IBorrowedRepository borrowedRepository)
         {
             _bookRepository = bookRepository;
             _mapper = mapper;
             _validator = validator;
             _imageHandler = handler;
+            _borrowedRepository = borrowedRepository;
         }
 
         [HttpGet]
@@ -144,6 +147,15 @@ namespace backend.Controllers
             _imageHandler.DeleteImage(existingBook.CoverName,"Books");
             await _bookRepository.DeleteAsync(id);
             return NoContent();
+        }
+
+        [Authorize(Roles = "lIBRARIAN")]
+        [HttpGet("borrow-history/{bookId}")]
+        public async Task<ActionResult<GetBorrowedBookForUserDto>> GetBorrowHistoryForBookByLibrarian([FromRoute] int bookId)
+        {
+            var res = await _borrowedRepository.GetBookBorrowHistory(bookId);
+            var bookDtos = _mapper.Map<IEnumerable<GetBorrowerDto>>(res);
+            return Ok(bookDtos);
         }
     }
 }

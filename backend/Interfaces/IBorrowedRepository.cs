@@ -6,7 +6,7 @@ namespace backend.Interfaces
     {
         public Task Return(int bookId, string userId);
         public Task<List<Borrowed>> GetCurrentlyBorrowedBooksByUser(string UserId);
-        //public Task<List<Borrowed>> GetUserBorrowHistory(string userId);
-        //public Task<List<Borrowed>> GetbookBorrowHistory(int bookId);
+        public Task<List<Borrowed>> GetUserBorrowHistory(string userId);
+        public Task<List<Borrowed>> GetBookBorrowHistory(int bookId);
     }
 }

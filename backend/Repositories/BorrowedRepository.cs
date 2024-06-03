@@ -11,11 +11,6 @@ namespace backend.Repositories
         {
         }
 
-        /*
-        public Task<List<Borrowed>> GetCurrentlyBorrowedBokksByUser(Guid UserId);
-        public Task<List<Borrowed>> GetUserBorrowHistory(Guid userId);
-        public Task<List<Borrowed>> GetbookBorrowHistory(int bookId);
-         */
 
         public async Task Return(int bookId, string userId)
         {
@@ -36,6 +31,28 @@ namespace backend.Repositories
                 .ToListAsync();
             return b;
 
+        }
+
+        public async Task<List<Borrowed>> GetUserBorrowHistory(string userId)
+        {
+            var res = await _context.Borrowed
+                .Where(b => b.currently_borrowed == false)
+                .Where(b => b.UserId == userId)
+                .Include(b => b.Book)
+                .OrderByDescending(b => b.BorrowDate)
+                .ToListAsync();
+            return res;
+        }
+       
+        public async Task<List<Borrowed>> GetBookBorrowHistory(int bookId)
+        {
+            var res = await _context.Borrowed
+                .Where(b => b.currently_borrowed == false)
+                .Where(b => b.BookId == bookId)
+                .Include(b => b.User)
+                .OrderByDescending(b=>b.BorrowDate)
+                .ToListAsync();
+            return res;
         }
     }
 }

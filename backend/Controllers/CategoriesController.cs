@@ -27,10 +27,10 @@ namespace backend.Controllers
 
         //GET /api/categories?pageSize=10&pageNumber=1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCategoryDto>>> GetCategories([FromQuery]int pageSize=4, [FromQuery] int pageNumber=1)
+        public async Task<ActionResult<PaginationDto<GetCategoryDto>>> GetCategories([FromQuery]int pageSize=4, [FromQuery] int pageNumber=1)
         {
                 var categories = await _categoryRepository.GetAllAsync(pageSize,pageNumber);
-                var categoryDtos = _mapper.Map<IEnumerable<GetCategoryDto>>(categories);
+                var categoryDtos = _mapper.Map<PaginationDto<GetCategoryDto>>(categories);
                 return Ok(categoryDtos);
         }
 

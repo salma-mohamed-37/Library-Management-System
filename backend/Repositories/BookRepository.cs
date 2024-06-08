@@ -1,7 +1,9 @@
 ﻿using backend.Data;
+using backend.Dtos.GetDtos;
 using backend.Interfaces;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace backend.Repositories
 {
@@ -32,33 +34,57 @@ namespace backend.Repositories
                 .ThenInclude(borrow => borrow.User)
                 .Where(b => b.Name.Contains(name))
                 .ToListAsync();
+
+
         }
 
-        public async Task<List<Book>> GetAllAsync(int pageSize, int pageNumber)
+        public async Task<PaginationDto<Book>> GetAllAsync(int pageSize, int pageNumber)
         {
-            var res = await _context.Books
+            var query = _context.Books
                 .AsNoTracking()
                 .Include(book => book.Category)
                 .Include(book => book.Author)
-                .Include(book=>book.Borrowed)
-                .Skip(pageSize * (pageNumber - 1))
-                .Take(pageSize)
-                .ToListAsync();
+                .Include(book => book.Borrowed);
+
+            var data = await query
+               .Skip(pageSize * (pageNumber - 1))
+               .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Book>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
             return res;
+
         }
 
-        public async Task<List<Book>> GetAllForLibrarianAsync(int pageSize, int pageNumber)
+        public async Task<PaginationDto<Book>> GetAllForLibrarianAsync(int pageSize, int pageNumber)
         {
-            var res = await _context.Books
+            var query = _context.Books
                 .AsNoTracking()
                 .Include(book => book.Category)
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
-                .ThenInclude(borrow => borrow.User)
-                .Skip(pageSize * (pageNumber - 1))
-                .Take(pageSize)
-                .ToListAsync();
+                .ThenInclude(borrow => borrow.User);
+
+            var data = await query
+              .Skip(pageSize * (pageNumber - 1))
+              .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Book>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
             return res;
+
+            
         }
         public async Task<Book> GetbyIdAsync(int id)
         {

@@ -28,10 +28,10 @@ namespace backend.Controllers
 
         //GET /api/Authors?pageSize=10&pageNumber=1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetAuthorDto>>> GetAuthors([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
+        public async Task<ActionResult<PaginationDto<GetAuthorDto>>> GetAuthors([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
         {
             var authors = await _authorRepository.GetAllAsync(pageSize, pageNumber);
-            var authorDtos = _mapper.Map<IEnumerable<GetAuthorDto>>(authors);
+            var authorDtos = _mapper.Map<PaginationDto<GetAuthorDto>>(authors);
             return Ok(authorDtos);
         }
 

@@ -14,6 +14,8 @@ namespace backend.MappingProfiles
             CreateMap<Author, GetAuthorDto>();
 
             CreateMap<ApplicationUser, UserDto>();
+
+            CreateMap(typeof(PaginationDto<>), typeof(PaginationDto<>));
         }
 
 

@@ -34,21 +34,21 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetBookDto>>> GetBooksForUsers([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
+        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksForUsers([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
         {
             var books = await _bookRepository.GetAllAsync(pageSize, pageNumber);
 
-            var bookDtos = _mapper.Map<IEnumerable<GetBookDto>>(books);
+            var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
             return Ok(bookDtos);
         }
 
         [Authorize(Roles ="lIBRARIAN")]
         [HttpGet("librarian")]
-        public async Task<ActionResult<IEnumerable<GetBookDto>>> GetBooksForLibrarian([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
+        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksForLibrarian([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
         {
             var books = await _bookRepository.GetAllForLibrarianAsync(pageSize, pageNumber);
 
-            var bookDtos = _mapper.Map<IEnumerable<GetBookForLibrarianDto>>(books);
+            var bookDtos = _mapper.Map<PaginationDto<GetBookForLibrarianDto>>(books);
             return Ok(bookDtos);
         }
 

@@ -1,4 +1,5 @@
 ﻿using backend.Data;
+using backend.Dtos.GetDtos;
 using backend.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,26 @@ namespace backend.Repositories
         {
             _context = context;
         }
+
+        public async Task<PaginationDto<T>> GetAllAsync(int pageSize, int pageNumber)
+        {
+            var query =  _context.Set<T>().AsNoTracking();
+
+            var data = await query
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<T>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
+            return res;
+        }
+
         async Task<T> IAsyncRepository<T>.AddAsync(T t)
         {
             await _context.Set<T>().AddAsync(t);
@@ -36,12 +57,6 @@ namespace backend.Repositories
             {
                 return false;
             }
-        }
-
-        async Task<List<T>> IAsyncRepository<T>.GetAllAsync(int pageSize, int pageNumber)
-        {
-            var res = await _context.Set<T>().AsNoTracking().Skip(pageSize*(pageNumber-1)).Take(pageSize).ToListAsync();
-            return res;
         }
 
         async Task<T> IAsyncRepository<T>.GetbyIdAsync(int id)

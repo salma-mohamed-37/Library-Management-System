@@ -150,11 +150,11 @@ namespace backend.Controllers
         }
 
         [Authorize(Roles = "lIBRARIAN")]
-        [HttpGet("borrow-history/{bookId}")]
-        public async Task<ActionResult<GetBorrowedBookForUserDto>> GetBorrowHistoryForBookByLibrarian([FromRoute] int bookId)
+        [HttpGet("borrow-history/{bookId}/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<GetBorrowedBookForUserDto>> GetBorrowHistoryForBookByLibrarian([FromRoute] int bookId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
-            var res = await _borrowedRepository.GetBookBorrowHistory(bookId);
-            var bookDtos = _mapper.Map<IEnumerable<GetBorrowerDto>>(res);
+            var res = await _borrowedRepository.GetBookBorrowHistory(bookId, pageSize, pageNumber);
+            var bookDtos = _mapper.Map<PaginationDto<GetBorrowerDto>>(res);
             return Ok(bookDtos);
         }
     }

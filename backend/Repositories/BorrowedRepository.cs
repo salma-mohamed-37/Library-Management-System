@@ -1,7 +1,9 @@
 ﻿using backend.Data;
+using backend.Dtos.GetDtos;
 using backend.Interfaces;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 
 namespace backend.Repositories
 {
@@ -21,38 +23,79 @@ namespace backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Borrowed>> GetCurrentlyBorrowedBooksByUser(string UserId)
+        public async Task<PaginationDto<Borrowed>> GetCurrentlyBorrowedBooksByUser(string UserId, int pageSize, int pageNumber)
         {
-            var b = await _context.Borrowed
+            var query = _context.Borrowed
                 .Where(b => b.currently_borrowed == true)
                 .Include(b => b.User)
                 .Where(b => b.User.Id == UserId)
                 .Include(b => b.Book)
-                .ToListAsync();
-            return b;
+                .OrderBy(b => b.Book.Name);
 
+            var data = await query
+               .Skip(pageSize * (pageNumber - 1))
+               .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Borrowed>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
+            return res;
         }
 
-        public async Task<List<Borrowed>> GetUserBorrowHistory(string userId)
+        public async Task<PaginationDto<Borrowed>> GetUserBorrowHistory(string userId, int pageSize, int pageNumber)
         {
-            var res = await _context.Borrowed
+
+            var query = _context.Borrowed
                 .Where(b => b.currently_borrowed == false)
                 .Where(b => b.UserId == userId)
                 .Include(b => b.Book)
-                .OrderByDescending(b => b.BorrowDate)
-                .ToListAsync();
+                .OrderByDescending(b => b.BorrowDate);
+
+            var data = await query
+               .Skip(pageSize * (pageNumber - 1))
+               .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Borrowed>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
             return res;
+
+           
         }
        
-        public async Task<List<Borrowed>> GetBookBorrowHistory(int bookId)
+        public async Task<PaginationDto<Borrowed>> GetBookBorrowHistory(int bookId, int pageSize, int pageNumber)
         {
-            var res = await _context.Borrowed
+            var query = _context.Borrowed
                 .Where(b => b.currently_borrowed == false)
                 .Where(b => b.BookId == bookId)
                 .Include(b => b.User)
-                .OrderByDescending(b=>b.BorrowDate)
-                .ToListAsync();
+                .OrderByDescending(b => b.BorrowDate);
+
+            var data = await query
+               .Skip(pageSize * (pageNumber - 1))
+               .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Borrowed>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
             return res;
+
+          
         }
     }
 }

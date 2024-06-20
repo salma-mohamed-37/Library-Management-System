@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.GetDtos;
 using backend.Dtos.GetDtos.Book;
 using backend.Interfaces;
 using backend.Models;
@@ -25,42 +26,42 @@ namespace backend.Controllers
             _borrowedRepository = borrowedRepository;
         }
 
-        [HttpGet("librarian/current-borrow")]
+        [HttpGet("librarian/current-borrow/{userId}/{pageNumber}/{pageSize}")]
         [Authorize(Roles = "lIBRARIAN")]
-        public async Task<IActionResult> GetCurrentlyBorrowedBooksByUser([FromQuery] string userId)
+        public async Task<ActionResult<PaginationDto<GetBorrowedBookForUserDto>>> GetCurrentlyBorrowedBooksByUser([FromRoute] string userId, [FromRoute]int pageNumber=1, [FromRoute] int pageSize =4)
         {
-            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId);
-            var bookDtos = _mapper.Map<IEnumerable<GetBorrowedBookForUserDto>>(res);
+            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId, pageSize, pageNumber);
+            var bookDtos = _mapper.Map<PaginationDto<GetBorrowedBookForUserDto>>(res);
             return Ok(bookDtos);
         }
 
-        [HttpGet("current-borrow")]
+        [HttpGet("current-borrow/{pageNumber}/{pageSize}")]
         [Authorize(Roles = "USER")]
-        public async Task<IActionResult> GetCurrentlyBorrowedBooksByUser()
+        public async Task<ActionResult<PaginationDto<GetBorrowedBookForUserDto>>> GetCurrentlyBorrowedBooksByUser([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId);
-            var bookDtos = _mapper.Map<IEnumerable<GetBorrowedBookForUserDto>>(res);
+            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId, pageSize, pageNumber);
+            var bookDtos = _mapper.Map<PaginationDto<GetBorrowedBookForUserDto>>(res);
             return Ok(bookDtos);
         }
 
 
         [Authorize(Roles ="lIBRARIAN")]
-        [HttpGet("borrow-history/{userId}")]
-        public async Task<ActionResult<GetBorrowedBookForUserDto>> GetBorrowHistoryForUserByLibrarian([FromRoute] string userId)
+        [HttpGet("borrow-history/{userId}/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetBorrowedBookForUserDto>>> GetBorrowHistoryForUserByLibrarian([FromRoute] string userId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
-            var res = await _borrowedRepository.GetUserBorrowHistory(userId);
-            var bookDtos = _mapper.Map<IEnumerable<GetBorrowedBookForUserDto>>(res);
+            var res = await _borrowedRepository.GetUserBorrowHistory(userId, pageSize, pageNumber);
+            var bookDtos = _mapper.Map<PaginationDto<GetBorrowedBookForUserDto>>(res);
             return Ok(bookDtos);
         }
 
         [Authorize(Roles ="USER")]
-        [HttpGet("borrow-history")]
-        public async Task<ActionResult<GetBorrowedBookForUserDto>> GetBorrowHistoryForUserByuser()
+        [HttpGet("borrow-history/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetBorrowedBookForUserDto>>> GetBorrowHistoryForUserByuser([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var res = await _borrowedRepository.GetUserBorrowHistory(userId!);
-            var bookDtos = _mapper.Map<IEnumerable<GetBorrowedBookForUserDto>>(res);
+            var res = await _borrowedRepository.GetUserBorrowHistory(userId!,pageSize, pageNumber);
+            var bookDtos = _mapper.Map<PaginationDto<GetBorrowedBookForUserDto>>(res);
             return Ok(bookDtos);
         }
     }

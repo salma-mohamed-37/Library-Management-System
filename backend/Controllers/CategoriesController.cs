@@ -25,9 +25,9 @@ namespace backend.Controllers
             _validator = validator;
         }
 
-        //GET /api/categories?pageSize=10&pageNumber=1
-        [HttpGet]
-        public async Task<ActionResult<PaginationDto<GetCategoryDto>>> GetCategories([FromQuery]int pageSize=4, [FromQuery] int pageNumber=1)
+       
+        [HttpGet("{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetCategoryDto>>> GetCategories( [FromRoute] int pageNumber=1, [FromRoute] int pageSize = 4)
         {
                 var categories = await _categoryRepository.GetAllAsync(pageSize,pageNumber);
                 var categoryDtos = _mapper.Map<PaginationDto<GetCategoryDto>>(categories);
@@ -46,11 +46,11 @@ namespace backend.Controllers
             return categoryDto;
         }
 
-        [HttpGet("search/{name}")]
-        public async Task<ActionResult<GetCategoryDto>> GetCategories(string name)
+        [HttpGet("search/{name}/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetCategoryDto>>> GetCategories([FromRoute] string name, [FromRoute] int pageSize, [FromRoute] int pageNumber)
         {
-            var categories = await  _categoryRepository.GetCategoriesbyName(name);
-            var categoryDtos = _mapper.Map<IEnumerable<GetCategoryDto>>(categories);
+            var categories = await  _categoryRepository.GetCategoriesbyName(name,pageNumber, pageSize);
+            var categoryDtos = _mapper.Map<PaginationDto<GetCategoryDto>>(categories);
             return Ok(categoryDtos);
 
         }

@@ -27,8 +27,8 @@ namespace backend.Controllers
         }
 
         //GET /api/Authors?pageSize=10&pageNumber=1
-        [HttpGet]
-        public async Task<ActionResult<PaginationDto<GetAuthorDto>>> GetAuthors([FromQuery] int pageSize = 4, [FromQuery] int pageNumber = 1)
+        [HttpGet("{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetAuthorDto>>> GetAuthors( [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
             var authors = await _authorRepository.GetAllAsync(pageSize, pageNumber);
             var authorDtos = _mapper.Map<PaginationDto<GetAuthorDto>>(authors);
@@ -47,11 +47,11 @@ namespace backend.Controllers
             return authorDto;
         }
 
-        [HttpGet("search/{name}")]
-        public async Task<ActionResult<GetAuthorDto>> GetAuthors(string name)
+        [HttpGet("search/{name}/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetAuthorDto>>> GetAuthors(string name, int pageNumber =1, int pageSize=4)
         {
-            var authors = await _authorRepository.GetAuthorsbyName(name);
-            var authorDtos = _mapper.Map<IEnumerable<GetAuthorDto>>(authors);
+            var authors = await _authorRepository.GetAuthorsbyName(name, pageNumber, pageSize);
+            var authorDtos = _mapper.Map< PaginationDto<GetAuthorDto>>(authors);
             return Ok(authorDtos);
 
         }

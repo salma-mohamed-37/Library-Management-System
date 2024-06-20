@@ -1,9 +1,10 @@
-﻿using backend.Models;
+﻿using backend.Dtos.GetDtos;
+using backend.Models;
 
 namespace backend.Interfaces
 {
     public interface IAuthorRepository : IAsyncRepository<Author>
     {
-        public Task<List<Author>> GetAuthorsbyName(string name);
+        public Task<PaginationDto<Author>> GetAuthorsbyName(string name, int pageNumber, int pageSize);
     }
 }

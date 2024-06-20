@@ -1,9 +1,10 @@
-﻿using backend.Models;
+﻿using backend.Dtos.GetDtos;
+using backend.Models;
 
 namespace backend.Interfaces
 {
     public interface ICategoryRepository:IAsyncRepository<Category>
     {
-        public Task<List<Category>> GetCategoriesbyName(string name);
+        public Task<PaginationDto<Category>> GetCategoriesbyName(string name, int pageNumber, int pageSize);
     }
 }

@@ -6,8 +6,8 @@ namespace backend.Interfaces
 {
     public interface IBookRepository: IAsyncRepository<Book>
     {
-        public Task<List<Book>> GetBooksbyName(string name);
+        public Task<PaginationDto<Book>> GetBooksbyName(string name, int pageNumber, int pageSize);
         public Task<PaginationDto<Book>> GetAllForLibrarianAsync(int pageSize, int pageNumber);
-        public Task<List<Book>> GetBooksbyNameForLibrarian(string name);
+        public Task<PaginationDto<Book>> GetBooksbyNameForLibrarian(string name, int pageNumber, int pageSize);
     }
 }

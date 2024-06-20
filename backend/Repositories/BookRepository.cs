@@ -126,6 +126,58 @@ namespace backend.Repositories
                 .FirstOrDefaultAsync(book => book.Id == id);
         }
 
+        public async Task<PaginationDto<Book>> GetBooksbyCategory(int categoryId, int pageNumber, int pageSize)
+        {
+            var query = _context.Books
+                .AsNoTracking()
+                .Include(book => book.Category)
+                .Where(b=>b.CategoryId == categoryId)
+                .Include(book => book.Author)
+                .Include(book => book.Borrowed)
+                .OrderBy(b => b.Name);
+
+
+            var data = await query
+               .Skip(pageSize * (pageNumber - 1))
+               .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Book>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
+            return res;
+        }
+
+        public async Task<PaginationDto<Book>> GetBooksbyAuthor(int authorId, int pageNumber, int pageSize)
+        {
+            var query = _context.Books
+                .AsNoTracking()
+                .Include(book => book.Author)
+                .Where(b => b.AuthorId == authorId)
+                .Include(book => book.Category)
+                .Include(book => book.Borrowed)
+                .OrderBy(b => b.Name);
+
+
+            var data = await query
+               .Skip(pageSize * (pageNumber - 1))
+               .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Book>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
+            return res;
+        }
+
 
     }
 }

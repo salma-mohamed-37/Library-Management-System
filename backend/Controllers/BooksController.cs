@@ -157,6 +157,24 @@ namespace backend.Controllers
             var bookDtos = _mapper.Map<PaginationDto<GetBorrowerDto>>(res);
             return Ok(bookDtos);
         }
+
+        [HttpGet("category/{categoryId}/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyCategoryId([FromRoute] int categoryId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        {
+            var books = await _bookRepository.GetBooksbyCategory(categoryId, pageNumber, pageSize);
+            var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
+            return Ok(bookDtos);
+        }
+
+        [HttpGet("author/{authorId}/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyAuthorId([FromRoute] int authorId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        {
+            var books = await _bookRepository.GetBooksbyAuthor(authorId, pageNumber, pageSize);
+            var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
+            return Ok(bookDtos);
+        }
+
+
     }
 }
 

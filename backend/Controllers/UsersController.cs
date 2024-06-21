@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.Account;
 using backend.Dtos.GetDtos;
 using backend.Dtos.GetDtos.Book;
 using backend.Interfaces;
@@ -18,12 +19,14 @@ namespace backend.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IBorrowedRepository _borrowedRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UsersController(UserManager<ApplicationUser> userManager, IMapper mapper, IBorrowedRepository borrowedRepository)
+        public UsersController(UserManager<ApplicationUser> userManager, IMapper mapper, IBorrowedRepository borrowedRepository, IUserRepository userRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
             _borrowedRepository = borrowedRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet("librarian/current-borrow/{userId}/{pageNumber}/{pageSize}")]
@@ -64,5 +67,13 @@ namespace backend.Controllers
             var bookDtos = _mapper.Map<PaginationDto<GetBorrowedBookForUserDto>>(res);
             return Ok(bookDtos);
         }
+
+        //[HttpGet("{pageNumber}/{pageSize}")]
+        //public async Task<ActionResult<PaginationDto<UserDto>>> GetUsers([FromRoute] int pageNumber=1, [FromRoute] int pageSize=4)
+        //{
+        //    var res = await _userRepository.GetAllAsync(pageSize, pageNumber);
+        //    var userDtos = _mapper.Map<PaginationDto<UserDto>>(res);
+        //    return userDtos;
+        //}
     }
 }

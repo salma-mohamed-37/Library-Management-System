@@ -7,6 +7,7 @@ namespace backend.Models
         public string FullName { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public List<Borrowed> Borrowed { get; set; }
+        public string Type { get; set; }
     }
 
 }

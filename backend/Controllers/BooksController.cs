@@ -80,7 +80,6 @@ namespace backend.Controllers
             return Ok(bookDtos);
         }
 
-        // PUT: api/books/5
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromForm] AddBookDto bookDto)
@@ -116,7 +115,7 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // POST: api/books
+  
 
         [HttpPost]
         [Authorize(Roles = "lIBRARIAN")]

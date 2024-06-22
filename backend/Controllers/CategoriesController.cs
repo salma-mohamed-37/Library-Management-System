@@ -34,7 +34,6 @@ namespace backend.Controllers
                 return Ok(categoryDtos);
         }
 
-        // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GetCategoryDto>> GetCategory(int id)
         {
@@ -55,7 +54,6 @@ namespace backend.Controllers
 
         }
 
-        // PUT: api/Categories/5
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id,[FromBody] AddCategoryDto categoryDto)
@@ -78,7 +76,6 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPost]
         public async Task<ActionResult<Category>> AddCategory([FromBody]AddCategoryDto categoryDto)

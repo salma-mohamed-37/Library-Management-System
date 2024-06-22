@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "raamTyw8ad1+hYUlgxISWqLceY+3eHtvIBitPanWWdxGb9SWA5IEhA9EuEGgSDMQ457WpsujUePaqqu93sihQQ==",
+  "dgSpecHash": "tRFRjLruX6072mgD+4fLpW34jNLRou93eDumGCWJDAKBGuZCUnZmM6H+z0gVXraTJKU0IA4/Xn3S/wRAT7GcJA==",
   "success": true,
-  "projectFilePath": "D:\\Full stack\\library management system\\backend\\backend.csproj",
+  "projectFilePath": "D:\\coding\\web projects\\library management system\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hp\\.nuget\\packages\\automapper\\6.1.1\\automapper.6.1.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",

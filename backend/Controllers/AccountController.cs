@@ -56,7 +56,8 @@ namespace backend.Controllers
                 UserName = registerDto.Username,
                 Email = registerDto.Email,
                 FullName = registerDto.Fullname,
-                DateOfBirth = registerDto.DateOfBirth
+                DateOfBirth = registerDto.DateOfBirth,
+                Type = StaticUserRoles.USER.ToString()
             };
 
             var is_succeeded = await _userManager.CreateAsync(appUser, registerDto.Password);
@@ -98,7 +99,8 @@ namespace backend.Controllers
                 UserName = registerDto.Username,
                 Email = registerDto.Email,
                 FullName = registerDto.Fullname,
-                DateOfBirth = registerDto.DateOfBirth
+                DateOfBirth = registerDto.DateOfBirth,
+                Type = StaticUserRoles.lIBRARIAN.ToString()
             };
 
             var is_succeeded = await _userManager.CreateAsync(appUser, registerDto.Password);
@@ -160,7 +162,8 @@ namespace backend.Controllers
             {
                 UserName = "admin111",
                 Email = "admin@gmail.com",
-                FullName = "admin"
+                FullName = "admin",
+                Type = StaticUserRoles.ADMIN.ToString()
             };
 
             var is_admin_exists = await _userManager.FindByNameAsync(admin.UserName);

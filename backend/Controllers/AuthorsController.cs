@@ -26,7 +26,6 @@ namespace backend.Controllers
             _validator = validator;
         }
 
-        //GET /api/Authors?pageSize=10&pageNumber=1
         [HttpGet("{pageNumber}/{pageSize}")]
         public async Task<ActionResult<PaginationDto<GetAuthorDto>>> GetAuthors( [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
@@ -35,7 +34,6 @@ namespace backend.Controllers
             return Ok(authorDtos);
         }
 
-        // GET: api/Authors/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GetAuthorDto>> GetAuthor(int id)
         {
@@ -56,7 +54,6 @@ namespace backend.Controllers
 
         }
 
-        // PUT: api/Authors/5
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(int id, [FromBody] AddAuthorDto authorDto)
@@ -79,7 +76,7 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPost]
         public async Task<ActionResult> AddAuthor([FromBody] AddAuthorDto authorDto)

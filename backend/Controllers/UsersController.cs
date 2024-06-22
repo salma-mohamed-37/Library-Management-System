@@ -68,12 +68,31 @@ namespace backend.Controllers
             return Ok(bookDtos);
         }
 
-        //[HttpGet("{pageNumber}/{pageSize}")]
-        //public async Task<ActionResult<PaginationDto<UserDto>>> GetUsers([FromRoute] int pageNumber=1, [FromRoute] int pageSize=4)
-        //{
-        //    var res = await _userRepository.GetAllAsync(pageSize, pageNumber);
-        //    var userDtos = _mapper.Map<PaginationDto<UserDto>>(res);
-        //    return userDtos;
-        //}
+        [Authorize(Roles ="lIBRARIAN")]
+        [HttpGet("reader/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<UserDto>>> GetUsers([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        {
+            var res = await _userRepository.GetAllReaders(pageSize, pageNumber);
+            var userDtos = _mapper.Map<PaginationDto<UserDto>>(res);
+            return userDtos;
+        }
+
+        [Authorize(Roles ="ADMIN")]
+        [HttpGet("librarian/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<UserDto>>> GetLibrarians([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        {
+            var res = await _userRepository.GetAllLibrarians(pageSize, pageNumber);
+            var userDtos = _mapper.Map<PaginationDto<UserDto>>(res);
+            return userDtos;
+        }
+
+        [Authorize(Roles = "lIBRARIAN")]
+        [HttpGet("search/{username}/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<PaginationDto<UserDto>>> SearchForUsersByUsername([FromRoute] string username, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        {
+            var res = await _userRepository.SearchForaUser(username, pageSize, pageNumber);
+            var userDtos = _mapper.Map<PaginationDto<UserDto>>(res);
+            return userDtos;
+        }
     }
 }

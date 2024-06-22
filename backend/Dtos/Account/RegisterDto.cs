@@ -19,5 +19,6 @@ namespace backend.Dtos.Account
 
         [Required(ErrorMessage = "Date of birth is required")]
         public DateTime DateOfBirth { get; set; }
+
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Full stack\\library management system\\backend\\backend.csproj": {}
+    "D:\\coding\\web projects\\library management system\\backend\\backend.csproj": {}
   },
   "projects": {
-    "D:\\Full stack\\library management system\\backend\\backend.csproj": {
+    "D:\\coding\\web projects\\library management system\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Full stack\\library management system\\backend\\backend.csproj",
+        "projectUniqueName": "D:\\coding\\web projects\\library management system\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "D:\\Full stack\\library management system\\backend\\backend.csproj",
+        "projectPath": "D:\\coding\\web projects\\library management system\\backend\\backend.csproj",
         "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "D:\\Full stack\\library management system\\backend\\obj\\",
+        "outputPath": "D:\\coding\\web projects\\library management system\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",

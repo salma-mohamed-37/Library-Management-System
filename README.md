@@ -4,7 +4,7 @@ The Library Management System is a  platform for managing a library's resources,
 The system provides a wide range of functionalities for different user roles, including anonymous users, members, librarians, and admins.
 
 # The features available for each stakeholder
-Anonymous
+Anonymous  
 sign up as member 				      
 view authors                                       
 view categories       			                                           

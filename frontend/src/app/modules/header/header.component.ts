@@ -12,10 +12,6 @@ import { MenuModule } from 'primeng/menu';
 export class HeaderComponent {
   items = [
     {
-      "label":"sign up",
-      "link":"pages"
-    },
-    {
       "label":"sign in",
       "link":"pages"
     }

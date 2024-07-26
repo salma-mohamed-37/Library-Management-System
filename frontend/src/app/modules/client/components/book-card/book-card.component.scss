@@ -1,0 +1,42 @@
+.card
+{
+  background-color: var(--white);
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 5px;
+  position: relative;
+  width: 13rem;
+  text-align: center;
+}
+img
+{
+  height:15rem;
+  width: 12rem;
+}
+
+.title
+{
+  text-align: center;
+  font-weight: 700;
+}
+
+.borrowed, .available
+{
+  position: absolute;
+  top:0;
+  right: 0;
+  height: fit-content;
+  color: var(--white);
+  margin: 0;
+  padding: 4px;
+  font-weight: 600;
+}
+
+.borrowed
+{
+  background-color: red;
+}
+.available
+{
+  background-color: green;
+}

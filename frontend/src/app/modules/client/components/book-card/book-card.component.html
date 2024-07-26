@@ -1,0 +1,20 @@
+<div class="card" >
+  <img [src]= getFullImageUrl(book!.imagePath) alt="book cover"/>
+  <p class="title"> {{book!.name}} </p>
+
+  <p [ngClass]="{
+    'borrowed': book!.currentlyBorrowed,
+    'available': !book!.currentlyBorrowed
+  }">
+    @if (book!.currentlyBorrowed)
+    {
+      Borrowed
+    }
+    @else
+    {
+      Available
+    }
+  </p>
+
+</div>
+

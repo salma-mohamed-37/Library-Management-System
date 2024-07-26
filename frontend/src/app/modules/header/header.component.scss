@@ -19,7 +19,22 @@ p
   border-radius:50%;
   height: 4rem;
   width: 4rem;
-  background-color: aqua;
+
+}
+
+img
+{
+  border:1px solid var(--background);
+}
+
+img:hover
+{
+  cursor: pointer;
+}
+
+.image
+{
+  margin-right: 2px;
 }
 
 :host ::ng-deep .p-menu-list:focus

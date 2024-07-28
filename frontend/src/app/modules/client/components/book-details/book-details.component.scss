@@ -1,0 +1,26 @@
+section
+{
+  font-family: sans-serif;
+  color:black;
+}
+
+::ng-deep .p-dialog .p-dialog-header .p-dialog-title
+{
+  color: black ;
+}
+.label
+{
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0.5rem;
+}
+
+.value
+{
+  margin: 2px;
+  border: 1px solid lightgrey;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin: 4px 0px;
+
+}

@@ -2,10 +2,10 @@ export interface Book {
   id: number;
   name: string;
   publishDate: Date;
-  categoryName: string;
-  authorName: string;
+  category_name: string;
+  author_name: string;
   imagePath: string;
-  currentlyBorrowed: boolean;
+  currently_borrowed: boolean;
   borrowDate?: Date;
   dueDate?: Date;
   returnDate?: Date;

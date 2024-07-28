@@ -4,9 +4,10 @@
 
 <div class="flex flex-wrap justify-content-between" style="margin: 5px;">
   <div *ngFor="let book of books; let i = index">
-    <app-book-card [book]="book" class=""></app-book-card>
+
+    <app-book-card [book]="book" (click)="getFullDetails(book)"></app-book-card>
   </div>
 </div>
-
+<app-book-details [visible]="visible" [selectedBook]="selectedBook" (dialogClosed)="hide()"></app-book-details>
 <p class="more"> <a href="">More Books</a></p>
 

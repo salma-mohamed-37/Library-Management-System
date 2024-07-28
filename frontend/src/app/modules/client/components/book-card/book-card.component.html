@@ -1,20 +1,20 @@
-<div class="card" >
-  <img [src]= getFullImageUrl(book!.imagePath) alt="book cover"/>
+<div class="card flex flex-column">
+  <img [src]= getFullImageUrl(book!.imagePath) alt="book cover" class="flex-grow-1 flex-shrink-1"/>
   <p class="title"> {{book!.name}} </p>
 
-  <p [ngClass]="{
-    'borrowed': book!.currentlyBorrowed,
-    'available': !book!.currentlyBorrowed
-  }">
-    @if (book!.currentlyBorrowed)
-    {
-      Borrowed
-    }
-    @else
-    {
-      Available
-    }
+  <p [ngClass]="{ 'borrowed': book!.currently_borrowed,'available': !book!.currently_borrowed}">
+      @if (book!.currently_borrowed == true)
+      {
+        Borrowed
+      }
+      @else
+      {
+        Available
+      }
   </p>
-
 </div>
+
+
+
+
 

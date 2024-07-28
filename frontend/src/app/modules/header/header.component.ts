@@ -14,6 +14,14 @@ export class HeaderComponent {
     {
       "label":"sign in",
       "link":"pages"
-    }
+    },
+    {
+      "label":"sign in",
+      "link":"pages"
+    },
+    {
+      "label":"sign in",
+      "link":"pages"
+    },
   ]
 }

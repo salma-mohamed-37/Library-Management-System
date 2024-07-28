@@ -17,4 +17,9 @@ export class BookService {
     return this.http.get<PaginationDto<Book>>(environment.apiUrl+"api/books/"+pageNumber+"/"+pageSize)
   }
 
+  getBookbyId(id:number): Observable<Book>
+  {
+    return this.http.get<Book>(environment.apiUrl+"api/books/"+id)
+  }
+
 }

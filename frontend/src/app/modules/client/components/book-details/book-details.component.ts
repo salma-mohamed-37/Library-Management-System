@@ -13,21 +13,16 @@ export class BookDetailsComponent {
   constructor(private route: ActivatedRoute,public bookService: BookService) { }
 
   @Input() selectedBook?:Book
-  @Input() visible! :boolean
-  @Output() dialogClosed = new EventEmitter<boolean>()
-
-  ngOnInit()
-  {
-
-  }
+  @Input() visible:boolean=false
+  @Output() hideDialog = new EventEmitter<boolean>()
 
   getFullImageUrl(path: string): string {
     return `${environment.apiUrl}${path}`;
   }
 
-  hideDialog() {
-    this.dialogClosed.emit();
+  dialogIsHidden()
+  {
+    this.hideDialog.emit()
   }
-
 
 }

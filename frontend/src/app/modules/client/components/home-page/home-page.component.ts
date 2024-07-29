@@ -8,8 +8,6 @@ import { BookService } from '../../../../services/book.service';
   styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent {
-  selectedBook? : Book
-  visible : boolean =false
   constructor(public bookService:BookService){}
   books : Book[] =[]
   ngOnInit()
@@ -18,29 +16,12 @@ export class HomePageComponent {
       next:(r)=>
       {
         this.books = r.data
-
       },
       error:(err) =>
       {
         console.log(err)
       }
     });
- }
-
- getFullDetails(selectedBook:Book)
- {
-    this.selectedBook = selectedBook
-    this.display()
- }
-
- display()
- {
-  this.visible=true
- }
-
- hide()
- {
-  this.visible = false
  }
 
 }

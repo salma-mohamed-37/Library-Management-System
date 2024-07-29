@@ -1,4 +1,4 @@
-<div class="card flex flex-column">
+<div class="card flex flex-column" (click)="display()">
   <img [src]= getFullImageUrl(book!.imagePath) alt="book cover" class="flex-grow-1 flex-shrink-1"/>
   <p class="title"> {{book!.name}} </p>
 
@@ -13,6 +13,7 @@
       }
   </p>
 </div>
+<app-book-details [visible]="visible" [selectedBook]="book" (hideDialog)="hide()"></app-book-details>
 
 
 

@@ -1,0 +1,20 @@
+<section >
+  <main *ngIf=" this.books!= undefined && this.books.data.length >0" class="flex flex-wrap" style="margin: 5px;">
+    @for (book of books.data; track $index)
+    {
+      <app-book-card [book]="book" style="margin: 0px 0.4rem;"></app-book-card>
+    }
+  </main>
+  <p class="more">
+
+  @if (loading)
+   {
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+   }
+   @else if (books != undefined && isThereareMore())
+   {
+    <span (click)="getPage()">More Books </span>
+   }
+  </p>
+</section>
+

@@ -9,8 +9,21 @@ import { environment } from '../../../../../environments/environment';
 })
 export class BookCardComponent {
   @Input() book : Book|undefined =undefined;
+  visible : boolean =false
 
-  getFullImageUrl(path: string): string {
+  getFullImageUrl(path: string): string
+  {
     return `${environment.apiUrl}${path}`;
   }
+
+ display()
+ {
+  this.visible=true
+ }
+
+ hide()
+ {
+  this.visible = false
+ }
+
 }

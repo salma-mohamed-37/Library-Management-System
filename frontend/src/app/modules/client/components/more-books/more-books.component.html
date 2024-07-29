@@ -1,4 +1,7 @@
-<p class="flex justify-content-between"> <span class="grow-1">Books</span> <input type="button" (click)="sidebarVisible = true" value="Filters"/></p>
+<nav class="flex flex-row justify-content-between">
+  <p class="flex-grow-1">Books</p>
+  <p><input type="button" (click)="sidebarVisible = !sidebarVisible" value="Filters"/></p>
+</nav>
 <section>
   <main *ngIf=" this.books!= undefined && this.books.data.length >0" class="flex flex-wrap" style="margin: 5px;">
     @for (book of books.data; track $index)
@@ -27,7 +30,7 @@
   </ng-template>
 
   <form [formGroup]="filters" (ngSubmit)="onSubmit()">
-    <aside class="flex flex-column gap-3">
+    <aside class="flex flex-column gap-3" >
       <label>Book Name</label>
       <input type="text" formControlName="bookName" />
 
@@ -39,9 +42,9 @@
 
       <label>Publish Date</label>
       <label>From</label>
-      <p-calendar formControlName="publishDateFrom" [showButtonBar]="true" [showIcon]="true" [touchUI]="true"></p-calendar>
+      <p-calendar formControlName="publishDateFrom" [showButtonBar]="true" [showIcon]="true" [touchUI]="true" dateFormat="dd-mm-yy" placeholder="dd-mm-yyyy"></p-calendar>
       <label>To</label>
-      <p-calendar formControlName="publishDateTo" [showButtonBar]="true" [showIcon]="true" [touchUI]="true"></p-calendar>
+      <p-calendar formControlName="publishDateTo" [showButtonBar]="true" [showIcon]="true" [touchUI]="true" dateFormat="dd-mm-yy" placeholder="dd-mm-yyyy"></p-calendar>
 
       <label>Sort Field</label>
       <p-dropdown [options]="sortFields" formControlName="sortField" placeholder="Select field"></p-dropdown>
@@ -49,7 +52,7 @@
       <label>Sort Direction</label>
       <p-dropdown [options]="sortDirections" formControlName="sortDirection" placeholder="Select direction"></p-dropdown>
 
-      <input type="submit" value="Search" />
+      <span style="text-align: center;"><input type="submit" value="Search" /></span>
     </aside>
   </form>
 </p-sidebar>

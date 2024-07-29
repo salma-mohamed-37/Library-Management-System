@@ -65,7 +65,6 @@ export class MoreBooksComponent {
       {
         if(this.books.data.length == 0)
         {
-          console.log("yes")
           this.books=b
         }
         else
@@ -74,6 +73,7 @@ export class MoreBooksComponent {
           this.books.count=b.count
         }
         this.loading=false
+        this.sidebarVisible = false
 
 
       },

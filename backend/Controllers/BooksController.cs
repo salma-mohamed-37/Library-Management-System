@@ -42,6 +42,17 @@ namespace backend.Controllers
             return Ok(bookDtos);
         }
 
+        [HttpPost("Filtered")]
+        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetFilteredBooksForUsers([FromBody] FilteringRequest request)
+        {
+            var books = await _bookRepository.GetFilteredBooks(request);
+
+            var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
+            return Ok(bookDtos);
+        }
+
+
+
         [Authorize(Roles ="lIBRARIAN")]
         [HttpGet("librarian/{pageNumber}/{pageSize}")]
         public async Task<ActionResult<PaginationDto<GetBookForLibrarianDto>>> GetBooksForLibrarian([FromRoute] int pageNumber = 1, [FromRoute] int pageSize =4 )
@@ -63,22 +74,22 @@ namespace backend.Controllers
             return bookDto;
         }
 
-        [HttpGet("search/{name}/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyName([FromRoute] string name, [FromRoute] int pageNumber = 1, [FromRoute ]int pageSize=4)
-        {
-            var books = await _bookRepository.GetBooksbyName(name, pageNumber, pageSize);
-            var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
-            return Ok(bookDtos);
-        }
+        // [HttpGet("search/{name}/{pageNumber}/{pageSize}")]
+        // public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyName([FromRoute] string name, [FromRoute] int pageNumber = 1, [FromRoute ]int pageSize=4)
+        // {
+        //     var books = await _bookRepository.GetBooksbyName(name, pageNumber, pageSize);
+        //     var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
+        //     return Ok(bookDtos);
+        // }
 
-        [Authorize(Roles = "lIBRARIAN")]
-        [HttpGet("librarian/search/{name}/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetBookForLibrarianDto>>> GetBooksByNameForLibrarian([FromRoute] string name, [FromRoute]int pageNumber=1, [FromRoute]int pageSize=4)
-        {
-            var books = await _bookRepository.GetBooksbyNameForLibrarian(name, pageNumber, pageSize);
-            var bookDtos = _mapper.Map<PaginationDto<GetBookForLibrarianDto>>(books);
-            return Ok(bookDtos);
-        }
+        // [Authorize(Roles = "lIBRARIAN")]
+        // [HttpGet("librarian/search/{name}/{pageNumber}/{pageSize}")]
+        // public async Task<ActionResult<PaginationDto<GetBookForLibrarianDto>>> GetBooksByNameForLibrarian([FromRoute] string name, [FromRoute]int pageNumber=1, [FromRoute]int pageSize=4)
+        // {
+        //     var books = await _bookRepository.GetBooksbyNameForLibrarian(name, pageNumber, pageSize);
+        //     var bookDtos = _mapper.Map<PaginationDto<GetBookForLibrarianDto>>(books);
+        //     return Ok(bookDtos);
+        // }
 
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]

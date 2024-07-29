@@ -1,20 +1,57 @@
-<section >
+<p class="flex justify-content-between"> <span class="grow-1">Books</span> <input type="button" (click)="sidebarVisible = true" value="Filters"/></p>
+<section>
   <main *ngIf=" this.books!= undefined && this.books.data.length >0" class="flex flex-wrap" style="margin: 5px;">
     @for (book of books.data; track $index)
     {
       <app-book-card [book]="book" style="margin: 0px 0.4rem;"></app-book-card>
     }
   </main>
+
   <p class="more">
 
-  @if (loading)
-   {
-    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
-   }
-   @else if (books != undefined && isThereareMore())
-   {
-    <span (click)="getPage()">More Books </span>
-   }
-  </p>
+    @if (loading)
+     {
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+     }
+     @else if (books != undefined && isThereareMore())
+     {
+      <span (click)="getPage()">More Books </span>
+     }
+    </p>
 </section>
+
+
+<p-sidebar [(visible)]="sidebarVisible">
+  <ng-template pTemplate="header">
+    <span class="font-semibold text-xl">Filters</span>
+  </ng-template>
+
+  <form [formGroup]="filters" (ngSubmit)="onSubmit()">
+    <aside class="flex flex-column gap-3">
+      <label>Book Name</label>
+      <input type="text" formControlName="bookName" />
+
+      <label>Author</label>
+      <input type="text" formControlName="author" />
+
+      <label>Genre</label>
+      <p-dropdown [options]="categories" formControlName="genre" placeholder="Select a Genre"></p-dropdown>
+
+      <label>Publish Date</label>
+      <label>From</label>
+      <p-calendar formControlName="publishDateFrom" [showButtonBar]="true" [showIcon]="true" [touchUI]="true"></p-calendar>
+      <label>To</label>
+      <p-calendar formControlName="publishDateTo" [showButtonBar]="true" [showIcon]="true" [touchUI]="true"></p-calendar>
+
+      <label>Sort Field</label>
+      <p-dropdown [options]="sortFields" formControlName="sortField" placeholder="Select field"></p-dropdown>
+
+      <label>Sort Direction</label>
+      <p-dropdown [options]="sortDirections" formControlName="sortDirection" placeholder="Select direction"></p-dropdown>
+
+      <input type="submit" value="Search" />
+    </aside>
+  </form>
+</p-sidebar>
+
 

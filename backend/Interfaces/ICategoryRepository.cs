@@ -6,5 +6,7 @@ namespace backend.Interfaces
     public interface ICategoryRepository:IAsyncRepository<Category>
     {
         public Task<PaginationDto<Category>> GetCategoriesbyName(string name, int pageNumber, int pageSize);
+
+        public Task<ICollection<string>> GetCategoriesNames();
     }
 }

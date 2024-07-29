@@ -98,5 +98,12 @@ namespace backend.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("names")]
+        public async Task<ActionResult<ICollection<string>>> GetCategoriesNames()
+        {
+            var res = await _categoryRepository.GetCategoriesNames();
+            return Ok(res);
+        }
     }
 }

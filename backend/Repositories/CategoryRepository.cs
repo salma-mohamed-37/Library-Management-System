@@ -35,5 +35,16 @@ namespace backend.Repositories
             return res;
 
         }
+
+        public async Task<ICollection<string>> GetCategoriesNames()
+        {
+            var res =await _context.Categories
+            .AsNoTracking()
+            .Select(c=>c.Name)
+            .ToListAsync();
+
+            return res;
+        }
+
     }
 }

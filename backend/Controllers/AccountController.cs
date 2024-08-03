@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace backend.Controllers
 {
@@ -152,7 +153,20 @@ namespace backend.Controllers
 
             var jwt = _tokenService.GenerateNewJsonWebToken(claims);
 
-            return Ok(jwt);
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(jwt);
+            var expiryDate = jwtSecurityToken.ValidTo;
+            var expiryDateLocal = expiryDate.ToLocalTime();
+
+            var res = new LoggedInUserDto 
+            {
+                Id = user.Id,
+                Role = userRoles[0],
+                Token = jwt,
+                ExpiryDate = expiryDateLocal
+            };
+
+            return Ok(res);
         }
 
         [HttpPost("checkForAdmin")]

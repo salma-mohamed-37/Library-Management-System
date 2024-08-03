@@ -1,6 +1,6 @@
 <div class="card flex flex-column" (click)="display()">
   <img [src]= getFullImageUrl(book!.imagePath) alt="book cover" class="flex-grow-1 flex-shrink-1"/>
-  <p class="title"> {{book!.name}} </p>
+  <p class="book-title"> {{book!.name}} </p>
 
   <p [ngClass]="{ 'borrowed': book!.currently_borrowed,'available': !book!.currently_borrowed}">
       @if (book!.currently_borrowed == true)

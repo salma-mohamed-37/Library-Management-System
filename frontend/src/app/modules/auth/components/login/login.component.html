@@ -1,0 +1,14 @@
+<main class="flex flex-row justify-content-center">
+  <form [formGroup]="loginForm" (ngSubmit)="submit()" >
+    <section class="flex flex-column m-5">
+      <p class="title">Log in Page</p>
+      <label>Email: </label>
+      <input type="text" formControlName="email"/>
+      <label>Password: </label>
+      <input type="password" formControlName="password" />
+      <p style="text-align: center;"><input type="submit" value="Log in" /></p>
+    </section>
+  </form>
+
+
+</main>

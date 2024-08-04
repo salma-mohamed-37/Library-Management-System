@@ -33,12 +33,8 @@ export class HeaderComponent {
     this.items=[]
     if(this.authService.isLoggedin())
     {
-      this.isLoggedIn = this.authService.isLoggedin()
-
-      console.log(this.authService.getCurrentUserRole() )
       if(this.authService.getCurrentUserRole() == "USER")
       {
-        console.log("1")
         this.items.push({
           label:"Borrow History",
             command: () => {
@@ -55,7 +51,6 @@ export class HeaderComponent {
       }
       else if (this.authService.getCurrentUserRole() == "lIBRARIAN")
       {
-        console.log("2")
         this.items.push({
           label:"Dashboard",
             command: () => {
@@ -66,7 +61,6 @@ export class HeaderComponent {
       }
       else if(this.authService.getCurrentUserRole() == "ADMIN")
       {
-        console.log("3")
         this.items.push({
           label:"Admin Dashboard",
             command: () => {

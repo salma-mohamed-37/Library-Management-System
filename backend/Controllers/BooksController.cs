@@ -2,6 +2,7 @@
 using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos;
 using backend.Dtos.GetDtos.Book;
+using backend.Dtos.Responses;
 using backend.Handlers;
 using backend.Interfaces;
 using backend.Models;
@@ -34,76 +35,65 @@ namespace backend.Controllers
         }
 
         [HttpGet("{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksForUsers([FromRoute] int pageSize = 4, [FromRoute] int pageNumber = 1)
+        public async Task<ActionResult<APIResponse<PaginationDto<GetBookDto>>>> GetBooksForUsers([FromRoute] int pageSize = 4, [FromRoute] int pageNumber = 1)
         {
             var books = await _bookRepository.GetAllAsync(pageSize, pageNumber);
 
             var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
-            return Ok(bookDtos);
+            return Ok(new APIResponse<PaginationDto<GetBookDto>>(200, "", bookDtos));
         }
 
         [HttpPost("Filtered")]
-        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetFilteredBooksForUsers([FromBody] FilteringRequest request)
+        public async Task<ActionResult<APIResponse<PaginationDto<GetBookDto>>>> GetFilteredBooksForUsers([FromBody] FilteringRequest request)
         {
             var books = await _bookRepository.GetFilteredBooks(request);
 
             var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
-            return Ok(bookDtos);
+            return Ok(new APIResponse<PaginationDto<GetBookDto>>(200, "", bookDtos));
         }
 
 
 
         [Authorize(Roles ="lIBRARIAN")]
         [HttpGet("librarian/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetBookForLibrarianDto>>> GetBooksForLibrarian([FromRoute] int pageNumber = 1, [FromRoute] int pageSize =4 )
+        public async Task<ActionResult<APIResponse<PaginationDto<GetBookForLibrarianDto>>>> GetBooksForLibrarian([FromRoute] int pageNumber = 1, [FromRoute] int pageSize =4 )
         {
             var books = await _bookRepository.GetAllForLibrarianAsync(pageSize, pageNumber);
 
             var bookDtos = _mapper.Map<PaginationDto<GetBookForLibrarianDto>>(books);
-            return Ok(bookDtos);
+            return Ok(new APIResponse<PaginationDto<GetBookForLibrarianDto>>(200, "", bookDtos));
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetBookDto>> GetBook(int id)
+        public async Task<ActionResult<APIResponse<GetBookDto>>> GetBook(int id)
         {
             var book = await _bookRepository.GetbyIdAsync(id);
             if (book is null)
-                return NotFound();
+                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
             var bookDto = _mapper.Map<GetBookDto>(book);
-            return bookDto;
+            return new APIResponse<GetBookDto>(200, "", bookDto);
         }
-
-        // [HttpGet("search/{name}/{pageNumber}/{pageSize}")]
-        // public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyName([FromRoute] string name, [FromRoute] int pageNumber = 1, [FromRoute ]int pageSize=4)
-        // {
-        //     var books = await _bookRepository.GetBooksbyName(name, pageNumber, pageSize);
-        //     var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
-        //     return Ok(bookDtos);
-        // }
-
-        // [Authorize(Roles = "lIBRARIAN")]
-        // [HttpGet("librarian/search/{name}/{pageNumber}/{pageSize}")]
-        // public async Task<ActionResult<PaginationDto<GetBookForLibrarianDto>>> GetBooksByNameForLibrarian([FromRoute] string name, [FromRoute]int pageNumber=1, [FromRoute]int pageSize=4)
-        // {
-        //     var books = await _bookRepository.GetBooksbyNameForLibrarian(name, pageNumber, pageSize);
-        //     var bookDtos = _mapper.Map<PaginationDto<GetBookForLibrarianDto>>(books);
-        //     return Ok(bookDtos);
-        // }
 
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromForm] AddBookDto bookDto)
         {
-            var validationResult = await _validator.ValidateAsync(bookDto);
-            if (validationResult.Errors.Any())
+            if (!ModelState.IsValid)
             {
-                return BadRequest(validationResult);
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
             }
+
             var existingBook = await _bookRepository.GetbyIdAsync(id);
             if (existingBook == null)
             {
-                return NotFound();
+                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
             }
 
             if (bookDto.CoverFile == null)
@@ -123,24 +113,30 @@ namespace backend.Controllers
             }
 
             await _bookRepository.UpdateAsync(existingBook);
-            return NoContent();
+            return Ok(new APIResponse<object>(200, "The book is updated successfully.", null));
         }
 
   
 
         [HttpPost]
         [Authorize(Roles = "lIBRARIAN")]
-        public async Task<ActionResult> AddBook([FromForm] AddBookDto bookDto)
+        public async Task<IActionResult> AddBook([FromForm] AddBookDto bookDto)
         {
-            var validationResult = await _validator.ValidateAsync(bookDto);
-            if (validationResult.Errors.Any())
+            if (!ModelState.IsValid)
             {
-                return BadRequest(validationResult);
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
             }
+
             var book = _mapper.Map<Book>(bookDto);
             await _imageHandler.SaveImageFile(bookDto.CoverFile,book.CoverName, "Books");
             await _bookRepository.AddAsync(book);
-            return Ok();
+            return Ok(new APIResponse<object>(200, "The book is added successfully.", null));
         }
 
 
@@ -152,37 +148,37 @@ namespace backend.Controllers
 
             if (existingBook == null)
             {
-                return NotFound();
+                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
             }
             _imageHandler.DeleteImage(existingBook.CoverName,"Books");
             await _bookRepository.DeleteAsync(id);
-            return NoContent();
+            return Ok(new APIResponse<object>(200, "The book is deleted successfully.", null));
         }
 
         [Authorize(Roles = "lIBRARIAN")]
         [HttpGet("borrow-history/{bookId}/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<GetBorrowedBookForUserDto>> GetBorrowHistoryForBookByLibrarian([FromRoute] int bookId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        public async Task<ActionResult<APIResponse<PaginationDto<GetBorrowerDto>>>> GetBorrowHistoryForBookByLibrarian([FromRoute] int bookId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
             var res = await _borrowedRepository.GetBookBorrowHistory(bookId, pageSize, pageNumber);
             var bookDtos = _mapper.Map<PaginationDto<GetBorrowerDto>>(res);
-            return Ok(bookDtos);
+            return Ok(new APIResponse<PaginationDto<GetBorrowerDto>>(200, "", bookDtos));
         }
 
-        [HttpGet("category/{categoryId}/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyCategoryId([FromRoute] int categoryId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
-        {
-            var books = await _bookRepository.GetBooksbyCategory(categoryId, pageNumber, pageSize);
-            var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
-            return Ok(bookDtos);
-        }
+        //[HttpGet("category/{categoryId}/{pageNumber}/{pageSize}")]
+        //public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyCategoryId([FromRoute] int categoryId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        //{
+        //    var books = await _bookRepository.GetBooksbyCategory(categoryId, pageNumber, pageSize);
+        //    var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
+        //    return Ok(bookDtos);
+        //}
 
-        [HttpGet("author/{authorId}/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyAuthorId([FromRoute] int authorId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
-        {
-            var books = await _bookRepository.GetBooksbyAuthor(authorId, pageNumber, pageSize);
-            var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
-            return Ok(bookDtos);
-        }
+        //[HttpGet("author/{authorId}/{pageNumber}/{pageSize}")]
+        //public async Task<ActionResult<PaginationDto<GetBookDto>>> GetBooksbyAuthorId([FromRoute] int authorId, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        //{
+        //    var books = await _bookRepository.GetBooksbyAuthor(authorId, pageNumber, pageSize);
+        //    var bookDtos = _mapper.Map<PaginationDto<GetBookDto>>(books);
+        //    return Ok(bookDtos);
+        //}
 
 
     }

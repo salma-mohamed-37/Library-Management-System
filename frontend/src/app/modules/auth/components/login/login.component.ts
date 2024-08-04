@@ -36,8 +36,6 @@ export class LoginComponent {
         {
           if(res)
            this.router.navigate(["pages/client/pages"])
-          else
-            console.log("wrong credintials")
         }
       })
     }

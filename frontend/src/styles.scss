@@ -58,3 +58,9 @@ input[type=text], input[type=password]
   width: 100%;
   font-weight: 500;
 }
+
+.p-toast .p-toast-message.p-toast-message-error .p-toast-icon-close
+{
+  outline: none;
+  border: none;
+}

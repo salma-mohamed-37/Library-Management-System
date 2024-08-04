@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using backend.Dtos.Responses;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace backend.Controllers
 {
@@ -42,13 +45,19 @@ namespace backend.Controllers
         {
             if(! ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors) , null);
+                return BadRequest(response);
             }
 
             var is_user_exists = await _userManager.FindByNameAsync(registerDto.Username);
             if (is_user_exists is not null)
             {
-                return BadRequest("Username already exists");
+                return BadRequest(new APIResponse<object>(400, "Username already exists", null));
             }
 
 
@@ -69,14 +78,14 @@ namespace backend.Controllers
 
                 foreach (var e in is_succeeded.Errors)
                 {
-                    error += " ";
+                    error += "\n";
                     error += e.Description;
                 }
-                return BadRequest(error);
+                return BadRequest(new APIResponse<object>(400, error, null));
             }
                 await _userManager.AddToRoleAsync(appUser, StaticUserRoles.USER);
 
-            return Ok("User created successfully");
+            return Ok(new APIResponse<object>(200,"User created successfully",null));
         }
 
         [Authorize(Roles ="ADMIN")]
@@ -85,13 +94,19 @@ namespace backend.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
             }
 
             var is_user_exists = await _userManager.FindByNameAsync(registerDto.Username);
             if (is_user_exists is not null)
             {
-                return BadRequest("Username already exists");
+                return BadRequest(new APIResponse<object>(400, "Username already exists", null));
             }
 
 
@@ -112,14 +127,14 @@ namespace backend.Controllers
 
                 foreach (var e in is_succeeded.Errors)
                 {
-                    error += " ";
+                    error += "\n";
                     error += e.Description;
                 }
-                return BadRequest(error);
+                return BadRequest(new APIResponse<object>(400, error, null));
             }
-                await _userManager.AddToRoleAsync(appUser, StaticUserRoles.lIBRARIAN);
+            await _userManager.AddToRoleAsync(appUser, StaticUserRoles.lIBRARIAN);
 
-            return Ok("Librarian created successfully");
+            return Ok(new APIResponse<object>(200,"Librarian created successfully",null));
         }
 
         [HttpPost("login")]
@@ -127,14 +142,14 @@ namespace backend.Controllers
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
-            {
-                return Unauthorized("Invalid credentials");
+            { 
+                return Unauthorized(new APIResponse<object>(400, "Invalid credentials", null));
             }
 
             var is_password_correct = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!is_password_correct)
             {
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(new APIResponse<object>(400, "Invalid credentials", null));
             }
 
             var claims = new List<Claim>
@@ -166,7 +181,7 @@ namespace backend.Controllers
                 ExpiryDate = expiryDateLocal
             };
 
-            return Ok(res);
+            return Ok(new APIResponse<object>(200,"", res));
         }
 
         [HttpPost("checkForAdmin")]
@@ -184,7 +199,7 @@ namespace backend.Controllers
 
             if (is_admin_exists is not null)
             {
-                return Ok("Admin already exists");
+                return BadRequest(new APIResponse<object>(400,"Admin already exists", null));
             }
             else
             {
@@ -192,7 +207,7 @@ namespace backend.Controllers
                 if (is_succeeded.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(admin, StaticUserRoles.ADMIN);
-                    return Ok();
+                    return Ok(new APIResponse<object>(200,"Admin created successfully",null));
 
                 }
                 else
@@ -201,10 +216,10 @@ namespace backend.Controllers
 
                     foreach (var e in is_succeeded.Errors)
                     {
-                        error += " ";
+                        error += "\n";
                         error += e.Description;
                     }
-                    return BadRequest(error);
+                    return BadRequest(new APIResponse<object>(400, error, null));
                 }
 
             }

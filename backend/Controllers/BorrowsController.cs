@@ -2,6 +2,7 @@
 using backend.Data;
 using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos.Book;
+using backend.Dtos.Responses;
 using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
@@ -37,13 +38,13 @@ namespace backend.Controllers
             var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {
-                return BadRequest("User doesn't exist");
+                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
             }
 
             var borrow = _mapper.Map<Borrowed>(dto);
 
             await _borrowedRepository.AddAsync(borrow);
-            return Ok("Book borrowed successfully");
+            return Ok(new APIResponse<object>(200, "Book borrowed successfully.", null));
         }
 
         [HttpPut("return")]
@@ -53,11 +54,11 @@ namespace backend.Controllers
             var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {
-                return BadRequest("User doesn't exist");
+                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
             }
             await _borrowedRepository.Return(dto.BookId, dto.UserId);
 
-            return Ok("Book returned successfully");
+            return Ok(new APIResponse<object>(200, "Book returned successfully.", null));
         }
 
         

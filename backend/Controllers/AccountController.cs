@@ -143,13 +143,13 @@ namespace backend.Controllers
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             { 
-                return Unauthorized(new APIResponse<object>(400, "Invalid credentials", null));
+                return BadRequest(new APIResponse<object>(400, "Invalid credentials", null));
             }
 
             var is_password_correct = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!is_password_correct)
             {
-                return Unauthorized(new APIResponse<object>(400, "Invalid credentials", null));
+                return BadRequest(new APIResponse<object>(400, "Invalid credentials", null));
             }
 
             var claims = new List<Claim>

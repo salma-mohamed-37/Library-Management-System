@@ -3,14 +3,13 @@ import { catchError, map, Observable, of, throwError} from 'rxjs';
 import { APIResponse } from '../interfaces/common/apiresponse';
 import { Injectable } from '@angular/core';
 import { ToastContentService } from '../services/toast-content.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
-@Injectable
-({
-  providedIn: 'root'
-})
+@Injectable()
 export class ResponseInterceptor implements HttpInterceptor {
 
-  constructor(private toastContentService: ToastContentService) {}
+  constructor(private toastContentService: ToastContentService, private authService :AuthService, private router:Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
       return next.handle(req).pipe(
@@ -42,8 +41,18 @@ export class ResponseInterceptor implements HttpInterceptor {
         }),
         catchError((error: HttpErrorResponse) =>
         {
+          if(error.status == 401)
+          {
+            this.authService.logout()
+            this.router.navigate(["pages/client/homepage"])
+            this.toastContentService.showError("Unauthorized please login.")
+            return of(error as any);
+          }
+          else
+          {
             this.toastContentService.showError(error.error.message)
             return of(error as any);
+          }
         })
     );
   }

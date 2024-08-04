@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { roleGuard } from './auth/role.guard';
 
 const routes: Routes =
 [
@@ -13,6 +14,8 @@ const routes: Routes =
   },
   {
     path:"dashboard",
+    canActivate: [roleGuard],
+    data: { role: 'lIBRARIAN' },
     loadChildren : () => import ('./librarian-dashboard/librarian-dashboard.module').then((m)=>m.LibrarianDashboardModule)
   },
 

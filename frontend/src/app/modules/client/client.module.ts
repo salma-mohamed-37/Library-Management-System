@@ -10,6 +10,9 @@ import { SidebarModule } from 'primeng/sidebar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PaginatorModule } from 'primeng/paginator';
+import { BorrowHistoryComponent } from './components/borrow-history/borrow-history.component';
+import { BorrowCardComponent } from './components/borrow-card/borrow-card.component';
 
 
 
@@ -18,7 +21,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     BookCardComponent,
     HomePageComponent,
     BookDetailsComponent,
-    MoreBooksComponent
+    MoreBooksComponent,
+    BorrowHistoryComponent,
+    BorrowCardComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +32,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SidebarModule,
     DropdownModule,
     CalendarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PaginatorModule
 
   ]
 })

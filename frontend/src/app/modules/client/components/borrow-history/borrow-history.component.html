@@ -1,0 +1,23 @@
+<p class="title">Borrow History</p>
+
+
+@if (books)
+{
+  <main class="grid m-0 justify-content-center">
+    @for (book of books.data; track $index)
+    {
+      <app-borrow-card [book]="book"></app-borrow-card>
+    }
+  </main>
+
+  <br/>
+
+<p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="books.pageSize"
+    [totalRecords]="books.count"
+    [rowsPerPageOptions]="rowsPerPageOptions" />
+
+}
+

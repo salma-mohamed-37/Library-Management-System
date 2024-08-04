@@ -1,0 +1,18 @@
+<section class="flex">
+  <img [src]=getFullImageUrl(book!.imagePath) alt="book cover"/>
+  <div>
+    <p class="heading">{{book.name}}</p>
+    <main class="flex flex-row">
+      <aside>
+        <label>Borrow Date: </label> <br/>
+        <label>Due Date: </label> <br/>
+        <label>Return Date: </label> <br/>
+      </aside>
+      <aside>
+       <span>{{book.borrowDate | date:'MMMM,dd,YYYY'}}</span> <br/>
+       <span>{{book.dueDate | date:'MMMM,dd,YYYY'}}</span> <br/>
+       <span>{{book.returnDate | date:'MMMM,dd,YYYY'}}</span> <br/>
+      </aside>
+    </main>
+  </div>
+</section>

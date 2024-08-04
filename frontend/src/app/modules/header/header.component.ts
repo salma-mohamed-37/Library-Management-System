@@ -38,7 +38,7 @@ export class HeaderComponent {
         this.items.push({
           label:"Borrow History",
             command: () => {
-                this.navigate("pages/client/homepage");
+                this.navigate("pages/client/borrow-history");
 
             }},
             {

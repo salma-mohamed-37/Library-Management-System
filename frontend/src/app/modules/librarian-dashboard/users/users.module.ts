@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UsersRoutingModule } from './users-routing.module';
 import { AllUsersComponent } from './components/all-users/all-users.component';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { AllUsersComponent } from './components/all-users/all-users.component';
   ],
   imports: [
     CommonModule,
-    UsersRoutingModule
+    UsersRoutingModule,
+    TableModule
   ]
 })
 export class UsersModule { }

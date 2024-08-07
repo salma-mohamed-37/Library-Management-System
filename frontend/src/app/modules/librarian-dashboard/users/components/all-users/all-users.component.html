@@ -1,1 +1,22 @@
-<p>all-users works!</p>
+<nav>
+  <input type="button" value="Add User"/>
+</nav>
+
+<main>
+  <p-table [value]="response.data" [loading]="loading" [paginator]="true"[first]="first" [rows]="rows" [totalRecords]="response.count"  [rowsPerPageOptions]="[1,5, 10, 20]" dataKey="id"  [lazy]="true"(onLazyLoad)="onPageChange($event)" sortMode="single">
+    <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+        <tr>
+            <td>{{ user.fullName}}</td>
+            <td>{{ user.email}}</td>
+            <td><input type="button" value="Details"/> <input type="button" value="Borrow"/> <input type="button" value="Return"/></td>
+        </tr>
+    </ng-template>
+</p-table>
+</main>

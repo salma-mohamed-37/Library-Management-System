@@ -54,7 +54,7 @@ export class HeaderComponent {
         this.items.push({
           label:"Dashboard",
             command: () => {
-                this.navigate("pages/client/homepage");
+                this.navigate("pages/dashboard");
 
             }},
           );

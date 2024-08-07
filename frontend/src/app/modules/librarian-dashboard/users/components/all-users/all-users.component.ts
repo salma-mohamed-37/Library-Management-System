@@ -4,6 +4,7 @@ import { FilterMatchMode } from 'primeng/api';
 import { LazyLoadEventDTO } from '../../../../../interfaces/common/TableDtos';
 import { PaginationDto } from '../../../../../interfaces/common/PaginationDto';
 import { UserService } from '../../../../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-users',
@@ -19,6 +20,7 @@ export class AllUsersComponent {
   first:number =1
   rows:number=5
   loading:boolean=true
+  name:string=""
 
   response:PaginationDto<UserDto>={
     pageNumber:0,
@@ -26,7 +28,7 @@ export class AllUsersComponent {
     count:0,
     data:[]
   }
-  constructor(private userService:UserService){}
+  constructor(private userService:UserService, private router:Router){}
   ngOnInit()
   {
     this.getUsers()
@@ -37,7 +39,7 @@ export class AllUsersComponent {
     const pageNumber = Math.floor(this.first / this.rows) + 1;
     console.log(pageNumber)
 
-    this.userService.getUsers(this.rows,pageNumber).subscribe({
+    this.userService.getUsers(this.rows,pageNumber, this.name).subscribe({
       next:(res)=>
       {
         this.response=res
@@ -52,4 +54,16 @@ export class AllUsersComponent {
     this.rows=event.rows
     this.getUsers()
   }
+
+  search(name:string)
+  {
+    console.log(name)
+    this.name=name
+    this.getUsers()
+  }
+  navigate(url:string)
+  {
+    this.router.navigate([url])
+  }
+
 }

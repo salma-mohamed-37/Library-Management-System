@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend.Dtos.Account;
 using backend.Dtos.GetDtos;
+using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos.Book;
 using backend.Dtos.Responses;
 using backend.Interfaces;
@@ -88,10 +89,10 @@ namespace backend.Controllers
         }
 
         [Authorize(Roles = "lIBRARIAN")]
-        [HttpGet("search/{username}/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<APIResponse<PaginationDto<UserDto>>>> SearchForUsersByUsername([FromRoute] string username, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        [HttpPost("search/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<APIResponse<PaginationDto<UserDto>>>> SearchForUsersByUsername([FromBody] SearchByNameDto request, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
-            var res = await _userRepository.SearchForaUser(username, pageSize, pageNumber);
+            var res = await _userRepository.SearchForaUser(request.Name, pageSize, pageNumber);
             var userDtos = _mapper.Map<PaginationDto<UserDto>>(res);
             return Ok(new APIResponse<PaginationDto<UserDto>>(200, "", userDtos));
         }

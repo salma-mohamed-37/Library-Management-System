@@ -53,12 +53,12 @@ namespace backend.Repositories
             return res;
         }
 
-        public async Task<PaginationDto<ApplicationUser>> SearchForaUser(string userName, int pageSize, int pageNumber)
+        public async Task<PaginationDto<ApplicationUser>> SearchForaUser(string? name, int pageSize, int pageNumber)
         {
             var query = _context.Users
                .AsNoTracking()
                .Where(u => u.Type == StaticUserRoles.USER)
-               .Where(u => u.UserName.Contains(userName))
+               .Where(u => u.FullName.Contains(name))
                .OrderBy(u => u.UserName);
 
 

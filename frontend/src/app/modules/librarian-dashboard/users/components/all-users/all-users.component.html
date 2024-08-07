@@ -1,10 +1,17 @@
-<nav>
-  <input type="button" value="Add User"/>
+<nav class="flex justify-content-between">
+  <input type="button" value="Add User"/> <input type="button" value="Home" (click)="navigate('pages/client/home')"/>
 </nav>
 
 <main>
   <p-table [value]="response.data" [loading]="loading" [paginator]="true"[first]="first" [rows]="rows" [totalRecords]="response.count"  [rowsPerPageOptions]="[1,5, 10, 20]" dataKey="id"  [lazy]="true"(onLazyLoad)="onPageChange($event)" sortMode="single">
     <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <input type="text" name="search" #searchname/> <input type="button" value="search"(click)="search(searchname.value)"/>
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
         <tr>
           <th>Name</th>
           <th>Email</th>

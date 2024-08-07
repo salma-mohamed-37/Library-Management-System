@@ -12,8 +12,8 @@ export class UserService {
 
   constructor(private http : HttpClient) { }
 
-  getUsers(pageSize:number,pageNumber:number):Observable<PaginationDto<UserDto>>
+  getUsers(pageSize:number,pageNumber:number, name:string):Observable<PaginationDto<UserDto>>
   {
-    return this.http.get<PaginationDto<UserDto>>(environment.apiUrl+"api/users/reader/"+pageNumber+"/"+pageSize)
+    return this.http.post<PaginationDto<UserDto>>(environment.apiUrl+"api/users/search/"+pageNumber+"/"+pageSize,{name})
   }
 }

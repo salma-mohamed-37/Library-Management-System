@@ -8,6 +8,6 @@ namespace backend.Interfaces
     {
         public Task<PaginationDto<ApplicationUser>> GetAllReaders(int pageSize, int pageNumber);
         public Task<PaginationDto<ApplicationUser>> GetAllLibrarians(int pageSize, int pageNumber);
-        public Task<PaginationDto<ApplicationUser>> SearchForaUser(string userName, int pageSize, int pageNumber);
+        public Task<PaginationDto<ApplicationUser>> SearchForaUser(string? name, int pageSize, int pageNumber);
     }
 }

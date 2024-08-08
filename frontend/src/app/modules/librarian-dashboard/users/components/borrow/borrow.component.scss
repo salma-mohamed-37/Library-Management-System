@@ -1,14 +1,19 @@
+nav
+{
+  margin-top: 4px;
+}
 .p-picklist-list
 {
   width:30%;
 }
 
-.p-picklist-source-controls
-{
-  display: none;
-}
 
 input[type=text]
 {
   font-size: 2rem;
+}
+
+p
+{
+  margin: 0;
 }

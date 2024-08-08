@@ -2,8 +2,6 @@ nav
 {
   background-color: var(--white);
   width: 100%;
-  border-top: 2px solid var(--title);
-  border-bottom: 2px solid var(--title);
   margin: 4px 0px;
   padding: 3px;
 }
@@ -16,4 +14,10 @@ nav
 .item
 {
   margin: 0.5rem;
+  font-size: 1rem;
+}
+
+input[type=text]
+{
+  font-size: 1.5rem;
 }

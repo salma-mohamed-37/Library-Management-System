@@ -70,6 +70,7 @@ export class AllUsersComponent {
     this.name=name
     this.getUsers()
   }
+
   navigate(url:string)
   {
     this.router.navigate([url])
@@ -95,6 +96,7 @@ export class AllUsersComponent {
 
   returnBooks()
   {
+    this.returnVisible=false
     var ids = this.returnedBooks.map(b=>b.id)
     var uniqueIds = [...new Set(ids)];
     this.borrowService.booksIds=uniqueIds

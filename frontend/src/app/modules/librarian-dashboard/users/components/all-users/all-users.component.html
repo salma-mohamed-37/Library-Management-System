@@ -2,8 +2,8 @@
   <input type="button" value="Add User"/> <input type="button" value="Home" (click)="navigate('pages/dashboard')"/>
 </nav>
 
-<main>
-  <p-table [value]="response.data" [loading]="loading" [paginator]="true"[first]="first" [rows]="rows" [totalRecords]="response.count"  [rowsPerPageOptions]="[1,5, 10, 20]" dataKey="id"  [lazy]="true"(onLazyLoad)="onPageChange($event)" sortMode="single">
+<main *ngIf="! loading">
+  <p-table [value]="response.data"  [paginator]="true"[first]="first" [rows]="rows" [totalRecords]="response.count"  [rowsPerPageOptions]="[1,5, 10, 20]" dataKey="id"  [lazy]="true"(onLazyLoad)="onPageChange($event)" sortMode="single">
     <ng-template pTemplate="header">
       <tr>
         <th>
@@ -28,13 +28,20 @@
 </p-table>
 </main>
 
+<p *ngIf="loading" class="loading"><i class="pi pi-spin pi-spinner"></i></p>
+
 <p-sidebar [(visible)]="returnVisible" position="right">
-  <h2>Currently Borrowed Books</h2>
+  <ng-template pTemplate="header">
+    <h2>Currently Borrowed Books</h2>
+  </ng-template>
   @for (book of books; track $index)
   {
     <p class="item"><p-checkbox [(ngModel)]="returnedBooks" [label]="book.name" name="returned" [value]="book" /></p>
   }
-  <input type="button" value="Return" (click)="returnBooks()"/>
+  @if (books.length>0)
+  {
+    <p style="text-align: center;"><input type="button" value="Return" (click)="returnBooks()"/></p>
+  }
 </p-sidebar>
 
 

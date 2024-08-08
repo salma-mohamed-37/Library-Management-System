@@ -62,6 +62,16 @@ namespace backend.Controllers
         }
 
 
+        [Authorize(Roles = "lIBRARIAN")]
+        [HttpPost("librarian/available/search/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<APIResponse<PaginationDto<GetBookForLibrarianDto>>>> GetAvailableBooksByNameForLibrarian([FromBody] SearchByNameDto request, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        {
+            var books = await _bookRepository.GetAvailablebyNameForLibrarian(request.Name, pageNumber, pageSize);
+            var bookDtos = _mapper.Map<PaginationDto<GetBookForLibrarianDto>>(books);
+            return Ok(new APIResponse<PaginationDto<GetBookForLibrarianDto>>(200, "", bookDtos));
+        }
+
+
 
         [Authorize(Roles ="lIBRARIAN")]
         [HttpGet("librarian/{pageNumber}/{pageSize}")]

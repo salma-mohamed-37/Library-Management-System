@@ -25,6 +25,8 @@ export class BorrowComponent {
   first:number=1
   rows:number=3
 
+  loading:boolean=true
+
   constructor(private bookService:BookService, private borrowService: BorrowService, private router:Router){}
 
   ngOnInit()
@@ -39,8 +41,9 @@ export class BorrowComponent {
 
   getBooks()
   {
+    this.loading=true
     const pageNumber = Math.floor(this.first / this.rows) + 1;
-    this.bookService.getBooksForLibrarian(pageNumber,this.rows,this.name).subscribe({
+    this.bookService.getAvailableBooksForLibrarian(pageNumber,this.rows,this.name).subscribe({
       next:(res)=>
       {
         console.log(this.target)
@@ -48,6 +51,7 @@ export class BorrowComponent {
         this.data.data= res.data.filter(item =>!this.target.some(t => t.id === item.id));
       }
     })
+    this.loading=false
   }
 
   search(name:string)
@@ -65,16 +69,24 @@ export class BorrowComponent {
 
   borrow()
   {
-    var ids = this.target.map(b=>b.id)
-    var uniqueIds = [...new Set(ids)];
-    this.borrowService.booksIds=uniqueIds
-    this.borrowService.borrow().subscribe({
-      next:(res)=>
-      {
-        console.log(res)
-      }
-    })
-    this.borrowService.clear()
+    this.loading=true
+    if(this.target.length>0)
+    {
+      var ids = this.target.map(b=>b.id)
+      var uniqueIds = [...new Set(ids)];
+      this.borrowService.booksIds=uniqueIds
+      this.target=[]
+
+      this.borrowService.borrow().subscribe({
+        next:(res)=>
+        {
+          console.log(res)
+        }
+      })
+      this.borrowService.clear()
+    }
+    this.loading=false
   }
+
 
 }

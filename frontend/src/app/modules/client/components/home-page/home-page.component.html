@@ -2,11 +2,13 @@
   <p class="title">Books</p>
 </div>
 
-<div class="flex flex-wrap justify-content-between" style="margin: 5px;">
+<div class="flex flex-wrap justify-content-between" style="margin: 5px;" *ngIf="!loading">
   <div *ngFor="let book of books; let i = index">
 
     <app-book-card [book]="book"></app-book-card>
   </div>
 </div>
-<p class="more"> <a href="pages/client/more/1">More Books</a></p>
+<p class="more" *ngIf="! loading"> <a href="pages/client/more/1">More Books</a></p>
+
+<p *ngIf="loading" class="loading"><i class="pi pi-spin pi-spinner"></i></p>
 

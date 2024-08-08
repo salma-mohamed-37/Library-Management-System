@@ -10,18 +10,21 @@ import { BookService } from '../../../../services/book.service';
 export class HomePageComponent {
   constructor(public bookService:BookService){}
   books : Book[] =[]
+  loading:boolean=true
   ngOnInit()
   {
     this.bookService.getBooksForUser(4,1).subscribe({
       next:(r)=>
       {
         this.books = r.data
+        this.loading=false
       },
       error:(err) =>
       {
         console.log(err)
       }
     });
+
  }
 
 }

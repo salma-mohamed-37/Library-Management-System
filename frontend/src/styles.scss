@@ -71,3 +71,27 @@ input[type=text], input[type=password]
   outline: none;
   border: none;
 }
+
+.p-button
+{
+  background: var(--title);
+    border: 1px solid var(--title);
+}
+
+.p-dialog-header-icon
+{
+  background-color: #FFFFFF;
+  border: white;
+}
+
+.loading
+{
+  text-align: center;
+  color:var(--title);
+  margin: 7px !important;
+}
+
+.loading .pi
+{
+  font-size: 2rem;
+}

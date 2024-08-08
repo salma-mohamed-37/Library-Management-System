@@ -246,6 +246,34 @@ namespace backend.Repositories
 
         }
 
+        public async Task<PaginationDto<Book>> GetAvailablebyNameForLibrarian(string name, int pageNumber, int pageSize)
+        {
+            var query = _context.Books
+             .AsNoTracking()
+               .Include(book => book.Category)
+               .Include(book => book.Author)
+               .Include(book => book.Borrowed)
+               .ThenInclude(borrow => borrow.User)
+               .Where(b => b.Borrowed.All(borrow => borrow.currently_borrowed == false))
+               .Where(b => b.Name.Contains(name))
+               .OrderBy(b => b.Name);
+
+            var data = await query
+               .Skip(pageSize * (pageNumber - 1))
+               .Take(pageSize).ToListAsync();
+
+            var res = new PaginationDto<Book>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+
+            return res;
+
+        }
+
 
     }
 }

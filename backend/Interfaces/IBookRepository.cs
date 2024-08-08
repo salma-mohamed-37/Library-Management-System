@@ -12,5 +12,7 @@ namespace backend.Interfaces
         public Task<PaginationDto<Book>> GetBooksbyAuthor(int authorId, int pageNumber, int pageSize);
         public Task<PaginationDto<Book>> GetBooksbyCategory(int categoryId, int pageNumber, int pageSize);
         public Task<PaginationDto<Book>> GetFilteredBooks(FilteringRequest request);
+        public Task<PaginationDto<Book>> GetAvailablebyNameForLibrarian(string name, int pageNumber, int pageSize);
+
     }
 }

@@ -32,4 +32,9 @@ export class BookService {
   {
       return this.http.post<PaginationDto<Book>>(environment.apiUrl+"api/books/librarian/search/"+pageNumber+"/"+pageSize, {name})
   }
+
+  getAvailableBooksForLibrarian(pageNumber:number, pageSize:number, name:string)
+  {
+      return this.http.post<PaginationDto<Book>>(environment.apiUrl+"api/books/librarian/available/search/"+pageNumber+"/"+pageSize, {name})
+  }
 }

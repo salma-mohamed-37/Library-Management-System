@@ -24,7 +24,6 @@ export class RequestInterceptor implements HttpInterceptor
       else
       {
         this.authService.logout()
-        this.router.navigate(['pages/auth/login'])
         return of(new HttpResponse({ status: 401, statusText: 'Unauthorized' }));
       }
     }

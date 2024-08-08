@@ -27,4 +27,9 @@ export class BookService {
   {
     return this.http.post<PaginationDto<Book>>(environment.apiUrl+"api/books/filtered", request)
   }
+
+  getBooksForLibrarian(pageNumber:number, pageSize:number, name:string)
+  {
+      return this.http.post<PaginationDto<Book>>(environment.apiUrl+"api/books/librarian/search/"+pageNumber+"/"+pageSize, {name})
+  }
 }

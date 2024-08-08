@@ -5,6 +5,7 @@ import { LazyLoadEventDTO } from '../../../../../interfaces/common/TableDtos';
 import { PaginationDto } from '../../../../../interfaces/common/PaginationDto';
 import { UserService } from '../../../../../services/user.service';
 import { Router } from '@angular/router';
+import { BorrowService } from '../../../../../services/borrow.service';
 
 @Component({
   selector: 'app-all-users',
@@ -28,7 +29,7 @@ export class AllUsersComponent {
     count:0,
     data:[]
   }
-  constructor(private userService:UserService, private router:Router){}
+  constructor(private userService:UserService, private router:Router, private borrowService:BorrowService){}
   ngOnInit()
   {
     this.getUsers()
@@ -64,6 +65,12 @@ export class AllUsersComponent {
   navigate(url:string)
   {
     this.router.navigate([url])
+  }
+
+  borrow(id:string)
+  {
+    this.router.navigate(["pages/dashboard/users/borrow"])
+    this.borrowService.userId= id
   }
 
 }

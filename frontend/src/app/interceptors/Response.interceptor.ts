@@ -18,6 +18,7 @@ export class ResponseInterceptor implements HttpInterceptor {
             const httpResponse = event as HttpResponse<APIResponse<any>>;
             const response = httpResponse.body as APIResponse<any>;
             console.log(response.statusCode)
+            console.log(response)
 
             if (response.statusCode === 200)
             {

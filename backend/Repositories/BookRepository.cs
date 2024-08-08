@@ -41,7 +41,7 @@ namespace backend.Repositories
             return res;
         }
 
-        async public Task<PaginationDto<Book>> GetBooksbyNameForLibrarian(string name, int pageNumber, int pageSize)
+        async public Task<PaginationDto<Book>> GetBooksbyNameForLibrarian(string? name, int pageNumber, int pageSize)
         {
             var query = _context.Books
               .AsNoTracking()

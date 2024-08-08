@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Data;
 using System.Security.Claims;
 using static System.Reflection.Metadata.BlobBuilder;
@@ -38,13 +39,24 @@ namespace backend.Controllers
             var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {
-                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
+                return NotFound(new APIResponse<object>(404, "This user doesn't exist.", null));
             }
 
-            var borrow = _mapper.Map<Borrowed>(dto);
-
-            await _borrowedRepository.AddAsync(borrow);
-            return Ok(new APIResponse<object>(200, "Book borrowed successfully.", null));
+            foreach (var i in dto.BooksIds)
+            {
+                var borrow = new Borrowed
+                {
+                    UserId = dto.UserId,
+                    BookId = i,
+                    currently_borrowed =true,
+                    BorrowDate = DateTime.Now,
+                    DueDate = DateTime.Now.AddDays(14),
+                    ReturnDate = new DateTime(9999, 1, 1)
+                };
+                await _borrowedRepository.AddAsync(borrow);
+            }
+        
+            return Ok(new APIResponse<object>(200, "Books borrowed successfully.", null));
         }
 
         [HttpPut("return")]
@@ -54,9 +66,9 @@ namespace backend.Controllers
             var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {
-                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
+                return NotFound(new APIResponse<object>(404, "This user doesn't exist.", null));
             }
-            await _borrowedRepository.Return(dto.BookId, dto.UserId);
+            await _borrowedRepository.Return(dto.BooksIds, dto.UserId);
 
             return Ok(new APIResponse<object>(200, "Book returned successfully.", null));
         }

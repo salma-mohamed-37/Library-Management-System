@@ -1,5 +1,5 @@
 <nav class="flex justify-content-between">
-  <input type="button" value="Add User"/> <input type="button" value="Home" (click)="navigate('pages/client/home')"/>
+  <input type="button" value="Add User"/> <input type="button" value="Home" (click)="navigate('pages/dashboard')"/>
 </nav>
 
 <main>
@@ -22,7 +22,7 @@
         <tr>
             <td>{{ user.fullName}}</td>
             <td>{{ user.email}}</td>
-            <td><input type="button" value="Details"/> <input type="button" value="Borrow"/> <input type="button" value="Return"/></td>
+            <td><input type="button" value="Details"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return"/></td>
         </tr>
     </ng-template>
 </p-table>

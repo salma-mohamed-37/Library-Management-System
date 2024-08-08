@@ -12,14 +12,18 @@ namespace backend.Repositories
         public BorrowedRepository(ApplicationDbContext context) : base(context)
         {
         }
-
-
-        public async Task Return(int bookId, string userId)
+        public async Task Return(ICollection<int> booksIds, string userId)
         {
-            var b = await _context.Borrowed
-                .FirstOrDefaultAsync(b => b.UserId == userId && b.BookId == bookId && b.currently_borrowed ==true);
-            b.ReturnDate = DateTime.Now;
-            b.currently_borrowed = false;
+            var borrowedBooks = await _context.Borrowed
+            .Where(b => b.UserId == userId && booksIds.Contains(b.BookId) && b.currently_borrowed == true)
+            .ToListAsync();
+
+            foreach (var book in borrowedBooks)
+            {
+                book.ReturnDate = DateTime.Now;
+                book.currently_borrowed = false;
+            }
+
             await _context.SaveChangesAsync();
         }
 

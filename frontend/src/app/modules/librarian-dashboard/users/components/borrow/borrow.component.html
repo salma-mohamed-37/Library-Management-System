@@ -1,0 +1,31 @@
+<input type="text" name="search" #searchname/> <input type="button" value="search"(click)="search(searchname.value)"/>
+<input type="button" value="Borrow"(click)="borrow()"/>
+
+<p-pickList
+  [source]="this.data.data"
+  [target]="target"
+  sourceHeader="All Books"
+  targetHeader="To Borrow"
+  [dragdrop]="true"
+  [responsive]="true">
+  <ng-template let-book pTemplate="item">
+    <div class="flex flex-wrap p-2 align-items-center gap-3">
+      <img
+        class="w-4rem shadow-2 flex-shrink-0 border-round"
+        [src]="getFullImage(book.imagePath)"
+        alt="{{ book.name }}" />
+      <div class="flex-1 flex flex-column gap-2">
+        <span class="font-bold">
+          {{ book.name }}
+        </span>
+      </div>
+    </div>
+  </ng-template>
+</p-pickList>
+
+<p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="this.data.count"
+    [rowsPerPageOptions]="[3]" />

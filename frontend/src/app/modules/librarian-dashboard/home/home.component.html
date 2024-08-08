@@ -1,8 +1,11 @@
 <main class="flex flex-wrap justify-content-center align-content-center">
-  <section class="grid">
+  <section class="grid gap-2">
     @for (item of menuItems; track $index)
     {
-     <div class="card col-6" (click)="navigate(item.path)">{{item.label}}</div>
+     <div class="card col-5" (click)="navigate(item.path)">
+      <p><i [class]=item.icon></i></p>
+      <p class="label">{{item.label}}</p>
+     </div>
     }
    </section>
 </main>

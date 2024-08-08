@@ -31,27 +31,38 @@ export class HeaderComponent {
   constructItems()
   {
     this.items=[]
+    this.items.push({
+      icon: 'pi pi-home',
+      label:"Home",
+        command: () => {
+            this.navigate("pages/client/home");
+
+    }})
+
     if(this.authService.isLoggedin())
     {
       if(this.authService.getCurrentUserRole() == "USER")
       {
         this.items.push({
+          icon: "pi pi-history",
           label:"Borrow History",
             command: () => {
                 this.navigate("pages/client/borrow-history");
 
             }},
-            {
-              label:"Currently Borrowed",
-                command: () => {
-                    this.navigate("pages/client/homepage");
+        {
+          icon:"pi pi-bookmark",
+          label:"Books in Use",
+            command: () => {
+                this.navigate("pages/client/homepage");
 
-                }}
-          );
+            }}
+        );
       }
       else if (this.authService.getCurrentUserRole() == "lIBRARIAN")
       {
         this.items.push({
+          icon:"pi pi-th-large",
           label:"Dashboard",
             command: () => {
                 this.navigate("pages/dashboard");
@@ -62,6 +73,7 @@ export class HeaderComponent {
       else if(this.authService.getCurrentUserRole() == "ADMIN")
       {
         this.items.push({
+          icon:"pi pi-th-large",
           label:"Admin Dashboard",
             command: () => {
                 this.navigate("pages/client/homepage");
@@ -73,13 +85,15 @@ export class HeaderComponent {
 
       this.items.push(
         {
+          icon:"pi pi-user",
           label:"Profile",
             command: () => {
                 this.navigate("pages/client/homepage");
 
             }},
         {
-        label:"log out",
+          icon:"pi pi-sign-out",
+          label:"log out",
           command: () => {
               this.logout();
 

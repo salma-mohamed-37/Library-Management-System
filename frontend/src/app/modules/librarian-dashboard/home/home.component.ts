@@ -12,19 +12,23 @@ export class HomeComponent {
   menuItems: any[]=[
     {
       label:"Books",
-      path:"pages/dashboard/users"
+      path:"pages/dashboard/users",
+      icon:"pi pi-book"
     },
     {
-      label:"Author",
-      path:"pages/dashboard/users"
+      label:"Authors",
+      path:"pages/dashboard/users",
+      icon:"pi pi-pen-to-square"
     },
     {
-      label:"Genre",
-      path:"pages/dashboard/users"
+      label:"Genres",
+      path:"pages/dashboard/users",
+      icon:"pi pi-objects-column"
     },
     {
       label:"Users",
-      path:"pages/dashboard/users/all"
+      path:"pages/dashboard/users/all",
+      icon:"pi pi-user"
     }
   ]
 

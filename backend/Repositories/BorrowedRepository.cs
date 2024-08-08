@@ -27,26 +27,15 @@ namespace backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<PaginationDto<Borrowed>> GetCurrentlyBorrowedBooksByUser(string UserId, int pageSize, int pageNumber)
+        public async Task<ICollection<Borrowed>> GetCurrentlyBorrowedBooksByUser(string UserId)
         {
-            var query = _context.Borrowed
+            var res = await _context.Borrowed
                 .Where(b => b.currently_borrowed == true)
                 .Include(b => b.User)
                 .Where(b => b.User.Id == UserId)
                 .Include(b => b.Book)
-                .OrderBy(b => b.Book.Name);
-
-            var data = await query
-               .Skip(pageSize * (pageNumber - 1))
-               .Take(pageSize).ToListAsync();
-
-            var res = new PaginationDto<Borrowed>
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                Count = await query.CountAsync(),
-                Data = data
-            };
+                .OrderBy(b => b.Book.Name)
+                .ToListAsync();
 
             return res;
         }

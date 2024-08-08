@@ -65,3 +65,9 @@ input[type=text], input[type=password]
   outline: none;
   border: none;
 }
+
+.p-toast .p-toast-message.p-toast-message-success .p-toast-icon-close
+{
+  outline: none;
+  border: none;
+}

@@ -22,8 +22,19 @@
         <tr>
             <td>{{ user.fullName}}</td>
             <td>{{ user.email}}</td>
-            <td><input type="button" value="Details"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return"/></td>
+            <td><input type="button" value="Details"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return" (click)="return(user.id)"/></td>
         </tr>
     </ng-template>
 </p-table>
 </main>
+
+<p-sidebar [(visible)]="returnVisible" position="right">
+  <h2>Currently Borrowed Books</h2>
+  @for (book of books; track $index)
+  {
+    <p class="item"><p-checkbox [(ngModel)]="returnedBooks" [label]="book.name" name="returned" [value]="book" /></p>
+  }
+  <input type="button" value="Return" (click)="returnBooks()"/>
+</p-sidebar>
+
+

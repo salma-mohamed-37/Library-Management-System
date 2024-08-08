@@ -7,3 +7,13 @@ nav
   margin: 4px 0px;
   padding: 3px;
 }
+
+
+:host ::ng-deep .p-checkbox-box {
+  display: none;
+}
+
+.item
+{
+  margin: 0.5rem;
+}

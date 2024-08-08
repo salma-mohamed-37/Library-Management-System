@@ -6,6 +6,7 @@ import { PaginationDto } from '../../../../../interfaces/common/PaginationDto';
 import { UserService } from '../../../../../services/user.service';
 import { Router } from '@angular/router';
 import { BorrowService } from '../../../../../services/borrow.service';
+import { Book } from '../../../../../interfaces/book/Book';
 
 @Component({
   selector: 'app-all-users',
@@ -29,6 +30,13 @@ export class AllUsersComponent {
     count:0,
     data:[]
   }
+
+  returnVisible:boolean=false
+  books:Book[]=[]
+  returnedBooks:any[]=[]
+  checked: boolean = false;
+
+
   constructor(private userService:UserService, private router:Router, private borrowService:BorrowService){}
   ngOnInit()
   {
@@ -73,4 +81,29 @@ export class AllUsersComponent {
     this.borrowService.userId= id
   }
 
+  return(userId:string)
+  {
+    this.borrowService.userId= userId
+    this.returnVisible=true
+      this.userService.getCurrentlyBorrowedBooksByUserForLibrarian(userId).subscribe({
+        next:(res)=>
+        {
+          this.books=res
+        }
+      })
+  }
+
+  returnBooks()
+  {
+    var ids = this.returnedBooks.map(b=>b.id)
+    var uniqueIds = [...new Set(ids)];
+    this.borrowService.booksIds=uniqueIds
+    this.borrowService.return().subscribe({
+      next:(res)=>
+      {
+        console.log(res)
+      }
+    })
+    this.borrowService.clear()
+  }
 }

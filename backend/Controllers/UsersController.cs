@@ -31,23 +31,23 @@ namespace backend.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("librarian/current-borrow/{userId}/{pageNumber}/{pageSize}")]
+        [HttpGet("librarian/current-borrow/{userId}")]
         [Authorize(Roles = "lIBRARIAN")]
-        public async Task<ActionResult<APIResponse<PaginationDto<GetBorrowedBookForUserDto>>>> GetCurrentlyBorrowedBooksByUser([FromRoute] string userId, [FromRoute]int pageNumber=1, [FromRoute] int pageSize =4)
+        public async Task<ActionResult<APIResponse<ICollection<GetBorrowedBookForUserDto>>>> GetCurrentlyBorrowedBooksByUser([FromRoute] string userId)
         {
-            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId, pageSize, pageNumber);
-            var bookDtos = _mapper.Map<PaginationDto<GetBorrowedBookForUserDto>>(res);
-            return Ok(new APIResponse<PaginationDto<GetBorrowedBookForUserDto>>(200, "", bookDtos));
+            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId);
+            var bookDtos = _mapper.Map<ICollection<GetBorrowedBookForUserDto>>(res);
+            return Ok(new APIResponse<ICollection<GetBorrowedBookForUserDto>>(200, "", bookDtos));
         }
 
-        [HttpGet("current-borrow/{pageNumber}/{pageSize}")]
+        [HttpGet("current-borrow")]
         [Authorize(Roles = "USER")]
-        public async Task<ActionResult<APIResponse<PaginationDto<GetBorrowedBookForUserDto>>>> GetCurrentlyBorrowedBooksByUser([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        public async Task<ActionResult<APIResponse<ICollection<GetBorrowedBookForUserDto>>>> GetCurrentlyBorrowedBooksByUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId, pageSize, pageNumber);
-            var bookDtos = _mapper.Map<PaginationDto<GetBorrowedBookForUserDto>>(res);
-            return Ok(new APIResponse<PaginationDto<GetBorrowedBookForUserDto>>(200, "", bookDtos));
+            var res = await _borrowedRepository.GetCurrentlyBorrowedBooksByUser(userId);
+            var bookDtos = _mapper.Map<ICollection<GetBorrowedBookForUserDto>>(res);
+            return Ok(new APIResponse<ICollection<GetBorrowedBookForUserDto>>(200, "", bookDtos));
         }
 
 

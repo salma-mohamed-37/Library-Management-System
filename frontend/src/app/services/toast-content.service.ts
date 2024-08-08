@@ -16,7 +16,7 @@ export class ToastContentService {
 
   showSuccess(message:string)
   {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: message , life: 100000 });
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
 
   }
 }

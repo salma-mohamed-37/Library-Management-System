@@ -16,6 +16,11 @@ export class BorrowService {
     return this.http.post(environment.apiUrl+"api/Borrows/borrow",{UserId:this.userId, BooksIds:this.booksIds})
   }
 
+  return()
+  {
+    return this.http.put(environment.apiUrl+"api/Borrows/return",{UserId:this.userId, BooksIds:this.booksIds})
+  }
+
   clear()
   {
     this.booksIds=[]

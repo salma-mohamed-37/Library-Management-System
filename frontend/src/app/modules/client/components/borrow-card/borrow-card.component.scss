@@ -19,7 +19,34 @@ aside
 
 img
 {
-  height: 8rem;
+  height: 7rem;
   width: 5rem;
   margin: 5px;
+}
+
+.more
+{
+  color:var(--title);
+  padding: 0;
+}
+
+.more:hover
+{
+  cursor: pointer;
+}
+
+.d:hover
+{
+  border-bottom: 1px solid var(--title);
+}
+
+.d
+{
+  padding: 2px;
+}
+
+label
+{
+  display: inline-block;
+  margin: 4px;
 }

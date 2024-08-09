@@ -14,20 +14,26 @@ export class BorrowHistoryComponent {
 
   books!: PaginationDto<GetBorrowedBookForUser>
   first : number=0
-  rowsPerPageOptions = [4,10, 20, 30];
+  rows:number=6
+  rowsPerPageOptions = [6,10, 20, 30];
+  loading:boolean=true
 
   ngOnInit()
   {
-    this.getNewPage(4,1)
+    this.getNewPage()
   }
 
-  getNewPage(pageSize:number, pageNumber:number)
+  getNewPage()
   {
-    this.userProfileService.getMyBorrowHistory(pageSize,pageNumber).subscribe({
+    this.loading=true
+    const pageNumber = Math.floor(this.first / this.rows) + 1;
+    this.userProfileService.getMyBorrowHistory(this.rows,pageNumber).subscribe({
       next:(res)=>
       {
         this.books=res
+        console.log(res)
         this.first= (this.books.pageNumber -1)*this.books.pageSize
+        this.loading=false
       },
       error:(err)=>{}
     })
@@ -35,7 +41,9 @@ export class BorrowHistoryComponent {
 
   onPageChange(event:any)
   {
-    console.log(event)
+    this.rows=event.rows
+    this.first=event.first
+    this.getNewPage()
   }
 
 }

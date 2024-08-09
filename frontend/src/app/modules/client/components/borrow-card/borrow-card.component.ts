@@ -14,4 +14,17 @@ export class BorrowCardComponent {
   {
     return `${environment.apiUrl}${path}`;
   }
+
+  isReturned(date:Date | undefined)
+  {
+    const d = new Date("9999/1/1")
+    if (date == d)
+    {
+      return true
+    }
+    else
+    {
+      return false
+    }
+  }
 }

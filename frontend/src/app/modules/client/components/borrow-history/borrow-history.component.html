@@ -1,12 +1,10 @@
 <p class="title">Borrow History</p>
-
-
-@if (books)
+@if (!loading)
 {
-  <main class="grid m-0 justify-content-center">
+  <main class="flex flex-wrap justify-content-center">
     @for (book of books.data; track $index)
     {
-      <app-borrow-card [book]="book"></app-borrow-card>
+      <app-borrow-card [book]="book" style="width:48%;"></app-borrow-card>
     }
   </main>
 
@@ -17,7 +15,13 @@
     [first]="first"
     [rows]="books.pageSize"
     [totalRecords]="books.count"
-    [rowsPerPageOptions]="rowsPerPageOptions" />
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [style]="{position:'absolute',bottom:0, width:'100%'}"/>
 
+}
+
+@else
+{
+  <p class="loading"><i class="pi pi-spin pi-spinner"></i></p>
 }
 

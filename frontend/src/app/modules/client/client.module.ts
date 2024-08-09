@@ -13,6 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PaginatorModule } from 'primeng/paginator';
 import { BorrowHistoryComponent } from './components/borrow-history/borrow-history.component';
 import { BorrowCardComponent } from './components/borrow-card/borrow-card.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { CurrentBorrowComponent } from './components/current-borrow/current-borrow.component';
 
 
 
@@ -23,7 +25,8 @@ import { BorrowCardComponent } from './components/borrow-card/borrow-card.compon
     BookDetailsComponent,
     MoreBooksComponent,
     BorrowHistoryComponent,
-    BorrowCardComponent
+    BorrowCardComponent,
+    CurrentBorrowComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +36,8 @@ import { BorrowCardComponent } from './components/borrow-card/borrow-card.compon
     DropdownModule,
     CalendarModule,
     ReactiveFormsModule,
-    PaginatorModule
+    PaginatorModule,
+    OverlayPanelModule
 
   ]
 })

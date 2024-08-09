@@ -1,18 +1,40 @@
 <section class="flex">
   <img [src]=getFullImageUrl(book!.imagePath) alt="book cover"/>
-  <div>
+  <div class="flex-grow-1">
     <p class="heading">{{book.name}}</p>
-    <main class="flex flex-row">
-      <aside>
-        <label>Borrow Date: </label> <br/>
-        <label>Due Date: </label> <br/>
-        <label>Return Date: </label> <br/>
-      </aside>
-      <aside>
-       <span>{{book.borrowDate | date:'MMMM,dd,YYYY'}}</span> <br/>
-       <span>{{book.dueDate | date:'MMMM,dd,YYYY'}}</span> <br/>
-       <span>{{book.returnDate | date:'MMMM,dd,YYYY'}}</span> <br/>
-      </aside>
-    </main>
+    <div class="flex flex-row justify-content-between" style="width: 100%;">
+      <div>
+        Genre: {{book.category_name}} <br/>
+        Author: {{book.author_name}}
+      </div>
+        <div class="more" (click)="op.toggle($event)" >
+          <span class="d"><i class="pi pi-calendar"></i> Borrow Details</span>
+      </div>
+    </div>
+    <p-overlayPanel #op>
+      <ng-template pTemplate="content">
+        <main class="flex flex-row">
+          <aside>
+            <label>Borrow Date: </label> <br/>
+            <label>Due Date: </label> <br/>
+            @if (isReturned(book.returnDate ))
+           {
+            <label>Return Date:</label> <br/>
+           }
+          </aside>
+          <aside>
+           <label>{{book.borrowDate | date:'MMMM,dd,YYYY'}}</label> <br/>
+           <label>{{book.dueDate | date:'MMMM,dd,YYYY'}}</label> <br/>
+           @if (isReturned(book.returnDate ))
+           {
+            <label>{{book.returnDate | date:'MMMM,dd,YYYY'}}</label> <br/>
+           }
+
+          </aside>
+        </main>
+      </ng-template>
+    </p-overlayPanel>
+
+
   </div>
 </section>

@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { PaginationDto } from '../interfaces/common/PaginationDto';
 import { GetBorrowedBookForUser } from '../interfaces/book/GetBorrowedBookForUser';
 import { Observable } from 'rxjs';
+import { Book } from '../interfaces/book/Book';
 
 @Injectable({
   providedIn: 'root'
@@ -15,5 +16,10 @@ export class UserProfileService {
   getMyBorrowHistory(pageSize:number,pageNumber:number): Observable<PaginationDto<GetBorrowedBookForUser>>
   {
     return this.http.get<PaginationDto<GetBorrowedBookForUser>>(environment.apiUrl+"api/users/borrow-history/"+pageNumber+"/"+pageSize)
+  }
+
+  getMyCurrentlyBorrowedBooks():Observable<Book[]>
+  {
+    return this.http.get<Book[]>(environment.apiUrl+"api/Users/current-borrow/")
   }
 }

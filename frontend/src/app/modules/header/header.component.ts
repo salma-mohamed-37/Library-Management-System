@@ -54,7 +54,7 @@ export class HeaderComponent {
           icon:"pi pi-bookmark",
           label:"Books in Use",
             command: () => {
-                this.navigate("pages/client/homepage");
+                this.navigate("pages/client/current");
 
             }}
         );

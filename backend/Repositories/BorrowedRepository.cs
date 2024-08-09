@@ -34,6 +34,9 @@ namespace backend.Repositories
                 .Include(b => b.User)
                 .Where(b => b.User.Id == UserId)
                 .Include(b => b.Book)
+                .ThenInclude(b => b.Author)
+                .Include(b => b.Book)
+                .ThenInclude(b => b.Category)
                 .OrderBy(b => b.Book.Name)
                 .ToListAsync();
 
@@ -47,6 +50,9 @@ namespace backend.Repositories
                 .Where(b => b.currently_borrowed == false)
                 .Where(b => b.UserId == userId)
                 .Include(b => b.Book)
+                .ThenInclude(b=>b.Author)
+                .Include(b=>b.Book)
+                .ThenInclude(b=>b.Category)
                 .OrderByDescending(b => b.BorrowDate);
 
             var data = await query

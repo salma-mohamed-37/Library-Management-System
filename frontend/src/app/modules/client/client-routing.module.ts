@@ -4,6 +4,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { MoreBooksComponent } from './components/more-books/more-books.component';
 import { BorrowHistoryComponent } from './components/borrow-history/borrow-history.component';
 import { roleGuard } from '../auth/role.guard';
+import { CurrentBorrowComponent } from './components/current-borrow/current-borrow.component';
 
 
 const routes: Routes = [
@@ -20,7 +21,13 @@ const routes: Routes = [
     canActivate: [roleGuard],
     data: { role: 'USER' },
     component: BorrowHistoryComponent
-  }
+  },
+  {
+    path:"current",
+    canActivate: [roleGuard],
+    data: { role: 'USER' },
+    component: CurrentBorrowComponent
+  },
 ];
 
 @NgModule({

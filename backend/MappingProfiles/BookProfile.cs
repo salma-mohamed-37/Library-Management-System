@@ -30,7 +30,10 @@ namespace backend.MappingProfiles
             CreateMap<Borrowed, GetBorrowedBookForUserDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Book.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Book.Name))
-                .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => Path.Combine("StaticFiles","Images", "Books", src.Book.CoverName)));
+                .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => Path.Combine("StaticFiles", "Images", "Books", src.Book.CoverName)))
+                .ForMember(des => des.Category_name, opt => opt.MapFrom(src => src.Book.Category.Name ))
+                .ForMember(des => des.Author_name, opt => opt.MapFrom(src => src.Book.Author.Name))
+                .ForMember(des => des.PublishDate, opt => opt.MapFrom(src => src.Book.PublishDate));
         }
     }
 

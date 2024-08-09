@@ -15,10 +15,10 @@ export class BorrowCardComponent {
     return `${environment.apiUrl}${path}`;
   }
 
-  isReturned(date:Date | undefined)
+  isReturned(date:string|Date|undefined)
   {
-    const d = new Date("9999/1/1")
-    if (date == d)
+    const d = "9999-01-01T00:00:00"
+    if (date! !== d)
     {
       return true
     }

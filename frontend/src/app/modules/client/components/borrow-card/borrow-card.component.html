@@ -23,11 +23,11 @@
            }
           </aside>
           <aside>
-           <label>{{book.borrowDate | date:'MMMM,dd,YYYY'}}</label> <br/>
-           <label>{{book.dueDate | date:'MMMM,dd,YYYY'}}</label> <br/>
+           <label>{{book.borrowDate | date:'MMMM,dd,yyyy'}}</label> <br/>
+           <label>{{book.dueDate | date:'MMMM,dd,yyyy'}}</label> <br/>
            @if (isReturned(book.returnDate ))
            {
-            <label>{{book.returnDate | date:'MMMM,dd,YYYY'}}</label> <br/>
+            <label>{{book.returnDate | date:'MMMM,dd,yyyy'}}</label> <br/>
            }
 
           </aside>

@@ -47,6 +47,7 @@ namespace backend.Data
 
             builder.Entity<Borrowed>().HasKey(x => new { x.UserId, x.BookId, x.BorrowDate });
             
+            
             base.OnModelCreating(builder);
         }
     }

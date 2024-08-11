@@ -27,7 +27,7 @@ export class BorrowHistoryComponent {
   {
     this.loading=true
     const pageNumber = Math.floor(this.first / this.rows) + 1;
-    this.userProfileService.getMyBorrowHistory(this.rows,pageNumber).subscribe({
+    this.userProfileService.getBorrowHistoryForUser(this.rows,pageNumber).subscribe({
       next:(res)=>
       {
         this.books=res

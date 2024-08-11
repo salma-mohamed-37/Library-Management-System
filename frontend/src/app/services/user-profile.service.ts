@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { PaginationDto } from '../interfaces/common/PaginationDto';
@@ -13,13 +13,34 @@ export class UserProfileService {
 
   constructor(public http : HttpClient) { }
 
-  getMyBorrowHistory(pageSize:number,pageNumber:number): Observable<PaginationDto<GetBorrowedBookForUser>>
+  getBorrowHistoryForUser(pageSize:number,pageNumber:number,userId?:string): Observable<PaginationDto<GetBorrowedBookForUser>>
   {
-    return this.http.get<PaginationDto<GetBorrowedBookForUser>>(environment.apiUrl+"api/users/borrow-history/"+pageNumber+"/"+pageSize)
+    if (userId)
+    {
+      let params = new HttpParams();
+      params = params.set('userId', userId);
+
+      return this.http.get<PaginationDto<GetBorrowedBookForUser>>(environment.apiUrl+"api/users/borrow-history/"+pageNumber+"/"+pageSize, {params})
+    }
+    else
+    {
+      return this.http.get<PaginationDto<GetBorrowedBookForUser>>(environment.apiUrl+"api/users/borrow-history/"+pageNumber+"/"+pageSize)
+    }
   }
 
-  getMyCurrentlyBorrowedBooks():Observable<Book[]>
+  getCurrentlyBorrowedBooks(userId?:string):Observable<Book[]>
   {
-    return this.http.get<Book[]>(environment.apiUrl+"api/Users/current-borrow/")
+    if (userId)
+      {
+        let params = new HttpParams();
+        params = params.set('userId', userId);
+
+        return this.http.get<Book[]>(environment.apiUrl+"api/Users/current-borrow/", {params})
+      }
+      else
+      {
+        return this.http.get<Book[]>(environment.apiUrl+"api/Users/current-borrow/")
+      }
+
   }
 }

@@ -103,10 +103,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ImageHandler>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-builder.Services.AddFluentValidationAutoValidation(opt =>
-{
-    opt.DisableDataAnnotationsValidation = true;
-});
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 app.UseStaticFiles(new StaticFileOptions

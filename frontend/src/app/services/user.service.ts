@@ -17,9 +17,5 @@ export class UserService {
   {
     return this.http.post<PaginationDto<UserDto>>(environment.apiUrl+"api/users/search/"+pageNumber+"/"+pageSize,{name})
   }
-
-  getCurrentlyBorrowedBooksByUserForLibrarian(userId:string):Observable<Book[]>
-  {
-    return this.http.get<Book[]>(environment.apiUrl+"api/Users/librarian/current-borrow/"+userId)
-  }
+  //add, update , delete
 }

@@ -2,6 +2,7 @@ import { Component, effect, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuModule } from 'primeng/menu';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -17,11 +18,18 @@ export class HeaderComponent {
   {
     effect(() => {
       this.isLoggedIn=this.authService.isLoggedin();
+      this.profile=this.authService.getUserImage()!;
       this.constructItems()
     });
   }
+  profile?:string =""
   items: any[] = [];
   isLoggedIn : boolean =false
+
+  getFullImageUrl(path?: string): string
+  {
+    return `${environment.apiUrl}${path}`;
+  }
 
   login()
   {

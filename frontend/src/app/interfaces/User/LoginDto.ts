@@ -11,4 +11,5 @@ export interface LoggedInUser
   role:string;
   token:string;
   expiryDate:Date;
+  imagePath:string;
 }

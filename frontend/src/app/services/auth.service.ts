@@ -30,6 +30,7 @@ export class AuthService {
           localStorage.setItem("Role", res.role);
           localStorage.setItem("Token", res.token);
           localStorage.setItem("Expiry Date", new Date(res.expiryDate).toISOString());
+          localStorage.setItem("Image", res.imagePath);
           this.authStatus.set(true)
           return true;
         }),
@@ -45,6 +46,7 @@ export class AuthService {
     localStorage.setItem("Role","");
     localStorage.setItem("Token", "");
     localStorage.setItem("Expiry Date", "");
+    localStorage.setItem("Image", "");
     this.authStatus.set(false)
   }
 
@@ -66,6 +68,11 @@ export class AuthService {
   getCurrentUserToken()
   {
     return localStorage.getItem("Token")
+  }
+
+  getUserImage()
+  {
+    return localStorage.getItem("Image")
   }
 
   isTokenValid():boolean

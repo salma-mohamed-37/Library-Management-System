@@ -27,6 +27,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="MyStaticFiles\Images\Books\" />
     <Folder Include="MyStaticFiles\Images\Authors\" />
+    <Folder Include="MyStaticFiles\Images\Users\" />
   </ItemGroup>
 
 </Project>

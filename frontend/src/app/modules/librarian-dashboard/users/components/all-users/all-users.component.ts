@@ -7,6 +7,7 @@ import { UserService } from '../../../../../services/user.service';
 import { Router } from '@angular/router';
 import { BorrowService } from '../../../../../services/borrow.service';
 import { Book } from '../../../../../interfaces/book/Book';
+import { UserProfileService } from '../../../../../services/user-profile.service';
 
 @Component({
   selector: 'app-all-users',
@@ -37,7 +38,7 @@ export class AllUsersComponent {
   checked: boolean = false;
 
 
-  constructor(private userService:UserService, private router:Router, private borrowService:BorrowService){}
+  constructor(private userProfileService:UserProfileService, private userService:UserService, private router:Router, private borrowService:BorrowService){}
   ngOnInit()
   {
     this.getUsers()
@@ -46,7 +47,6 @@ export class AllUsersComponent {
   getUsers()
   {
     const pageNumber = Math.floor(this.first / this.rows) + 1;
-    console.log(pageNumber)
 
     this.userService.getUsers(this.rows,pageNumber, this.name).subscribe({
       next:(res)=>
@@ -66,7 +66,6 @@ export class AllUsersComponent {
 
   search(name:string)
   {
-    console.log(name)
     this.name=name
     this.getUsers()
   }
@@ -86,7 +85,7 @@ export class AllUsersComponent {
   {
     this.borrowService.userId= userId
     this.returnVisible=true
-      this.userService.getCurrentlyBorrowedBooksByUserForLibrarian(userId).subscribe({
+      this.userProfileService.getCurrentlyBorrowedBooks(userId).subscribe({
         next:(res)=>
         {
           this.books=res

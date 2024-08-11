@@ -101,6 +101,7 @@ namespace backend.Repositories
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
                 .ThenInclude(borrow => borrow.User)
+                .Where(b=> b.Borrowed.All(b=>b.User.IsDeleted ==false))
                  .OrderBy(b => b.Name);
 
             var data = await query
@@ -254,6 +255,7 @@ namespace backend.Repositories
                .Include(book => book.Author)
                .Include(book => book.Borrowed)
                .ThenInclude(borrow => borrow.User)
+               .Where(b => b.Borrowed.All(b => b.User.IsDeleted == false))
                .Where(b => b.Borrowed.All(borrow => borrow.currently_borrowed == false))
                .Where(b => b.Name.Contains(name))
                .OrderBy(b => b.Name);

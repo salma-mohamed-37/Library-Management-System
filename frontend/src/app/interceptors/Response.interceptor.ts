@@ -49,6 +49,22 @@ export class ResponseInterceptor implements HttpInterceptor {
             this.toastContentService.showError("Unauthorized please login.")
             return of(error as any);
           }
+          else if (error.status==400)
+          {
+            console.log(error)
+            if(error.error.message)
+            {
+              this.toastContentService.showError(error.error.message)
+            }
+            if(error.error.errors)
+            {
+              for(var e in error.error.errors)
+                {
+                  this.toastContentService.showError(error.error.errors[e])
+                }
+            }
+            return of(error as any);
+          }
           else
           {
             this.toastContentService.showError(error.error.message)

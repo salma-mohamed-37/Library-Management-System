@@ -17,5 +17,9 @@ export class UserService {
   {
     return this.http.post<PaginationDto<UserDto>>(environment.apiUrl+"api/users/search/"+pageNumber+"/"+pageSize,{name})
   }
+  addUser(user:FormData)
+  {
+    return this.http.post(environment.apiUrl+"api/account/register", user)
+  }
   //add, update , delete
 }

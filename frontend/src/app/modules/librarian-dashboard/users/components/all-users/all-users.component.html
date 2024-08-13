@@ -1,5 +1,5 @@
 <nav class="flex justify-content-between">
-  <input type="button" value="Add User"/> <input type="button" value="Home" (click)="navigate('pages/dashboard')"/>
+  <input type="button" value="Add User" (click)="navigate('pages/dashboard/users/add')"/> <input type="button" value="Home" (click)="navigate('pages/dashboard')"/>
 </nav>
 
 <main *ngIf="! loading">
@@ -20,7 +20,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-user>
         <tr>
-            <td>{{ user.fullName}}</td>
+            <td>{{ user.fullname}}</td>
             <td>{{ user.email}}</td>
             <td><input type="button" value="Details"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return" (click)="return(user.id)"/></td>
         </tr>

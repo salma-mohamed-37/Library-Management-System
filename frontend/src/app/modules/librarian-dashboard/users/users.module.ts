@@ -9,12 +9,17 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PaginatorModule } from 'primeng/paginator';
 import { SidebarModule } from 'primeng/sidebar';
 import { CheckboxModule } from 'primeng/checkbox';
+import { AddUserComponent } from './components/add-user/add-user.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { CalendarModule } from 'primeng/calendar';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AllUsersComponent,
-    BorrowComponent
+    BorrowComponent,
+    AddUserComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +29,10 @@ import { CheckboxModule } from 'primeng/checkbox';
     DragDropModule,
     PaginatorModule,
     SidebarModule,
-    CheckboxModule
+    CheckboxModule,
+    FileUploadModule,
+    CalendarModule,
+    ReactiveFormsModule
   ]
 })
 export class UsersModule { }

@@ -51,7 +51,7 @@ namespace backend.Controllers
         //}
 
         [Authorize()]
-        [HttpGet("current-history")]
+        [HttpGet("current-borrow")]
         public async Task<ActionResult<APIResponse<ICollection<GetBorrowedBookForUserDto>>>> GetCurrentlyBorrowedBooksByUser([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4, [FromQuery] string userId = null)
         {
             if (userId == null)

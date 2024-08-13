@@ -1,0 +1,88 @@
+main
+{
+  background-color:var(--white);
+  padding: 0.5rem;
+  min-height: calc(100vh - 7.5rem);
+}
+.image
+{
+  height: 7rem;
+  width: 6rem;
+}
+
+img
+{
+  height: 7rem;
+  width: 6rem;
+}
+
+aside
+{
+  width: 50%;
+}
+
+.name
+{
+  margin: 0;
+  width: 45%;
+}
+
+input[type=text], input[type=email], input[type=tel], input[type=password]
+{
+  font-size: 1rem;
+  padding:0.5rem ;
+  width: 70%;
+  margin-top: 0.5rem;
+}
+
+input[type=radio]
+{
+  margin-top: 0.5rem;
+}
+
+input[type=submit]
+{
+  padding: 4px 1rem;
+}
+
+
+::ng-deep .p-calendar-w-btn
+{
+  margin-top: 0.5rem;
+}
+
+
+::ng-deep .p-fileupload-content{
+  display: none;
+}
+
+
+::ng-deep .p-fileupload .p-fileupload-buttonbar
+{
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.container
+{
+  border: 1px solid var(--background);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.header
+{
+  position: absolute;
+  top:-0.6rem;
+  left: 0.75rem;
+  background-color: var(--white);
+  padding:2px ;
+  color:var(--label)
+}
+
+label
+{
+  color:var(--label)
+}
+

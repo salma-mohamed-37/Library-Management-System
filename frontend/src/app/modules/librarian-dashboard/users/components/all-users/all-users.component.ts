@@ -52,6 +52,7 @@ export class AllUsersComponent {
       next:(res)=>
       {
         this.response=res
+        console.log(res)
         this.loading=false
       }
     })
@@ -77,8 +78,9 @@ export class AllUsersComponent {
 
   borrow(id:string)
   {
-    this.router.navigate(["pages/dashboard/users/borrow"])
     this.borrowService.userId= id
+    console.log(this.borrowService.userId)
+    this.router.navigate(["pages/dashboard/users/borrow"])
   }
 
   return(userId:string)

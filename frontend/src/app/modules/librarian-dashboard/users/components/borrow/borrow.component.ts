@@ -81,9 +81,9 @@ export class BorrowComponent {
         next:(res)=>
         {
           console.log(res)
+          this.borrowService.clear()
         }
       })
-      this.borrowService.clear()
     }
     this.loading=false
   }

@@ -1,11 +1,12 @@
-export interface UserDto {
-  id:string;
+export interface RegisterDto {
   username: string;
   email: string;
+  password: string;
   fullname: string;
   dateOfBirth: Date;
   gender: string;
   city: string;
-  imagePath: string;
-  isDeleted: boolean;
+  imageFile?: File;
+  type?: string;
+  phoneNumber: string;
 }

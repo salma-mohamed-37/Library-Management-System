@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AllUsersComponent } from './components/all-users/all-users.component';
 import { BorrowComponent } from './components/borrow/borrow.component';
+import { AddUserComponent } from './components/add-user/add-user.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
     path:"borrow",
     component:BorrowComponent
   },
+  {
+    path:"add",
+    component:AddUserComponent
+  }
 ];
 
 @NgModule({

@@ -96,7 +96,7 @@ export class HeaderComponent {
           icon:"pi pi-user",
           label:"Profile",
             command: () => {
-                this.navigate("pages/client/homepage");
+                this.navigate("pages/client/profile");
 
             }},
         {

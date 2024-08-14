@@ -15,6 +15,8 @@ import { BorrowHistoryComponent } from './components/borrow-history/borrow-histo
 import { BorrowCardComponent } from './components/borrow-card/borrow-card.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CurrentBorrowComponent } from './components/current-borrow/current-borrow.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { UserInfoComponent } from '../user-info/user-info.component';
 
 
 
@@ -26,7 +28,8 @@ import { CurrentBorrowComponent } from './components/current-borrow/current-borr
     MoreBooksComponent,
     BorrowHistoryComponent,
     BorrowCardComponent,
-    CurrentBorrowComponent
+    CurrentBorrowComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +40,8 @@ import { CurrentBorrowComponent } from './components/current-borrow/current-borr
     CalendarModule,
     ReactiveFormsModule,
     PaginatorModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    UserInfoComponent
 
   ]
 })

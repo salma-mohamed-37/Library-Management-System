@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaginationDto } from '../interfaces/common/PaginationDto';
@@ -22,4 +22,19 @@ export class UserService {
     return this.http.post(environment.apiUrl+"api/account/register", user)
   }
   //add, update , delete
+
+  getUserbyID(userId? :string)
+  {
+    if (userId)
+      {
+        let params = new HttpParams();
+        params = params.set('userId', userId);
+
+        return this.http.get<UserDto>(environment.apiUrl+"api/account/info", {params})
+      }
+      else
+      {
+        return this.http.get<UserDto>(environment.apiUrl+"api/account/info")
+      }
+  }
 }

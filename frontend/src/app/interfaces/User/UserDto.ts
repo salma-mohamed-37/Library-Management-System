@@ -5,7 +5,10 @@ export interface UserDto {
   fullname: string;
   dateOfBirth: Date;
   gender: string;
+  phoneNumber:string;
   city: string;
   imagePath: string;
-  isDeleted: boolean;
+  isDeleted?: boolean;
+  deletedAt?:Date;
+  createdAt:Date;
 }

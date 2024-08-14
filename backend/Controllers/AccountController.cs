@@ -49,6 +49,7 @@ namespace backend.Controllers
             return Ok();
         }
 
+        [Authorize(Roles ="lIBRARIAN")]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm] RegisterDto registerDto)
         {
@@ -317,7 +318,7 @@ namespace backend.Controllers
 
         [HttpDelete]
         [Authorize]
-        public async Task<IActionResult> DeleteAccount([FromQuery] string userId)
+        public async Task<IActionResult> DeleteAccount([FromQuery] string userId=null)
         {
             if (userId == null)
             {
@@ -373,8 +374,23 @@ namespace backend.Controllers
                 return false;
         }
 
+        [Authorize]
+        [HttpGet("info")]
+        public async Task<ActionResult<APIResponse<UserDto>>> GetAccountInfo([FromQuery] string userId = null)
+        {
+            if (userId == null)
+            {
+                userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
 
-        
+            var user = await _userManager.FindByIdAsync(userId!);
+            if (user == null)
+            {
+                return BadRequest(new APIResponse<object>(400, "The user is not found.",null));
+            }
+            var userDto = _mapper.Map<UserDto>(user);
 
+            return Ok(new APIResponse<UserDto>(200, "", userDto));
+        }
     }
 }

@@ -1,0 +1,17 @@
+<p class="title">Profile</p>
+<main>
+  <div class="flex justify-content-start align-items-center gap-2 basic-container">
+    <p>
+      <img [src]="getFullImageUrl(user.imagePath)" />
+    </p>
+    <p>
+     <span class="name">{{user.fullname}}</span><br/>
+     <span>
+      {{user.username}} <br/>
+      {{user.email}}
+     </span>
+    </p>
+    <p class="options-button"><i class="pi pi-ellipsis-v"></i></p>
+  </div>
+ <app-user-info [user]="user"></app-user-info>
+</main>

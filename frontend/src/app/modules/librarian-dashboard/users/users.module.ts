@@ -13,13 +13,15 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 
 @NgModule({
   declarations: [
     AllUsersComponent,
     BorrowComponent,
-    AddUserComponent
+    AddUserComponent,
+    UserDetailsComponent
   ],
   imports: [
     CommonModule,

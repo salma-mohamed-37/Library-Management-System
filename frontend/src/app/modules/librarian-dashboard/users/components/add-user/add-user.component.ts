@@ -4,6 +4,7 @@ import { FileSelectEvent, FileUpload, FileUploadEvent } from 'primeng/fileupload
 import { Password } from 'primeng/password';
 import { UserService } from '../../../../../services/user.service';
 import { dateValidator, passwordMatch } from './validators';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { dateValidator, passwordMatch } from './validators';
 })
 export class AddUserComponent {
 
-  constructor(private fb:FormBuilder, private userService:UserService){}
+  constructor(private fb:FormBuilder, private userService:UserService, private router:Router){}
 
   addForm!:FormGroup
   imageSrc: string | ArrayBuffer | null = null;
@@ -67,7 +68,12 @@ export class AddUserComponent {
       for (var pair of formData.entries()) {
         console.log(pair[0]+ ', ' + pair[1]);
       }
-      this.userService.addUser(formData).subscribe({})
+      this.userService.addUser(formData).subscribe({
+        next:(res)=>
+        {
+            this.router.navigate(["pages/dashboard/users/all"])
+        }
+      })
     }
     else
     {
@@ -147,3 +153,7 @@ export class AddUserComponent {
     return this.addForm.get('imageFile')
   }
 }
+function res(value: Object): void {
+  throw new Error('Function not implemented.');
+}
+

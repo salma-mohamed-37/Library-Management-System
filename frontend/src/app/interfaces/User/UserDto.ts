@@ -10,5 +10,4 @@ export interface UserDto {
   imagePath: string;
   isDeleted?: boolean;
   deletedAt?:Date;
-  createdAt:Date;
 }

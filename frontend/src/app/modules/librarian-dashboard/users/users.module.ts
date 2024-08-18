@@ -14,6 +14,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { UserInfoComponent } from "../../user-info/user-info.component";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { UserDetailsComponent } from './components/user-details/user-details.com
     CheckboxModule,
     FileUploadModule,
     CalendarModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    UserInfoComponent
+]
 })
 export class UsersModule { }

@@ -22,7 +22,7 @@
         <tr>
             <td>{{ user.fullname}}</td>
             <td>{{ user.email}}</td>
-            <td><input type="button" value="Details"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return" (click)="return(user.id)"/></td>
+            <td><input type="button" value="Details" (click)="navigate('pages/dashboard/users/details/'+user.id)"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return" (click)="return(user.id)"/></td>
         </tr>
     </ng-template>
 </p-table>

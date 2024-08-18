@@ -1,14 +1,16 @@
 main
 {
   background-color: var(--white);
-  min-height: calc(100vh - 8.5rem);
-  padding: 4px;
+  min-height: calc(100vh - 7.5rem);
+  padding: 6px;
 }
 
 img
 {
   border-radius: 50%;
   border: 1px solid var(--background);
+  height:12rem;
+  width: 12rem;
 }
 
 .name
@@ -20,14 +22,15 @@ img
 
 .basic-container
 {
-  position: relative;
+  margin: 0;
 }
 
 .options-button
 {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+
+  margin: 0;
+  height: fit-content;
+  width: fit-content;
 }
 .options-button:hover
 {

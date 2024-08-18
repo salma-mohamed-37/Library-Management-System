@@ -1,0 +1,26 @@
+main
+{
+  background-color: var(--white);
+  min-height: calc(100vh - 7.5rem);
+  padding: 6px;
+}
+
+img
+{
+  border-radius: 50%;
+  border: 1px solid var(--background);
+  height:12rem;
+  width: 12rem;
+}
+
+.name
+{
+  font-size: 2.5rem;
+  font-weight:500;
+  display: inline-block;
+}
+
+.basic-container
+{
+  margin: 0;
+}

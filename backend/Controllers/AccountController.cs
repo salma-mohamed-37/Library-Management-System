@@ -82,6 +82,7 @@ namespace backend.Controllers
                 Type = registerDto.Type,
                 Gender = registerDto.Gender,
                 City = registerDto.City,
+                PhoneNumber =registerDto.PhoneNumber,
                 ImagePath = $"{Guid.NewGuid()}_{registerDto.ImageFile.FileName}"
 
             };
@@ -137,6 +138,7 @@ namespace backend.Controllers
                 Type = registerDto.Type,
                 Gender = registerDto.Gender,
                 City = registerDto.City,
+                PhoneNumber = registerDto.PhoneNumber,
                 ImagePath = $"{Guid.NewGuid()}_{registerDto.ImageFile.FileName}"
 
             };

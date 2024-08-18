@@ -17,6 +17,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CurrentBorrowComponent } from './components/current-borrow/current-borrow.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserInfoComponent } from '../user-info/user-info.component';
+import { MenuModule } from 'primeng/menu';
+
 
 
 
@@ -41,7 +43,8 @@ import { UserInfoComponent } from '../user-info/user-info.component';
     ReactiveFormsModule,
     PaginatorModule,
     OverlayPanelModule,
-    UserInfoComponent
+    UserInfoComponent,
+    MenuModule
 
   ]
 })

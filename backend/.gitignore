@@ -1,0 +1,4 @@
+# .NET Core and Visual Studio files
+.vs/
+bin/
+obj/

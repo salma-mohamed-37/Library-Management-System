@@ -11,17 +11,23 @@
         </th>
         <th></th>
         <th></th>
+        <th></th>
+        <th></th>
       </tr>
         <tr>
+          <th></th>
           <th>Name</th>
           <th>Email</th>
+          <th>Deleted</th>
           <th>Actions</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-user>
         <tr>
-            <td>{{ user.fullname}}</td>
-            <td>{{ user.email}}</td>
+          <td> <img [src]="getFullImageUrl(user.imagePath)"/></td>
+            <td>{{user.fullname}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.isDeleted}}</td>
             <td><input type="button" value="Details" (click)="navigate('pages/dashboard/users/details/'+user.id)"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return" (click)="return(user.id)"/></td>
         </tr>
     </ng-template>

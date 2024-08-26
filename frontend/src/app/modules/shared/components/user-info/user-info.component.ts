@@ -7,6 +7,7 @@ import { environment } from '../../../../../environments/environment';
 import { MenuItem } from 'primeng/api';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangePasswordDto } from '../../../../interfaces/User/ChangePasswordDto';
+import { ToastContentService } from '../../../../services/toast-content.service';
 
 @Component({
   selector: 'app-user-info',
@@ -23,7 +24,7 @@ export class UserInfoComponent {
   viewDeleteConfirm:boolean=false
   changeForm!: FormGroup;
 
-  constructor(private userService:UserService,public route:ActivatedRoute, private router:Router, private fb:FormBuilder){}
+  constructor(private userService:UserService,public route:ActivatedRoute, private router:Router, private fb:FormBuilder, private toastContnentService : ToastContentService){}
 
   ngOnInit()
   {
@@ -65,7 +66,23 @@ export class UserInfoComponent {
     if(this.userId)
     {
       this.items.push({
-        label : "Delete"
+        label : "Delete",
+        command:()=>{
+          this.toastContnentService.showConfirm().subscribe({
+            next:(res)=>
+            {
+              if(res)
+              {
+                this.userService.delete(this.userId).subscribe({
+                  next:(res)=>
+                  {
+                    this.router.navigate(['pages/dashboard/users/all'])
+                  }
+                })
+              }
+            }
+          })
+        }
       })
     }
 

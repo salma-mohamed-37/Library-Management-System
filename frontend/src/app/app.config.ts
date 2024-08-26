@@ -4,8 +4,9 @@ import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { ResponseInterceptor } from './interceptors/Response.interceptor';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestInterceptor } from './interceptors/Request.interceptor';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,8 @@ export const appConfig: ApplicationConfig = {
       useClass: ResponseInterceptor,
       multi: true
     },
-    MessageService
+    MessageService,
+    ConfirmDialogModule,
+    ConfirmationService
   ]
 };

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { BorrowService } from '../../../../../services/borrow.service';
 import { Book } from '../../../../../interfaces/book/Book';
 import { UserProfileService } from '../../../../../services/user-profile.service';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-all-users',
@@ -108,5 +109,10 @@ export class AllUsersComponent {
       }
     })
     this.borrowService.clear()
+  }
+
+  getFullImageUrl(path?: string): string
+  {
+    return `${environment.apiUrl}${path}`;
   }
 }

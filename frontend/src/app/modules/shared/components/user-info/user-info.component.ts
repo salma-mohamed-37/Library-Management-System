@@ -5,6 +5,8 @@ import { UserService } from '../../../../services/user.service';
 import { ActivatedRoute, Router} from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { MenuItem } from 'primeng/api';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangePasswordDto } from '../../../../interfaces/User/ChangePasswordDto';
 
 @Component({
   selector: 'app-user-info',
@@ -17,7 +19,11 @@ export class UserInfoComponent {
   user!:UserDto;
   userId!:string |undefined
   items: MenuItem[]=[]
-  constructor(private userService:UserService,public route:ActivatedRoute, private router:Router){}
+  viewChangePassword:boolean=false;
+  viewDeleteConfirm:boolean=false
+  changeForm!: FormGroup;
+
+  constructor(private userService:UserService,public route:ActivatedRoute, private router:Router, private fb:FormBuilder){}
 
   ngOnInit()
   {
@@ -50,9 +56,10 @@ export class UserInfoComponent {
         label: "Update Profile"
       },
       {
-        label: "Change Password"
-      }
-      
+        label: "Change Password",
+        command: () => {
+          this.viewChangePassword=true
+      }}
     ]
 
     if(this.userId)
@@ -62,16 +69,55 @@ export class UserInfoComponent {
       })
     }
 
+    this.changeForm=this.fb.group({
+      oldPassword:new FormControl('', [Validators.required,Validators.minLength(8)]),
+      newPassword:new FormControl('', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]+$'),Validators.minLength(8)])
+    })
+
   }
 
   getFullImageUrl(path?: string): string
   {
     return `${environment.apiUrl}${path}`;
   }
+
   navigate(url:string)
   {
     this.router.navigate([url]);
   }
 
+  submit()
+  {
+    if(this.changeForm.valid)
+    {
+      console.log(this.changeForm.value)
+      const req : ChangePasswordDto ={
+        oldPassword:this.changeForm.value["oldPassword"],
+        newPassword:this.changeForm.value["newPassword"],
+        userId :this.userId
+      }
+
+      this.userService.changePassword(req).subscribe({
+        next:(res)=>
+        {
+          this.viewChangePassword=false
+        }
+      })
+    }
+    else
+    {
+      console.log("invalid")
+    }
+  }
+
+  get oldPassword()
+  {
+    return this.changeForm.get('oldPassword')
+  }
+
+  get newPassword()
+  {
+    return this.changeForm.get('newPassword')
+  }
 
 }

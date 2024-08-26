@@ -394,5 +394,51 @@ namespace backend.Controllers
 
             return Ok(new APIResponse<UserDto>(200, "", userDto));
         }
+
+
+        [Authorize]
+
+        [HttpPut("password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
+        {
+            if (dto.UserId == null)
+            {
+                dto.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+
+            else
+            {
+                var operatorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userRole = await _userRepository.GetUserRole(dto.UserId);
+                var operatorRole = await _userRepository.GetUserRole(operatorId!);
+                if (!CanUpdate(userRole, operatorRole))
+                {
+                    return BadRequest(new APIResponse<object>(400, "You are not authorized to  change password update this account.", null));
+                }
+            }
+
+            var user = await _userManager.FindByIdAsync(dto.UserId);
+            if (user == null)
+            {
+                return BadRequest(new APIResponse<object>(404, "This account doesn't exist.", null));
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Ok(new APIResponse<object>(200, "Password changed successfully.", null));
+            }
+            var error = "Change password failed because: ";
+
+            foreach (var e in result.Errors)
+            {
+                error += "\n";
+                error += e.Description;
+            }
+            return BadRequest(new APIResponse<object>(400, error, null));
+
+
+        }
     }
 }

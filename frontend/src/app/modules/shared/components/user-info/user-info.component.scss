@@ -39,7 +39,8 @@ section
 
 label
 {
-  color:var(--label)
+  color:var(--label);
+  font-size:1rem;
 }
 
 aside
@@ -71,4 +72,9 @@ aside
   font-size: 2.5rem;
   font-weight:500;
   display: inline-block;
+}
+
+input[type=password]
+{
+  font-size: 1.5rem;
 }

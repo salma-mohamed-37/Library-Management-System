@@ -153,7 +153,5 @@ export class AddUserComponent {
     return this.addForm.get('imageFile')
   }
 }
-function res(value: Object): void {
-  throw new Error('Function not implemented.');
-}
+
 

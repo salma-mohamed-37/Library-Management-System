@@ -5,6 +5,7 @@ import { PaginationDto } from '../interfaces/common/PaginationDto';
 import { UserDto } from '../interfaces/User/UserDto';
 import { environment } from '../../environments/environment';
 import { Book } from '../interfaces/book/Book';
+import { ChangePasswordDto } from '../interfaces/User/ChangePasswordDto';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +27,35 @@ export class UserService {
   getUserbyID(userId? :string)
   {
     if (userId)
+    {
+      let params = new HttpParams();
+      params = params.set('userId', userId);
+
+      return this.http.get<UserDto>(environment.apiUrl+"api/account/info", {params})
+    }
+    else
+    {
+      return this.http.get<UserDto>(environment.apiUrl+"api/account/info")
+    }
+  }
+
+  changePassword(dto:ChangePasswordDto)
+  {
+    return this.http.put(environment.apiUrl+"api/account/password",dto)
+  }
+
+  delete(userId?:string)
+  {
+    if (userId)
       {
         let params = new HttpParams();
         params = params.set('userId', userId);
 
-        return this.http.get<UserDto>(environment.apiUrl+"api/account/info", {params})
+        return this.http.delete(environment.apiUrl+"api/account", {params})
       }
       else
       {
-        return this.http.get<UserDto>(environment.apiUrl+"api/account/info")
+        return this.http.delete(environment.apiUrl+"api/account")
       }
   }
 }

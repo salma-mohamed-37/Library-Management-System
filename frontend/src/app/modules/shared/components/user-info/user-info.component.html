@@ -42,7 +42,30 @@
       <span class="value">{{user.phoneNumber}}</span> <br/>
     </aside>
   </section>
-  
 </main>
+
+<p-dialog header="Change Password" [modal]="true" [(visible)]="viewChangePassword" [style]="{ width: '20rem' }">
+  <div class="flex justify-content-center">
+    <form [formGroup]="changeForm" (ngSubmit)="submit()">
+      <label>
+        Current Password
+      </label>
+      <br/>
+      <input type="password" name="old" formControlName="oldPassword"/>
+      <br/><br/>
+      <label>
+        New Password
+      </label>
+      <br/>
+      <input type="password" name="new" formControlName="newPassword"/>
+      <br/><br/>
+      <p style="text-align: center; margin: 0;"><input type="submit" value="Change" /></p>
+
+      <span class="error" *ngIf="changeForm!.invalid && oldPassword!.touched && newPassword!.touched">Passwords are required.<br />They must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.</span><br/>
+
+    </form>
+  </div>
+
+</p-dialog>
 
 

@@ -4,6 +4,8 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { MenuModule } from 'primeng/menu';
 import { DeletedComponent } from "../deleted/deleted.component";
+import { DialogModule } from 'primeng/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import { DeletedComponent } from "../deleted/deleted.component";
     CommonModule,
     SharedRoutingModule,
     MenuModule,
-    DeletedComponent
+    DeletedComponent,
+    DialogModule,
+    ReactiveFormsModule
 ],
 exports:[
   UserInfoComponent

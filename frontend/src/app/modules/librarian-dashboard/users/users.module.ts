@@ -15,6 +15,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { SharedModule } from "../../shared/shared.module";
+import { TabMenuModule } from 'primeng/tabmenu';
+import { BorrowHistoryComponent } from './components/borrow-history/borrow-history.component';
+import { CurrentlyBorrowedComponent } from './components/currently-borrowed/currently-borrowed.component';
 
 
 @NgModule({
@@ -22,7 +25,9 @@ import { SharedModule } from "../../shared/shared.module";
     AllUsersComponent,
     BorrowComponent,
     AddUserComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    BorrowHistoryComponent,
+    CurrentlyBorrowedComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +41,8 @@ import { SharedModule } from "../../shared/shared.module";
     FileUploadModule,
     CalendarModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    TabMenuModule
 ]
 })
 export class UsersModule { }

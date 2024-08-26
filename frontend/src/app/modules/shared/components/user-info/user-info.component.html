@@ -1,0 +1,48 @@
+<p class="title">User Info</p>
+<main>
+  <header class="flex flex-row justify-content-between basic-container">
+    <article class="flex justify-content-start align-items-center gap-2">
+      <p>
+        <img [src]="getFullImageUrl(user.imagePath)" />
+      </p>
+      <p>
+       <span class="name">{{user.fullname}}</span><br/>
+       <span>
+        {{user.username}} <br/>
+        {{user.email}}
+       </span>
+      </p>
+    </article>
+    <article *ngIf="user.isDeleted">
+      <app-deleted></app-deleted>
+    </article>
+
+    <article>
+      <span class="options-button" (click)="menu.toggle($event)">
+        <i class="pi pi-ellipsis-v"></i>
+      </span>
+      <p-menu #menu [model]="items" [popup]="true"/>
+    </article>
+
+  </header>
+
+  <section class="flex flex-row gap-2">
+    <span class="header">Personal Information</span>
+    <aside>
+      <label>Gender</label><br/>
+      <span class="value">{{user.gender}}</span>  <br/>
+      <label>Date of Birth</label><br/>
+      <span class="value">{{user.dateOfBirth| date:'MMMM,dd,YYYY'}}</span> <br/>
+    </aside>
+  
+    <aside>
+      <label>City</label><br/>
+      <span class="value">{{user.city}}</span> <br/>
+      <label>Phone Number</label><br/>
+      <span class="value">{{user.phoneNumber}}</span> <br/>
+    </aside>
+  </section>
+  
+</main>
+
+

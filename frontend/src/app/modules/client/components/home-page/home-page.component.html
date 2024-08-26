@@ -8,7 +8,7 @@
     <app-book-card [book]="book"></app-book-card>
   </div>
 </div>
-<p class="more" *ngIf="! loading"> <a href="pages/client/more/1">More Books</a></p>
+<p class="more" *ngIf="! loading &&  books.length>0"> <a href="pages/client/more/1">More Books</a></p>
 
 <p *ngIf="loading" class="loading"><i class="pi pi-spin pi-spinner"></i></p>
 

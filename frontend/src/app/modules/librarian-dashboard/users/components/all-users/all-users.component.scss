@@ -18,21 +18,7 @@ input[type=text]
   font-size: 1.5rem;
 }
 
-.p-paginator-bottom
+::ng-deep .p-datatable-wrapper
 {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
-::ng-deep .p-paginator
-{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
-::ng-deep .p-datatable
-{
-  min-height: calc(100vh - 7.6rem);
+  min-height: calc(100vh - 12rem);
 }

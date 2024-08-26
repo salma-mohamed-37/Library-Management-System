@@ -15,11 +15,6 @@ import { BorrowHistoryComponent } from './components/borrow-history/borrow-histo
 import { BorrowCardComponent } from './components/borrow-card/borrow-card.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CurrentBorrowComponent } from './components/current-borrow/current-borrow.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { UserInfoComponent } from '../user-info/user-info.component';
-import { MenuModule } from 'primeng/menu';
-
-
 
 
 @NgModule({
@@ -30,8 +25,7 @@ import { MenuModule } from 'primeng/menu';
     MoreBooksComponent,
     BorrowHistoryComponent,
     BorrowCardComponent,
-    CurrentBorrowComponent,
-    ProfileComponent
+    CurrentBorrowComponent
   ],
   imports: [
     CommonModule,
@@ -42,10 +36,7 @@ import { MenuModule } from 'primeng/menu';
     CalendarModule,
     ReactiveFormsModule,
     PaginatorModule,
-    OverlayPanelModule,
-    UserInfoComponent,
-    MenuModule
-
+    OverlayPanelModule
   ]
 })
 export class ClientModule { }

@@ -33,6 +33,12 @@
       <span class="value">{{user.gender}}</span>  <br/>
       <label>Date of Birth</label><br/>
       <span class="value">{{user.dateOfBirth| date:'MMMM,dd,YYYY'}}</span> <br/>
+
+      @if (user.isDeleted) 
+      {
+        <label>Deleted At</label><br/>
+      <span class="value">{{user.deletedAt| date:'MMMM,dd,YYYY'}}</span> <br/>
+      }
     </aside>
   
     <aside>

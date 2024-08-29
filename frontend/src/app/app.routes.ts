@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { NotFoundComponent } from './modules/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -6,5 +7,5 @@ export const routes: Routes = [
     loadChildren : () => import ('./modules/modules.module').then((m)=>m.ModulesModule)
   },
   { path: '', redirectTo: 'pages/client/home-page', pathMatch: 'full' },
-  { path: '**', redirectTo: 'pages/client/home-page' }  //not found
+  { path: '**', component:NotFoundComponent }  
 ];

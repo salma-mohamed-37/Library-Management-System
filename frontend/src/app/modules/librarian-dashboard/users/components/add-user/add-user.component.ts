@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileSelectEvent, FileUpload, FileUploadEvent } from 'primeng/fileupload';
 import { Password } from 'primeng/password';
 import { UserService } from '../../../../../services/user.service';
@@ -22,19 +22,22 @@ export class AddUserComponent {
 
   ngOnInit()
   {
-    this.addForm=this.fb.group({
-      firstName :['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      lastName:['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      username:['', Validators.required],
-      email:['', [Validators.required, Validators.email]],
-      dateOfBirth:['', [Validators.required, dateValidator()]],
-      gender:['', Validators.required],
-      city:['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      phoneNumber:['', [Validators.pattern('^[0-9]+$')]],
-      password:['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]+$')]],
-      confirmPassword:['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]+$')]],
-      imageFile:['', Validators.required]
-    }, {validator: passwordMatch('password', 'confirmPassword') })
+    this.addForm = this.fb.group({
+      firstName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]),
+      lastName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]), 
+    
+      username: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]), 
+    
+      dateOfBirth: new FormControl('', [Validators.required, dateValidator()]),
+      gender: new FormControl('', Validators.required),
+      city: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]),
+      phoneNumber:new FormControl('', Validators.pattern('^[0-9]+$')),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]+$')]),
+      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]+$')]), 
+    
+      imageFile: new FormControl('', Validators.required)
+    }, { validators: passwordMatch('password', 'confirmPassword') });
   }
 
   submit()

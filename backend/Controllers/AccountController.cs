@@ -260,7 +260,7 @@ namespace backend.Controllers
 
         [HttpPut()]
         [Authorize]
-        public async Task<IActionResult> Update([FromForm] RegisterDto dto, [FromQuery] string userId = null)
+        public async Task<IActionResult> Update([FromForm] UpdateUserDto dto, [FromQuery] string userId = null)
         {
             if (userId ==null)
             {
@@ -283,12 +283,10 @@ namespace backend.Controllers
             {
                 return BadRequest(new APIResponse<object>(400, "This user doesn't exist.", null));
             }
-
-            user.UserName = dto.Username;
-            user.Email = dto.Email;
             user.FullName = dto.Fullname;
             user.DateOfBirth = dto.DateOfBirth;
             user.Gender = dto.Gender;
+            user.PhoneNumber = dto.PhoneNumber;
             user.City = dto.City;
 
             if (dto.ImageFile != null)

@@ -54,7 +54,18 @@ export class UserInfoComponent {
 
     this.items=[
       {
-        label: "Update Profile"
+        label: "Update Profile",
+        command:()=>{
+          if(this.userId ==undefined)
+          {
+            this.navigate("pages/-/update")
+          }
+          else
+          {
+            this.navigate("pages/-/update/"+this.userId)
+          }
+          
+        }
       },
       {
         label: "Change Password",

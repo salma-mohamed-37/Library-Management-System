@@ -58,4 +58,19 @@ export class UserService {
         return this.http.delete(environment.apiUrl+"api/account")
       }
   }
+
+  updateUser( user:FormData, userId?:string)
+  {
+    if (userId)
+      {
+        let params = new HttpParams();
+        params = params.set('userId', userId);
+  
+        return this.http.put(environment.apiUrl+"api/account",user, {params})
+      }
+      else
+      {
+        return this.http.put(environment.apiUrl+"api/account",user)
+      }
+  }
 }

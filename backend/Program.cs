@@ -66,11 +66,11 @@ builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
     options.SignIn.RequireConfirmedEmail = false;
-    options.User.RequireUniqueEmail = true;
+    options.User.RequireUniqueEmail = false;
 });
 
 //add authentication and JwtBearer

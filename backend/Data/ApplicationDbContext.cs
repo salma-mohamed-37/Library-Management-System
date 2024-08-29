@@ -46,9 +46,30 @@ namespace backend.Data
                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Borrowed>().HasKey(x => new { x.UserId, x.BookId, x.BorrowDate });
-            
-            
+
+
+
             base.OnModelCreating(builder);
+
+            builder.Entity<ApplicationUser>()
+                .HasIndex(e => e.Email)
+                .HasDatabaseName("EmailIndex")
+                .IsUnique(false);
+
+            builder.Entity<ApplicationUser>()
+                .HasIndex(e => e.NormalizedEmail)
+                .HasDatabaseName("NormalizedEmailIndex")
+                .IsUnique(false);
+
+                builder.Entity<ApplicationUser>()
+                .HasIndex(e => e.UserName)
+                .HasDatabaseName("UserNameIndex")
+                .IsUnique(false);
+
+            builder.Entity<ApplicationUser>()
+                .HasIndex(e => e.NormalizedUserName)
+                .HasDatabaseName("NormalizedUserNameIndex")
+                .IsUnique(false);
         }
     }
 }

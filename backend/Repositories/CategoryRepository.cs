@@ -46,5 +46,15 @@ namespace backend.Repositories
             return res;
         }
 
+        public async Task<bool> IsExists(int id, CancellationToken cancellationToken)
+        {
+            return await _context.Categories.AnyAsync(c => c.Id == id,cancellationToken);
+        }
+
+        public async Task<bool> IsNameExists(string name, CancellationToken cancellationToken)
+        {
+            return await _context.Categories.AnyAsync(c => c.Name == name, cancellationToken);
+
+        }
     }
 }

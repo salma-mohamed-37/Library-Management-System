@@ -86,5 +86,20 @@ namespace backend.Repositories
             return role!;
 
         }
+
+        public async Task<bool> IsExists(string id, CancellationToken cancellationToken)
+        {
+            return await _context.Users.AnyAsync(x=>x.Id ==id && x.IsDeleted==false, cancellationToken);
+        }
+
+        public async Task<bool> IsEmailExists(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Users.AnyAsync(x => x.Email == email && x.IsDeleted == false, cancellationToken);
+        }
+
+        public async Task<bool> IsUsernameExists(string username, CancellationToken cancellationToken)
+        {
+            return await _context.Users.AnyAsync(x => x.UserName == username && x.IsDeleted == false, cancellationToken);
+        }
     }
 }

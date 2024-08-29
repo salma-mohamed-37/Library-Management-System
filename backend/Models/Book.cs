@@ -12,5 +12,8 @@
         public string CoverName { get; set; }   
 
         public List<Borrowed> Borrowed { get; set; }
+
+        public bool IsDeleted { get; set; }
+        public DateTime DeletedAt { get; set; }
     }
 }

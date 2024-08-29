@@ -19,6 +19,7 @@ namespace backend.Repositories
         {
             var query = _context.Books
                 .AsNoTracking()
+                .Where(x=>x.IsDeleted==false)
                 .Include(book => book.Category)
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
@@ -72,6 +73,7 @@ namespace backend.Repositories
         {
             var query = _context.Books
                 .AsNoTracking()
+                 .Where(x => x.IsDeleted == false)
                 .Include(book => book.Category)
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
@@ -97,6 +99,7 @@ namespace backend.Repositories
         {
             var query = _context.Books
                 .AsNoTracking()
+
                 .Include(book => book.Category)
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
@@ -184,6 +187,7 @@ namespace backend.Repositories
         {
             var query = _context.Books
                 .AsNoTracking()
+                 .Where(x => x.IsDeleted == false)
                 .Include(book => book.Category)
                 .Include(book => book.Author)
                 .Include(book => book.Borrowed)
@@ -251,6 +255,7 @@ namespace backend.Repositories
         {
             var query = _context.Books
              .AsNoTracking()
+                .Where(x => x.IsDeleted == false)
                .Include(book => book.Category)
                .Include(book => book.Author)
                .Include(book => book.Borrowed)
@@ -274,6 +279,16 @@ namespace backend.Repositories
 
             return res;
 
+        }
+
+        public async Task<bool> IsExists(int id, CancellationToken cancellationToken=default)
+        {
+            return await _context.Books.AnyAsync (b => b.Id == id && b.IsDeleted==false);
+        }
+
+        public async Task<bool> IsNameExists(string name, CancellationToken cancellationToken=default)
+        {
+            return await _context.Books.AnyAsync(b=>b.Name == name && b.IsDeleted == false, cancellationToken);
         }
 
 

@@ -44,6 +44,11 @@ namespace backend.Controllers
 
             foreach (var i in dto.BooksIds)
             {
+                if(await _borrowedRepository.IsBorrowed(i))
+                {
+                    return BadRequest(new APIResponse<object>(400, "This book is already borrowed.", null));
+
+                }
                 var borrow = new Borrowed
                 {
                     UserId = dto.UserId,
@@ -68,7 +73,16 @@ namespace backend.Controllers
             {
                 return NotFound(new APIResponse<object>(404, "This user doesn't exist.", null));
             }
-            await _borrowedRepository.Return(dto.BooksIds, dto.UserId);
+
+            foreach (var i in dto.BooksIds)
+            {
+                if (await _borrowedRepository.IsBorrowed(i))
+                {
+                    return BadRequest(new APIResponse<object>(400, "This book is already borrowed.", null));
+
+                }
+            }
+                await _borrowedRepository.Return(dto.BooksIds, dto.UserId);
 
             return Ok(new APIResponse<object>(200, "Book returned successfully.", null));
         }

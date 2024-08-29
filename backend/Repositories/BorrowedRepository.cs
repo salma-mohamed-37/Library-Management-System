@@ -50,9 +50,9 @@ namespace backend.Repositories
                 .Where(b => b.currently_borrowed == false)
                 .Where(b => b.UserId == userId)
                 .Include(b => b.Book)
-                .ThenInclude(b=>b.Author)
-                .Include(b=>b.Book)
-                .ThenInclude(b=>b.Category)
+                .ThenInclude(b => b.Author)
+                .Include(b => b.Book)
+                .ThenInclude(b => b.Category)
                 .OrderByDescending(b => b.BorrowDate);
 
             var data = await query
@@ -69,9 +69,9 @@ namespace backend.Repositories
 
             return res;
 
-           
+
         }
-       
+
         public async Task<PaginationDto<Borrowed>> GetBookBorrowHistory(int bookId, int pageSize, int pageNumber)
         {
             var query = _context.Borrowed
@@ -94,7 +94,14 @@ namespace backend.Repositories
 
             return res;
 
-          
+
         }
+
+        public async Task<bool> IsBorrowed(int bookId)
+        {
+            return await _context.Borrowed.AnyAsync(b => bookId == bookId && b.currently_borrowed == true);
+        }
+      
+
     }
 }

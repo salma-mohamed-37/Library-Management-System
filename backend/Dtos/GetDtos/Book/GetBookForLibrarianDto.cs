@@ -15,5 +15,8 @@ namespace backend.Dtos.GetDtos.Book
         public DateTime? ReturnDate { get; set; }
         public bool currently_borrowed { get; set; }
         public UserDto? User { get; set; }
+
+        public bool IsDeleted { get; set; }
+        public DateTime DeletedAt { get; set; }
     }
 }

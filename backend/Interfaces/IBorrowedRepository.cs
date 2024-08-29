@@ -9,5 +9,6 @@ namespace backend.Interfaces
         public Task<ICollection<Borrowed>> GetCurrentlyBorrowedBooksByUser(string UserId);
         public Task<PaginationDto<Borrowed>> GetUserBorrowHistory(string userId, int pageSize, int pageNumber);
         public Task<PaginationDto<Borrowed>> GetBookBorrowHistory(int bookId, int pageSize, int pageNumber);
+        public Task<bool>IsBorrowed(int bookId);
     }
 }

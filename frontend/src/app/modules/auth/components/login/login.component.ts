@@ -35,7 +35,7 @@ export class LoginComponent {
         next:(res)=>
         {
           if(res)
-           this.router.navigate(["pages/client/pages"])
+           this.router.navigate(["pages/client/home-page"])
         }
       })
     }

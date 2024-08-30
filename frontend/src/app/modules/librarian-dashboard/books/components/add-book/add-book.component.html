@@ -1,0 +1,33 @@
+<p class="title">Add Book</p>
+<main>
+  <form [formGroup]="addForm" (ngSubmit)="submit()">
+    <section class="flex justify-content-between">
+      <p>
+        <p-fileUpload mode="advanced" [auto]="true"  chooseLabel="Upload Image" chooseIcon="pi pi-upload" (onSelect)="onImageSelect($event)" />
+        <span class="error" *ngIf="imageFile!.invalid">Image is required.</span>
+      </p>
+      <p class="image">
+        <img [src]="imageSrc" *ngIf="imageSrc"/>
+      </p>
+      
+    </section>
+    <label>Name</label><br/>
+    <input type="text" formControlName="name"/><br/>
+    <span class="error" *ngIf="name!.invalid && name!.touched">Book name is required.</span><br/>
+
+    <label>Publish Date</label><br/>
+    <p-calendar [showIcon]="true"  [showOnFocus]="false"  formControlName="publishDate" dateFormat="dd-mm-yy" placeholder="dd-mm-yy"/><br/>
+    <span class="error" *ngIf="publishDate!.invalid && publishDate!.touched">Publish date is required and must be in the future.</span><br/>
+
+    <label>Genre</label><br/>
+    <p-dropdown [options]="genres" formControlName="categoryId" placeholder="Select a Genre"></p-dropdown><br/>
+    <span class="error" *ngIf="categoryId!.invalid && categoryId!.touched">Genre is required.</span><br/>
+
+    
+    <label>Author</label><br/>
+    <p-dropdown [options]="authors" formControlName="authorId" placeholder="Select an Author"></p-dropdown><br/>
+    <span class="error" *ngIf="authorId!.invalid && authorId!.touched">Author is required.</span><br/>
+
+    <p style="text-align: center;"><input type="submit" value="Add" /></p> 
+  </form>
+</main>

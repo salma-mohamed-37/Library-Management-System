@@ -14,6 +14,11 @@ namespace backend.Repositories
 
         }
 
+        public async Task<ICollection<Category>> getAllAsync()
+        {
+            return await _context.Categories.AsNoTracking().ToListAsync();
+        }
+
         public async Task<PaginationDto<Category>> GetCategoriesbyName (string name, int pageNumber, int pageSize)
         {
             var query = _context.Categories

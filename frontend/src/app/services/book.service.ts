@@ -37,4 +37,14 @@ export class BookService {
   {
       return this.http.post<PaginationDto<Book>>(environment.apiUrl+"api/books/librarian/available/search/"+pageNumber+"/"+pageSize, {name})
   }
+
+  getFilteredBooksForLibrarian(request:FilteringRequest)
+  {
+    return this.http.post<PaginationDto<Book>>(environment.apiUrl+"api/books/librarian/filtered", request)
+  }
+
+  addBook(book:FormData)
+  {
+      return this.http.post(environment.apiUrl+"api/books", book)
+  }
 }

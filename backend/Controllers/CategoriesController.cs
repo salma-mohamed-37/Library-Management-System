@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using backend.Dtos.Responses;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using backend.Repositories;
 
 namespace backend.Controllers
 {
@@ -118,6 +119,14 @@ namespace backend.Controllers
         {
             var res = await _categoryRepository.GetCategoriesNames();
             return Ok(new APIResponse<ICollection<string>>(200,"", res));
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<APIResponse<ICollection<GetCategoryDto>>>> GetAll()
+        {
+            var categories = await _categoryRepository.getAllAsync();
+            var res = _mapper.Map<ICollection<GetCategoryDto>>(categories);
+            return Ok(new APIResponse<ICollection<GetCategoryDto>>(200, "", res));
         }
     }
 }

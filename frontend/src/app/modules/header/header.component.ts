@@ -43,7 +43,7 @@ export class HeaderComponent {
       icon: 'pi pi-home',
       label:"Home",
         command: () => {
-            this.navigate("pages/client/home");
+            this.navigate("pages/client/home-page");
 
     }})
 
@@ -112,7 +112,7 @@ export class HeaderComponent {
   logout()
   {
     this.authService.logout();
-    this.router.navigate(["pages/client/homepage"]);
+    this.router.navigate(["pages/client/home-page"]);
     this.constructItems()
   }
 

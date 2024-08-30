@@ -13,6 +13,8 @@ namespace backend.Dtos.GetDtos.Book
         public DateTime? BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; }
         public DateTime? DueDate { get; set; }
+        public bool? IsDeleted { set; get; }
+        public DateTime? DeletedAt { set; get; }
 
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using static System.Reflection.Metadata.BlobBuilder;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace backend.Controllers
@@ -105,6 +106,21 @@ namespace backend.Controllers
             await _authorRepository.DeleteAsync(id);
 
             return Ok(new APIResponse<object>(200, "The author deleted successfully.", null));
+        }
+
+        [HttpGet("names")]
+        public async Task<ActionResult<APIResponse<ICollection<string>>>> GetAuthorsNames()
+        {
+            var res = await _authorRepository.GetAuthorsNames();
+            return Ok(new APIResponse<ICollection<string>>(200, "", res));
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<APIResponse<ICollection<GetAuthorDto>>>> GetAll()
+        {
+            var authors = await _authorRepository.getAllAsync();
+            var res = _mapper.Map<ICollection<GetAuthorDto>>(authors);
+            return Ok(new APIResponse<ICollection<GetAuthorDto>>(200, "", res));
         }
     }
 }

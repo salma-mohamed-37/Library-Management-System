@@ -16,6 +16,8 @@ namespace backend.Interfaces
         public Task<PaginationDto<Book>> GetAvailablebyNameForLibrarian(string name, int pageNumber, int pageSize);
         public Task<bool> IsExists(int id, CancellationToken cancellationToken);
         public Task<bool> IsNameExists(string name, CancellationToken cancellationToken);
+
+        public Task<PaginationDto<Book>> GetFilteredBooksForLibrarian(FilteringRequest request);
  
     }
 }

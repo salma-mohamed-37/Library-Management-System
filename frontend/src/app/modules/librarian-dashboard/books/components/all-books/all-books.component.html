@@ -1,0 +1,36 @@
+<nav class="flex justify-content-between">
+  <input type="button" value="Add Book" (click)="navigate('pages/dashboard/books/add')"/> <input type="button" value="Home" (click)="navigate('pages/dashboard')"/>
+</nav>
+<main *ngIf="! loading">
+  <p-table [value]="response.data"  [paginator]="true"[first]="first" [rows]="rows" [totalRecords]="response.count"  [rowsPerPageOptions]="[5, 10, 20]" dataKey="id"  [lazy]="true"(onLazyLoad)="onPageChange($event)" sortMode="single">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <input type="text" name="search" #searchname/> <input type="button" value="search"(click)="search()"/>
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Borrowed</th>
+          <th>Deleted</th>
+          <th>Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-book>
+        <tr>
+          <td> <img [src]="getFullImageUrl(book.imagePath)"/></td>
+            <td> {{book.name}} </td>
+            <td> {{book.currently_borrowed}} </td>
+            <td> {{book.isDeleted}} </td>
+            <td></td>
+        </tr>
+    </ng-template>
+</p-table>
+</main>
+
+<p *ngIf="loading" class="loading"><i class="pi pi-spin pi-spinner"></i></p>

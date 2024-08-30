@@ -1,5 +1,6 @@
 ﻿using backend.Dtos.GetDtos;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Interfaces
 {
@@ -9,5 +10,9 @@ namespace backend.Interfaces
 
         public Task<bool> IsExists(int id, CancellationToken cancellationToken);
         public Task<bool> IsNameExists(string name, CancellationToken cancellationToken);
+        public Task<ICollection<string>> GetAuthorsNames();
+        public Task<ICollection<Author>> getAllAsync();
+
+
     }
 }

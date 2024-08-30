@@ -291,6 +291,75 @@ namespace backend.Repositories
             return await _context.Books.AnyAsync(b=>b.Name == name && b.IsDeleted == false, cancellationToken);
         }
 
+        public async Task<PaginationDto<Book>> GetFilteredBooksForLibrarian(FilteringRequest request)
+        {
+            var query = _context.Books
+                .AsNoTracking()
+                .Include(book => book.Category)
+                .Include(book => book.Author)
+                .Include(book => book.Borrowed)
+                .AsQueryable();
+
+            // //filtering
+            if (!string.IsNullOrEmpty(request.Name))
+                query = query.Where(b => b.Name.Contains(request.Name!));
+
+            if (!string.IsNullOrEmpty(request.Category))
+                query = query.Where(b => b.Category.Name.Equals(request.Category!));
+
+            if (!string.IsNullOrEmpty(request.Author))
+                query = query.Where(b => b.Author.Name.Contains(request.Author!));
+
+            if (request.FromDate.HasValue)
+                query = query.Where(b => b.PublishDate >= request.FromDate);
+
+            if (request.ToDate.HasValue)
+                query = query.Where(b => b.PublishDate <= request.ToDate);
+
+            if (request.IsDeleted.HasValue)
+                query = query.Where(b => b.IsDeleted == request.IsDeleted);
+
+            //sorting
+            if (request.SortDirection == "desc")
+            {
+                query = request.SortField switch
+                {
+                    "name" => query.OrderByDescending(b => b.Name),
+                    "publish date" => query.OrderByDescending(b => b.PublishDate),
+                    "author" => query.OrderByDescending(b => b.Author.Name),
+                    "genre" => query.OrderByDescending(b => b.Category.Name),
+                    _ => query.OrderByDescending(b => b.Name)
+                };
+            }
+
+            else
+            {
+                query = request.SortField switch
+                {
+                    "name" => query.OrderBy(b => b.Name),
+                    "publish date" => query.OrderBy(b => b.PublishDate),
+                    "author" => query.OrderBy(b => b.Author.Name),
+                    "genre" => query.OrderBy(b => b.Category.Name),
+                    _ => query.OrderBy(b => b.Name)
+                };
+            }
+
+            //get right page
+
+            var data = await query
+                        .Skip(request.PageSize * (request.PageNumber - 1))
+                        .Take(request.PageSize)
+                        .ToListAsync();
+            var res = new PaginationDto<Book>
+            {
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                Count = await query.CountAsync(),
+                Data = data
+            };
+            return res;
+        }
+
 
     }
 }

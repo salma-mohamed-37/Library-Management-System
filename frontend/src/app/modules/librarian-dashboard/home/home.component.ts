@@ -12,7 +12,7 @@ export class HomeComponent {
   menuItems: any[]=[
     {
       label:"Books",
-      path:"pages/dashboard/users",
+      path:"pages/dashboard/books",
       icon:"pi pi-book"
     },
     {

@@ -16,7 +16,7 @@ import { environment } from '../../../../../../environments/environment';
   styleUrl: './all-users.component.scss'
 })
 export class AllUsersComponent {
-  users : UserDto[]=[]
+  //users : UserDto[]=[]
   matchModeOptions = [
     { label: 'Contains', value: FilterMatchMode.CONTAINS},
   ];

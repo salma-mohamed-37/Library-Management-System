@@ -7,6 +7,7 @@ export interface FilteringRequest
   toDate?: Date;
   sortField?: string;
   sortDirection?: string;
+  IsDeleted? :boolean;
   pageNumber: number;
   pageSize: number;
 }

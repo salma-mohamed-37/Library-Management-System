@@ -9,6 +9,7 @@ namespace backend.Dtos.GetDtos
         public DateTime? ToDate {set; get;}
         public string? SortField {set; get;}
         public string? SortDirection {set; get;}
+        public bool? IsDeleted { set; get; }
         public int PageNumber {set; get;}
         public int PageSize {set; get;}
     }

@@ -200,6 +200,17 @@ namespace backend.Controllers
         //}
 
 
+
+        [HttpPost("librarian/Filtered")]
+        public async Task<ActionResult<APIResponse<PaginationDto<GetBookForLibrarianDto>>>> GetFilteredBooksForLibrarian([FromBody] FilteringRequest request)
+        {
+            var books = await _bookRepository.GetFilteredBooksForLibrarian(request);
+
+            var bookDtos = _mapper.Map<PaginationDto<GetBookForLibrarianDto>>(books);
+            return Ok(new APIResponse<PaginationDto<GetBookForLibrarianDto>>(200, "", bookDtos));
+        }
+
+
     }
 }
 

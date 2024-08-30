@@ -12,5 +12,7 @@ namespace backend.Interfaces
         public Task<bool> IsExists(int id, CancellationToken cancellationToken);
         public Task<bool> IsNameExists(string name, CancellationToken cancellationToken);
 
+        public Task<ICollection<Category>> getAllAsync();
+
     }
 }

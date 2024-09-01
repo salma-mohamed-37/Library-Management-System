@@ -76,6 +76,7 @@ export class BorrowComponent {
       var uniqueIds = [...new Set(ids)];
       this.borrowService.booksIds=uniqueIds
       this.target=[]
+      console.log(this.borrowService.booksIds)
 
       this.borrowService.borrow().subscribe({
         next:(res)=>

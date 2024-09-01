@@ -11,6 +11,7 @@ using System.Data;
 using backend.Dtos.Responses;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using backend.Repositories;
+using Humanizer;
 
 namespace backend.Controllers
 {
@@ -72,6 +73,17 @@ namespace backend.Controllers
                 return BadRequest(response);
             }
 
+            var validationResult = await _validator.ValidateAsync(categoryDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
+
             var existingCategory = await _categoryRepository.GetbyIdAsync(id);
             if (existingCategory == null)
             {
@@ -100,6 +112,17 @@ namespace backend.Controllers
                 return BadRequest(response);
             }
 
+            var validationResult = await _validator.ValidateAsync(categoryDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+
+            }
             var category = _mapper.Map<Category>(categoryDto);
             await _categoryRepository.AddAsync(category);
             return Ok(new APIResponse<object>(200,"The categoey added successfully." , null));
@@ -109,6 +132,12 @@ namespace backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
+            var existingCategory = await _categoryRepository.GetbyIdAsync(id);
+            if (existingCategory == null)
+            {
+                return NotFound(new APIResponse<object>(404, "This category doesn't exists", null));
+            }
+
             await _categoryRepository.DeleteAsync(id);
 
             return Ok(new APIResponse<object>(200, "The catgegory deleted successfully.", null));

@@ -13,7 +13,9 @@ namespace backend.DtoValidation
             !await userRepository.IsEmailExists(email,cancellationToken));
 
             RuleFor(x => x.Username).MustAsync(async (username, cancellationToken) =>
-            !await userRepository.IsEmailExists(username, cancellationToken));
+            !await userRepository.IsUsernameExists(username, cancellationToken));
+
+
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.Account;
 using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos;
 using backend.Dtos.Responses;
@@ -71,12 +72,24 @@ namespace backend.Controllers
                 return BadRequest(response);
             }
 
+            var validationResult = await _validator.ValidateAsync(authorDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
+
+
             var existingAuthor = await _authorRepository.GetbyIdAsync(id);
+
             if (existingAuthor == null)
             {
                 return NotFound(new APIResponse<object>(404,"This author doesn't exist." , null));
             }
-
             
             _mapper.Map(authorDto, existingAuthor);
 
@@ -89,11 +102,28 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAuthor([FromBody] AddAuthorDto authorDto)
         {
-            var validationResult = await _validator.ValidateAsync(authorDto);
-            if (validationResult.Errors.Any())
+            if (!ModelState.IsValid)
             {
-                return BadRequest(validationResult);
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
             }
+
+            var validationResult = await _validator.ValidateAsync(authorDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
+
             var author = _mapper.Map<Author>(authorDto);
             await _authorRepository.AddAsync(author);
             return Ok(new APIResponse<object>(200, "The author added successfully.", null));
@@ -103,6 +133,13 @@ namespace backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
+            var existingAuthor = await _authorRepository.GetbyIdAsync(id);
+
+            if (existingAuthor == null)
+            {
+                return NotFound(new APIResponse<object>(404, "This author doesn't exist.", null));
+            }
+
             await _authorRepository.DeleteAsync(id);
 
             return Ok(new APIResponse<object>(200, "The author deleted successfully.", null));

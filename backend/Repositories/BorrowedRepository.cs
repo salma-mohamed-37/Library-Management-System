@@ -99,7 +99,7 @@ namespace backend.Repositories
 
         public async Task<bool> IsBorrowed(int bookId)
         {
-            return await _context.Borrowed.AnyAsync(b => bookId == bookId && b.currently_borrowed == true);
+            return await _context.Borrowed.AnyAsync(b => b.BookId == bookId && b.currently_borrowed == true);
         }
       
 

@@ -14,6 +14,7 @@ using AutoMapper;
 using backend.Handlers;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using FluentValidation;
 
 namespace backend.Controllers
 {
@@ -28,7 +29,8 @@ namespace backend.Controllers
         private readonly IMapper _mapper;
         private readonly ImageHandler _imageHandler;
         private readonly IUserRepository _userRepository;
-        public AccountController(IUserRepository userRepository, ImageHandler imageHandler, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ITokenService tokenService, IMapper mapper)
+        private readonly IValidator<RegisterDto> _registerValidator;
+        public AccountController(IUserRepository userRepository, ImageHandler imageHandler, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ITokenService tokenService, IMapper mapper, IValidator<RegisterDto> registerValidator)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -37,6 +39,7 @@ namespace backend.Controllers
             _imageHandler=imageHandler;
             _mapper=mapper;
             _userRepository = userRepository;
+            _registerValidator=registerValidator;
         }
 
         [HttpPost("seed-roles")]
@@ -66,12 +69,16 @@ namespace backend.Controllers
                 return BadRequest(response);
             }
 
-            var is_user_exists = await _userManager.FindByNameAsync(registerDto.Username);
-            if (is_user_exists is not null)
+            var validationResult = await _registerValidator.ValidateAsync(registerDto);
+            if (!validationResult.IsValid)
             {
-                return BadRequest(new APIResponse<object>(400, "Username already exists", null));
-            }
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
 
             var appUser = new ApplicationUser
             {
@@ -91,16 +98,15 @@ namespace backend.Controllers
 
             if (!is_succeeded.Succeeded)
             {
-                var error = "User creation failed because: ";
+                var errors = is_succeeded.Errors
+                            .Select(e => e.Description)
+                            .ToList();
 
-                foreach (var e in is_succeeded.Errors)
-                {
-                    error += "\n";
-                    error += e.Description;
-                }
-                return BadRequest(new APIResponse<object>(400, error, null));
+                var errorMessage = "User creation failed because:\n" + string.Join("\n", errors);
+                return BadRequest(new APIResponse<object>(400, errorMessage, null));
             }
-                await _userManager.AddToRoleAsync(appUser, StaticUserRoles.USER);
+
+            await _userManager.AddToRoleAsync(appUser, StaticUserRoles.USER);
             await _imageHandler.SaveImageFile(registerDto.ImageFile, appUser.ImagePath, "Users");
 
             return Ok(new APIResponse<object>(200,"User created successfully",null));
@@ -122,12 +128,16 @@ namespace backend.Controllers
                 return BadRequest(response);
             }
 
-            var is_user_exists = await _userManager.FindByNameAsync(registerDto.Username);
-            if (is_user_exists is not null)
+            var validationResult = await _registerValidator.ValidateAsync(registerDto);
+            if (!validationResult.IsValid)
             {
-                return BadRequest(new APIResponse<object>(400, "Username already exists", null));
-            }
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
 
             var appUser = new ApplicationUser
             {
@@ -148,15 +158,14 @@ namespace backend.Controllers
 
             if (!is_succeeded.Succeeded)
             {
-                var error = "User creation failed because: ";
+                var errors = is_succeeded.Errors
+                            .Select(e => e.Description)
+                            .ToList();
 
-                foreach (var e in is_succeeded.Errors)
-                {
-                    error += "\n";
-                    error += e.Description;
-                }
-                return BadRequest(new APIResponse<object>(400, error, null));
+                var errorMessage = "User creation failed because:\n" + string.Join("\n", errors);
+                return BadRequest(new APIResponse<object>(400, errorMessage, null));
             }
+
             await _userManager.AddToRoleAsync(appUser, StaticUserRoles.lIBRARIAN);
             await _imageHandler.SaveImageFile(registerDto.ImageFile, appUser.ImagePath, "Users");
 
@@ -166,6 +175,17 @@ namespace backend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
+            }
+
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null || user.IsDeleted == true)
             { 
@@ -240,18 +260,15 @@ namespace backend.Controllers
                 {
                     await _userManager.AddToRoleAsync(admin, StaticUserRoles.ADMIN);
                     return Ok(new APIResponse<object>(200,"Admin created successfully",null));
-
                 }
                 else
                 {
-                    var error = "User creation failed because: ";
+                    var errors = is_succeeded.Errors
+                           .Select(e => e.Description)
+                           .ToList();
 
-                    foreach (var e in is_succeeded.Errors)
-                    {
-                        error += "\n";
-                        error += e.Description;
-                    }
-                    return BadRequest(new APIResponse<object>(400, error, null));
+                    var errorMessage = "User creation failed because:\n" + string.Join("\n", errors);
+                    return BadRequest(new APIResponse<object>(400, errorMessage, null));
                 }
 
             }
@@ -262,6 +279,17 @@ namespace backend.Controllers
         [Authorize]
         public async Task<IActionResult> Update([FromForm] UpdateUserDto dto, [FromQuery] string userId = null)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
+            }
+
             if (userId ==null)
             {
                 userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -283,6 +311,7 @@ namespace backend.Controllers
             {
                 return BadRequest(new APIResponse<object>(400, "This user doesn't exist.", null));
             }
+
             user.FullName = dto.Fullname;
             user.DateOfBirth = dto.DateOfBirth;
             user.Gender = dto.Gender;
@@ -304,14 +333,12 @@ namespace backend.Controllers
             }
             else
             {
-                var error = "User update failed because: ";
+                var errors = result.Errors
+                            .Select(e => e.Description)
+                            .ToList();
 
-                foreach (var e in result.Errors)
-                {
-                    error += "\n";
-                    error += e.Description;
-                }
-                return BadRequest(new APIResponse<object>(400, error, null));
+                var errorMessage = "User creation failed because:\n" + string.Join("\n", errors);
+                return BadRequest(new APIResponse<object>(400, errorMessage, null));
             }
 
         }
@@ -348,14 +375,12 @@ namespace backend.Controllers
             }
             else
             {
-                var error = "User deletion failed because: ";
+                var errors = result.Errors
+                            .Select(e => e.Description)
+                            .ToList();
 
-                foreach (var e in result.Errors)
-                {
-                    error += "\n";
-                    error += e.Description;
-                }
-                return BadRequest(new APIResponse<object>(400, error, null));
+                var errorMessage = "User creation failed because:\n" + string.Join("\n", errors);
+                return BadRequest(new APIResponse<object>(400, errorMessage, null));
             }
 
 
@@ -399,6 +424,17 @@ namespace backend.Controllers
         [HttpPut("password")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                var vErrors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", vErrors), null);
+                return BadRequest(response);
+            }
+
             if (dto.UserId == null)
             {
                 dto.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -427,14 +463,12 @@ namespace backend.Controllers
             {
                 return Ok(new APIResponse<object>(200, "Password changed successfully.", null));
             }
-            var error = "Change password failed because: ";
+            var errors = result.Errors
+                           .Select(e => e.Description)
+                           .ToList();
 
-            foreach (var e in result.Errors)
-            {
-                error += "\n";
-                error += e.Description;
-            }
-            return BadRequest(new APIResponse<object>(400, error, null));
+            var errorMessage = "User creation failed because:\n" + string.Join("\n", errors);
+            return BadRequest(new APIResponse<object>(400, errorMessage, null));
 
 
         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.Account;
 using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos;
 using backend.Dtos.GetDtos.Book;
@@ -109,6 +110,17 @@ namespace backend.Controllers
                 return BadRequest(response);
             }
 
+            var validationResult = await _validator.ValidateAsync(bookDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
+
             var existingBook = await _bookRepository.GetbyIdAsync(id);
             if (existingBook == null)
             {
@@ -149,6 +161,17 @@ namespace backend.Controllers
                 .Select(e => e.ErrorMessage)
                 .ToList();
                 var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
+            }
+
+            var validationResult = await _validator.ValidateAsync(bookDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
                 return BadRequest(response);
             }
 

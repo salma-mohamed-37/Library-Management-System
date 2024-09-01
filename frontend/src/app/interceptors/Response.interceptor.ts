@@ -34,7 +34,11 @@ export class ResponseInterceptor implements HttpInterceptor {
             }
             else
             {
-              this.toastContentService.showError(response.message)
+              var messages = response.message.split("\n")
+              for (var m in messages)
+              {
+                this.toastContentService.showError(m)
+              }
               return event
             }
           }

@@ -6,6 +6,7 @@ using backend.Dtos.Responses;
 using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -25,17 +26,29 @@ namespace backend.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IBorrowedRepository _borrowedRepository;
+        private readonly IValidator<AddBorrowDto> _validator;
 
-        public BorrowsController(UserManager<ApplicationUser> userManager, IMapper mapper, IBorrowedRepository borrowedRepository)
+        public BorrowsController(UserManager<ApplicationUser> userManager, IMapper mapper, IBorrowedRepository borrowedRepository, IValidator<AddBorrowDto> validator)
         {
             _userManager = userManager;
             _mapper = mapper;
             _borrowedRepository = borrowedRepository;
+            _validator = validator;
         }
         [HttpPost("borrow")]
         [Authorize(Roles = "lIBRARIAN")]
         public async Task<IActionResult> BorrowBook([FromBody] AddBorrowDto dto)
         {
+            var validationResult = await _validator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
             var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {
@@ -47,7 +60,6 @@ namespace backend.Controllers
                 if(await _borrowedRepository.IsBorrowed(i))
                 {
                     return BadRequest(new APIResponse<object>(400, "This book is already borrowed.", null));
-
                 }
                 var borrow = new Borrowed
                 {
@@ -68,6 +80,17 @@ namespace backend.Controllers
         [Authorize(Roles = "lIBRARIAN")]
         public async Task<IActionResult>ReturnBook([FromBody] AddBorrowDto dto)
         {
+            var validationResult = await _validator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
+
             var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user is null)
             {

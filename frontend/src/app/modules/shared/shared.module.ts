@@ -9,10 +9,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CalendarModule } from 'primeng/calendar';
+import { BorrowCardComponent } from './components/borrow-card/borrow-card.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 @NgModule({
-  declarations: [UserInfoComponent, UpdateUserComponent],
+  declarations: [UserInfoComponent, UpdateUserComponent, BorrowCardComponent],
   imports: [
     CommonModule,
     SharedRoutingModule,
@@ -21,10 +23,12 @@ import { CalendarModule } from 'primeng/calendar';
     DialogModule,
     FileUploadModule,
     CalendarModule,  
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    OverlayPanelModule,
 ],
 exports:[
-  UserInfoComponent
+  UserInfoComponent,
+  BorrowCardComponent
 ]
 })
 export class SharedModule { }

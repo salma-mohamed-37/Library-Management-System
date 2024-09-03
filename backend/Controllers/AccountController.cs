@@ -15,6 +15,7 @@ using backend.Handlers;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
@@ -30,16 +31,18 @@ namespace backend.Controllers
         private readonly ImageHandler _imageHandler;
         private readonly IUserRepository _userRepository;
         private readonly IValidator<RegisterDto> _registerValidator;
-        public AccountController(IUserRepository userRepository, ImageHandler imageHandler, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ITokenService tokenService, IMapper mapper, IValidator<RegisterDto> registerValidator)
+        private readonly IBorrowedRepository _borrowedRepository;
+        public AccountController(IUserRepository userRepository, ImageHandler imageHandler, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ITokenService tokenService, IMapper mapper, IValidator<RegisterDto> registerValidator, IBorrowedRepository borrowedRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _tokenService = tokenService;
-            _imageHandler=imageHandler;
-            _mapper=mapper;
+            _imageHandler = imageHandler;
+            _mapper = mapper;
             _userRepository = userRepository;
-            _registerValidator=registerValidator;
+            _registerValidator = registerValidator;
+            _borrowedRepository = borrowedRepository;
         }
 
         [HttpPost("seed-roles")]
@@ -186,8 +189,11 @@ namespace backend.Controllers
                 return BadRequest(response);
             }
 
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null || user.IsDeleted == true)
+            var user = await _userManager.Users
+                        .Where(u => u.Email == loginDto.Email && !u.IsDeleted)
+                        .FirstOrDefaultAsync();
+
+            if (user == null)
             { 
                 return BadRequest(new APIResponse<object>(400, "Invalid credentials", null));
             }
@@ -359,9 +365,15 @@ namespace backend.Controllers
                 var operatorRole = await _userRepository.GetUserRole(operatorId!);
                 if (!CanUpdate(userRole, operatorRole))
                 {
-                    return BadRequest(new APIResponse<object>(400, "You are not authorized to  update this account.", null));
+                    return BadRequest(new APIResponse<object>(400, "You are not authorized to  delete this account.", null));
                 }
             }
+
+            if(await _borrowedRepository.IsCurrentlyBorrower(userId))
+            {
+                return BadRequest(new APIResponse<object>(400, "This user is currently borrowing a book.", null));
+            }
+
             var user = await _userManager.FindByIdAsync(userId);
 
             user.IsDeleted = true;

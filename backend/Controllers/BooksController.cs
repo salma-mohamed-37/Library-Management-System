@@ -190,7 +190,11 @@ namespace backend.Controllers
 
             if (existingBook == null)
             {
-                return NotFound(new APIResponse<object>(404, "This book doesn't exist.", null));
+                return BadRequest(new APIResponse<object>(404, "This book doesn't exist.", null));
+            }
+            if (await _borrowedRepository.IsBorrowed(id)) 
+            {
+                return BadRequest(new APIResponse<object>(404, "This book is already borrowed.", null));
             }
             _imageHandler.DeleteImage(existingBook.CoverName,"Books");
             await _bookRepository.DeleteAsync(id);

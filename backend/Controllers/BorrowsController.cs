@@ -92,16 +92,12 @@ namespace backend.Controllers
             }
 
             var user = await _userManager.FindByIdAsync(dto.UserId);
-            if (user is null)
-            {
-                return NotFound(new APIResponse<object>(404, "This user doesn't exist.", null));
-            }
 
             foreach (var i in dto.BooksIds)
             {
-                if (await _borrowedRepository.IsBorrowed(i))
+                if (! await _borrowedRepository.IsBorrowed(i))
                 {
-                    return BadRequest(new APIResponse<object>(400, "This book is already borrowed.", null));
+                    return BadRequest(new APIResponse<object>(400, "This book is not borrowed.", null));
 
                 }
             }

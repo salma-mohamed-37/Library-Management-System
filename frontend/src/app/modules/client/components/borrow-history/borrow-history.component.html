@@ -1,7 +1,7 @@
 <p class="title">Borrow History</p>
 @if (!loading)
 {
-  <main class="flex flex-wrap justify-content-center">
+  <main class="flex flex-wrap justify-content-between">
     @for (book of books.data; track $index)
     {
       <app-borrow-card [book]="book" style="width:48%;"></app-borrow-card>

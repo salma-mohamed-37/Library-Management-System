@@ -3,7 +3,7 @@
 {
   @if (books.length>0)
   {
-    <main class="flex flex-wrap justify-content-center">
+    <main class="flex flex-wrap justify-content-between">
       @for (book of books; track $index)
       {
         <app-borrow-card [book]="book" style="width:48%;"></app-borrow-card>

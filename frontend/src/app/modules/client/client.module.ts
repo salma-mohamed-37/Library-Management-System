@@ -12,9 +12,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PaginatorModule } from 'primeng/paginator';
 import { BorrowHistoryComponent } from './components/borrow-history/borrow-history.component';
-import { BorrowCardComponent } from './components/borrow-card/borrow-card.component';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CurrentBorrowComponent } from './components/current-borrow/current-borrow.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -24,7 +23,6 @@ import { CurrentBorrowComponent } from './components/current-borrow/current-borr
     BookDetailsComponent,
     MoreBooksComponent,
     BorrowHistoryComponent,
-    BorrowCardComponent,
     CurrentBorrowComponent
   ],
   imports: [
@@ -36,7 +34,7 @@ import { CurrentBorrowComponent } from './components/current-borrow/current-borr
     CalendarModule,
     ReactiveFormsModule,
     PaginatorModule,
-    OverlayPanelModule
+    SharedModule
   ]
 })
 export class ClientModule { }

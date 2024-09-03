@@ -101,7 +101,11 @@ namespace backend.Repositories
         {
             return await _context.Borrowed.AnyAsync(b => b.BookId == bookId && b.currently_borrowed == true);
         }
-      
+
+        public async Task<bool> IsCurrentlyBorrower(string userId)
+        {
+            return await _context.Borrowed.AnyAsync(b => b.UserId == userId && b.currently_borrowed == true);
+        }
 
     }
 }

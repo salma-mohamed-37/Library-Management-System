@@ -31,7 +31,6 @@ export class BorrowHistoryComponent {
       next:(res)=>
       {
         this.books=res
-        console.log(res)
         this.first= (this.books.pageNumber -1)*this.books.pageSize
         this.loading=false
       },

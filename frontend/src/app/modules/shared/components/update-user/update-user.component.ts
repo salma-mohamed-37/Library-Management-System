@@ -30,7 +30,6 @@ export class UpdateUserComponent {
     {
       this.route.paramMap.subscribe(params => {
         this.userId = params.get('id')||undefined;
-        console.log(this.userId)
       })
     }
     
@@ -41,24 +40,22 @@ export class UpdateUserComponent {
     this.userService.getUserbyID(this.userId).subscribe({
       next:(res)=>
       {
-        console.log(res)
-          this.user = res;
-          const dateOfBirth = new Date(this.user.dateOfBirth);
-          this.updateForm = this.fb.group({
-            firstName: new FormControl(this.user.fullname.split(" ")[0], [Validators.required, Validators.pattern('^[a-zA-Z]+$')]),
-            lastName: new FormControl(this.user.fullname.split(" ")[1], [Validators.required, Validators.pattern('^[a-zA-Z]+$')]), 
+        this.user = res;
+        const dateOfBirth = new Date(this.user.dateOfBirth);
+        this.updateForm = this.fb.group({
+          firstName: new FormControl(this.user.fullname.split(" ")[0], [Validators.required, Validators.pattern('^[a-zA-Z]+$')]),
+          lastName: new FormControl(this.user.fullname.split(" ")[1], [Validators.required, Validators.pattern('^[a-zA-Z]+$')]), 
           
-            dateOfBirth: new FormControl(dateOfBirth, [Validators.required, dateValidator()]),
-            gender: new FormControl(this.user.gender, Validators.required),
-            city: new FormControl(this.user.city, [Validators.required, Validators.pattern('^[a-zA-Z]+$')]),
-            phoneNumber:new FormControl(this.user.phoneNumber, Validators.pattern('^[0-9]+$')),
+          dateOfBirth: new FormControl(dateOfBirth, [Validators.required, dateValidator()]),
+          gender: new FormControl(this.user.gender, Validators.required),
+          city: new FormControl(this.user.city, [Validators.required, Validators.pattern('^[a-zA-Z]+$')]),
+          phoneNumber:new FormControl(this.user.phoneNumber, Validators.pattern('^[0-9]+$')),
           
-            imageFile: new FormControl('')
-          });
+          imageFile: new FormControl('')
+        });
       },
       error:(err)=>
       {
-        console.log(err)
       }
     })
   }
@@ -147,9 +144,7 @@ export class UpdateUserComponent {
           formData.append(key, value);
         }
       }
-      for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]);
-      }
+     
       this.userService.updateUser(formData, this.userId).subscribe({
         next:(res)=>
         {
@@ -159,11 +154,7 @@ export class UpdateUserComponent {
     }
     else
     {
-      console.log(this.updateForm.errors)
-      Object.keys(this.updateForm.controls).forEach(key => {
-        const controlErrors = this.updateForm.get(key)?.errors;
-        console.log(controlErrors)
-      })
+     
     }
   }
 }

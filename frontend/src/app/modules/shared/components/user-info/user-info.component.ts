@@ -32,7 +32,6 @@ export class UserInfoComponent {
     {
       this.route.paramMap.subscribe(params => {
         this.userId = params.get('id')||undefined;
-        console.log(this.userId)
       })
     }
     
@@ -43,13 +42,10 @@ export class UserInfoComponent {
     this.userService.getUserbyID(this.userId).subscribe({
       next:(res)=>
       {
-        console.log(res)
           this.user = res;
       },
       error:(err)=>
-      {
-        console.log(err)
-      }
+      {}
     })
 
     this.items=[
@@ -118,7 +114,6 @@ export class UserInfoComponent {
   {
     if(this.changeForm.valid)
     {
-      console.log(this.changeForm.value)
       const req : ChangePasswordDto ={
         oldPassword:this.changeForm.value["oldPassword"],
         newPassword:this.changeForm.value["newPassword"],
@@ -134,7 +129,7 @@ export class UserInfoComponent {
     }
     else
     {
-      console.log("invalid")
+      
     }
   }
 

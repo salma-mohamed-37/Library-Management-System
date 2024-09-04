@@ -45,12 +45,10 @@ export class AllBooksComponent {
 
   getBooks()
   {
-    console.log(this.filterRequest)
       this.booksService.getFilteredBooksForLibrarian(this.filterRequest).subscribe({
         next:(res)=>
         {
           this.response=res
-          console.log(this.response)
         }
         
       })
@@ -74,7 +72,6 @@ export class AllBooksComponent {
   {
     this.filterRequest.IsDeleted=this.filters.value["isDeleted"]
     this.filterRequest.name=this.filters.value["bookName"]
-    console.log(this.filterRequest)
     this.getBooks()
   }
 

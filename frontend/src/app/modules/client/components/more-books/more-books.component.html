@@ -1,6 +1,6 @@
-<nav class="flex flex-row justify-content-between">
-  <p class="flex-grow-1">Books</p>
-  <p><input type="button" (click)="sidebarVisible = !sidebarVisible" value="Filters"/></p>
+<nav class="flex flex-row justify-content-between align-items-start">
+  <p class="flex-grow-1 title">Books</p>
+  <p style="margin:2px;"><input type="button" (click)="sidebarVisible = !sidebarVisible" value="Filters" style="margin: 0;"/></p>
 </nav>
 <section>
   <main *ngIf=" this.books!= undefined && this.books.data.length >0" class="flex flex-wrap" style="margin: 5px;">

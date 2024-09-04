@@ -68,9 +68,7 @@ export class AddUserComponent {
           formData.append(key, value);
         }
       }
-      for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]);
-      }
+
       this.userService.addUser(formData).subscribe({
         next:(res)=>
         {
@@ -80,11 +78,7 @@ export class AddUserComponent {
     }
     else
     {
-      console.log(this.addForm.errors)
-      Object.keys(this.addForm.controls).forEach(key => {
-        const controlErrors = this.addForm.get(key)?.errors;
-        console.log(controlErrors)
-      })
+      
     }
   }
   onImageSelect(event: FileSelectEvent)

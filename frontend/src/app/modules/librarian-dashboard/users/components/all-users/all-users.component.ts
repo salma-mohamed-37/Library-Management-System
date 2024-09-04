@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { UserDto } from '../../../../../interfaces/User/UserDto';
 import { FilterMatchMode } from 'primeng/api';
-import { LazyLoadEventDTO } from '../../../../../interfaces/common/TableDtos';
 import { PaginationDto } from '../../../../../interfaces/common/PaginationDto';
 import { UserService } from '../../../../../services/user.service';
 import { Router } from '@angular/router';
@@ -53,7 +52,6 @@ export class AllUsersComponent {
       next:(res)=>
       {
         this.response=res
-        console.log(res)
         this.loading=false
       }
     })
@@ -80,12 +78,12 @@ export class AllUsersComponent {
   borrow(id:string)
   {
     this.borrowService.userId= id
-    console.log(this.borrowService.userId)
     this.router.navigate(["pages/dashboard/users/borrow"])
   }
 
   return(userId:string)
   {
+    this.borrowService.clear()
     this.borrowService.userId= userId
     this.returnVisible=true
       this.userProfileService.getCurrentlyBorrowedBooks(userId).subscribe({
@@ -105,10 +103,11 @@ export class AllUsersComponent {
     this.borrowService.return().subscribe({
       next:(res)=>
       {
-        console.log(res)
+        this.borrowService.clear()
+        this.returnedBooks=[]
       }
     })
-    this.borrowService.clear()
+    
   }
 
   getFullImageUrl(path?: string): string

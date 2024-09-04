@@ -59,7 +59,7 @@ namespace backend.Controllers
             {
                 if(await _borrowedRepository.IsBorrowed(i))
                 {
-                    return BadRequest(new APIResponse<object>(400, "This book is already borrowed.", null));
+                    return BadRequest(new APIResponse<object>(400, "This book "+i+" is already borrowed.", null));
                 }
                 var borrow = new Borrowed
                 {
@@ -97,7 +97,7 @@ namespace backend.Controllers
             {
                 if (! await _borrowedRepository.IsBorrowed(i))
                 {
-                    return BadRequest(new APIResponse<object>(400, "This book is not borrowed.", null));
+                    return BadRequest(new APIResponse<object>(400, "This book "+i+" is not borrowed.", null));
 
                 }
             }

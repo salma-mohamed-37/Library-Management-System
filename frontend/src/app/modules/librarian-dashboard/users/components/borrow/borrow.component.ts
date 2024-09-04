@@ -46,7 +46,6 @@ export class BorrowComponent {
     this.bookService.getAvailableBooksForLibrarian(pageNumber,this.rows,this.name).subscribe({
       next:(res)=>
       {
-        console.log(this.target)
         this.data=res
         this.data.data= res.data.filter(item =>!this.target.some(t => t.id === item.id));
       }
@@ -63,7 +62,6 @@ export class BorrowComponent {
   onPageChange(event:any)
   {
     this.first=event.first
-    console.log(this.first)
     this.getBooks()
   }
 
@@ -76,12 +74,10 @@ export class BorrowComponent {
       var uniqueIds = [...new Set(ids)];
       this.borrowService.booksIds=uniqueIds
       this.target=[]
-      console.log(this.borrowService.booksIds)
 
       this.borrowService.borrow().subscribe({
         next:(res)=>
         {
-          console.log(res)
           this.borrowService.clear()
         }
       })

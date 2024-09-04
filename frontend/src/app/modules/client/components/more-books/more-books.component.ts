@@ -78,7 +78,7 @@ export class MoreBooksComponent {
 
       },
       error:(err)=>
-        console.log(err)
+      {}
     })
   }
 
@@ -101,7 +101,7 @@ export class MoreBooksComponent {
       this.books.count=0
       this.books
       this.getPage()
-      console.log("done")
+     
 
   }
 
@@ -110,8 +110,7 @@ export class MoreBooksComponent {
     this.catgoryService.getCategoriesNames().subscribe({
       next:(r)=>
         this.categories.push(...r.map(category => ({ label: category, value: category }))),
-      error :(err)=>
-        console.log(err)
+      error :(err)=>{}
     })
   }
 

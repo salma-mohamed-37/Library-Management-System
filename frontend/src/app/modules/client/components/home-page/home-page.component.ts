@@ -21,7 +21,7 @@ export class HomePageComponent {
       },
       error:(err) =>
       {
-        console.log(err)
+       
       }
     });
 

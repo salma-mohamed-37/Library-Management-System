@@ -21,7 +21,7 @@ export class UserDetailsComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.userId = params.get('id')!;
-      console.log(this.userId)
+
     });
 
     this.items = [
@@ -32,7 +32,6 @@ export class UserDetailsComponent {
 
   onActiveItemChange(event:any)
   {
-    console.log(event)
     if(event.label == "Borrow History")
     {
         this.current=false

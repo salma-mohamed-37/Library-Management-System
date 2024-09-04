@@ -4,10 +4,10 @@
 
   @if (current) 
   {
-    <app-currently-borrowed></app-currently-borrowed>
+    <app-currently-borrowed [id]="userId"></app-currently-borrowed>
   }
   @else if (history) 
   {
-    <app-borrow-history></app-borrow-history>
+    <app-borrow-history [id]="userId"></app-borrow-history>
   }
 </main>

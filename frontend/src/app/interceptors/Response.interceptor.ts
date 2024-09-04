@@ -17,8 +17,6 @@ export class ResponseInterceptor implements HttpInterceptor {
           if (event instanceof HttpResponse) {
             const httpResponse = event as HttpResponse<APIResponse<any>>;
             const response = httpResponse.body as APIResponse<any>;
-            console.log(response.statusCode)
-            console.log(response)
 
             if (response.statusCode === 200)
             {
@@ -55,7 +53,6 @@ export class ResponseInterceptor implements HttpInterceptor {
           }
           else if (error.status==400)
           {
-            console.log(error)
             if(error.error.message)
             {
               this.toastContentService.showError(error.error.message)

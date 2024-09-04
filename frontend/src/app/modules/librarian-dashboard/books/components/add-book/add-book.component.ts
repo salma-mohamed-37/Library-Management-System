@@ -116,9 +116,7 @@ export class AddBookComponent {
               formData.append(key, value);
             }
           }
-          for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-          }
+
           this.bookService.addBook(formData).subscribe({
             next:(res)=>
             {
@@ -130,14 +128,7 @@ export class AddBookComponent {
 
       else
       {
-        Object.keys(this.addForm.controls).forEach(key => {
-          const controlErrors: ValidationErrors | null = this.addForm.get(key)!.errors;
-          if (controlErrors) {
-            Object.keys(controlErrors).forEach(keyError => {
-              console.log('Control:', key, 'Error:', keyError, 'Value:', controlErrors[keyError]);
-            });
-          }
-        });
+       
       }
   }
 

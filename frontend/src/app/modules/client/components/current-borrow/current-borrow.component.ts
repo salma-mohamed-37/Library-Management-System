@@ -15,6 +15,7 @@ export class CurrentBorrowComponent {
 
   ngOnInit()
   {
+    
     this.userProfileService.getCurrentlyBorrowedBooks().subscribe({
       next:(res)=>
       {

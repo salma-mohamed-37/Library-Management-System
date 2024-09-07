@@ -6,6 +6,7 @@ import { UserDto } from '../interfaces/User/UserDto';
 import { environment } from '../../environments/environment';
 import { Book } from '../interfaces/book/Book';
 import { ChangePasswordDto } from '../interfaces/User/ChangePasswordDto';
+import { SearchforUser} from '../interfaces/User/searchByname';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,9 @@ export class UserService {
 
   constructor(private http : HttpClient) { }
 
-  getUsers(pageSize:number,pageNumber:number, name:string):Observable<PaginationDto<UserDto>>
+  getUsers(pageSize:number,pageNumber:number, request:SearchforUser):Observable<PaginationDto<UserDto>>
   {
-    return this.http.post<PaginationDto<UserDto>>(environment.apiUrl+"api/users/search/"+pageNumber+"/"+pageSize,{name})
+    return this.http.post<PaginationDto<UserDto>>(environment.apiUrl+"api/users/search/"+pageNumber+"/"+pageSize,request)
   }
   addUser(user:FormData)
   {

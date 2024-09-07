@@ -6,13 +6,15 @@
   <p-table [value]="response.data"  [paginator]="true"[first]="first" [rows]="rows" [totalRecords]="response.count"  [rowsPerPageOptions]="[5, 10, 20]" dataKey="id"  [lazy]="true"(onLazyLoad)="onPageChange($event)" sortMode="single">
     <ng-template pTemplate="header">
       <tr>
-        <th>
-          <input type="text" name="search" #searchname/> <input type="button" value="search"(click)="search(searchname.value)"/>
+        <th colspan="5">
+          <form #userForm="ngForm" (ngSubmit)="search(userForm)">
+            <div class="flex align-items-center gap-5">
+              <input type="text" name="search" [(ngModel)]="request.name" name="name"/> 
+              <p-triStateCheckbox label="Is Deleted" [(ngModel)]="request.isDeleted" name="IsDeleted"></p-triStateCheckbox>
+              <input type="submit" value="search"/>
+            </div>
+          </form>
         </th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
       </tr>
         <tr>
           <th></th>

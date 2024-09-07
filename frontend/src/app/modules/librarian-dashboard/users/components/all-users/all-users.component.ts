@@ -8,6 +8,8 @@ import { BorrowService } from '../../../../../services/borrow.service';
 import { Book } from '../../../../../interfaces/book/Book';
 import { UserProfileService } from '../../../../../services/user-profile.service';
 import { environment } from '../../../../../../environments/environment';
+import { SearchforUser} from '../../../../../interfaces/User/searchByname';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-all-users',
@@ -15,15 +17,15 @@ import { environment } from '../../../../../../environments/environment';
   styleUrl: './all-users.component.scss'
 })
 export class AllUsersComponent {
-  //users : UserDto[]=[]
-  matchModeOptions = [
-    { label: 'Contains', value: FilterMatchMode.CONTAINS},
-  ];
 
   first:number =1
   rows:number=5
   loading:boolean=true
-  name:string=""
+
+  request: SearchforUser = {
+    name: '',
+    isDeleted: null
+  };
 
   response:PaginationDto<UserDto>={
     pageNumber:0,
@@ -48,7 +50,7 @@ export class AllUsersComponent {
   {
     const pageNumber = Math.floor(this.first / this.rows) + 1;
 
-    this.userService.getUsers(this.rows,pageNumber, this.name).subscribe({
+    this.userService.getUsers(this.rows,pageNumber, this.request).subscribe({
       next:(res)=>
       {
         this.response=res
@@ -64,9 +66,8 @@ export class AllUsersComponent {
     this.getUsers()
   }
 
-  search(name:string)
+  search(form:NgForm)
   {
-    this.name=name
     this.getUsers()
   }
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Diagnostics;
 
 namespace backend.Controllers
 {
@@ -112,7 +113,7 @@ namespace backend.Controllers
         [HttpPost("search/{pageNumber}/{pageSize}")]
         public async Task<ActionResult<APIResponse<PaginationDto<UserDto>>>> SearchForUsersByUsername([FromBody] SearchByNameDto request, [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
-            var res = await _userRepository.SearchForaUser(request.Name, pageSize, pageNumber);
+            var res = await _userRepository.SearchForaUser(request, pageSize, pageNumber);
             var userDtos = _mapper.Map<PaginationDto<UserDto>>(res);
             return Ok(new APIResponse<PaginationDto<UserDto>>(200, "", userDtos));
         }

@@ -18,6 +18,7 @@ import { SharedModule } from "../../shared/shared.module";
 import { TabMenuModule } from 'primeng/tabmenu';
 import { BorrowHistoryComponent } from './components/borrow-history/borrow-history.component';
 import { CurrentlyBorrowedComponent } from './components/currently-borrowed/currently-borrowed.component';
+import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { CurrentlyBorrowedComponent } from './components/currently-borrowed/curr
     CalendarModule,
     ReactiveFormsModule,
     SharedModule,
-    TabMenuModule
+    TabMenuModule,
+    TriStateCheckboxModule
 ]
 })
 export class UsersModule { }

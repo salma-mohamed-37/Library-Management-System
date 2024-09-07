@@ -4,5 +4,6 @@
     {
 
         public string? Name { set; get; }
+        public bool? IsDeleted { set; get; }
     }
 }

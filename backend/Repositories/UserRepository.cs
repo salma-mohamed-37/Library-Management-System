@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Dtos.Account;
+using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos;
 using backend.Interfaces;
 using backend.Models;
@@ -54,13 +55,14 @@ namespace backend.Repositories
             return res;
         }
 
-        public async Task<PaginationDto<ApplicationUser>> SearchForaUser(string? name, int pageSize, int pageNumber)
+        public async Task<PaginationDto<ApplicationUser>> SearchForaUser(SearchByNameDto request, int pageSize, int pageNumber)
         {
             var query = _context.Users
-               .AsNoTracking()
-               .Where(u => u.Type == StaticUserRoles.USER.ToString())
-               .Where(u => u.FullName.Contains(name))
-               .OrderBy(u => u.FullName);
+                .AsNoTracking()
+                .Where(u => u.Type == StaticUserRoles.USER.ToString())
+                .Where(u => request.IsDeleted == null || u.IsDeleted == request.IsDeleted)
+                .Where(u => request.Name == null || u.FullName.Contains(request.Name))
+                .OrderBy(u => u.FullName);
 
 
             var data = await query

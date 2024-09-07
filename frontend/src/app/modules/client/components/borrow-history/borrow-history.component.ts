@@ -15,7 +15,7 @@ export class BorrowHistoryComponent {
   books!: PaginationDto<GetBorrowedBookForUser>
   first : number=0
   rows:number=6
-  rowsPerPageOptions = [6,10, 20, 30];
+  rowsPerPageOptions = [6,12,18];
   loading:boolean=true
 
   ngOnInit()

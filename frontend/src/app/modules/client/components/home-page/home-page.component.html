@@ -7,7 +7,7 @@
   <p class="title">Books</p>
 </div>
 
-<div class="flex flex-wrap justify-content-between" style="margin: 5px;" *ngIf="!loading">
+<div class="flex flex-wrap justify-content-between" style="margin: 5px;" *ngIf="(!loading) &&(books) ">
   <div *ngFor="let book of books; let i = index">
 
     <app-book-card [book]="book"></app-book-card>

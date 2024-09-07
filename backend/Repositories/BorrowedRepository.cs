@@ -37,7 +37,7 @@ namespace backend.Repositories
                 .ThenInclude(b => b.Author)
                 .Include(b => b.Book)
                 .ThenInclude(b => b.Category)
-                .OrderBy(b => b.Book.Name)
+                .OrderByDescending(b => b.BorrowDate)
                 .ToListAsync();
 
             return res;

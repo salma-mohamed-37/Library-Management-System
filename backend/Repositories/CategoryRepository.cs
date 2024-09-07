@@ -16,7 +16,7 @@ namespace backend.Repositories
 
         public async Task<ICollection<Category>> getAllAsync()
         {
-            return await _context.Categories.AsNoTracking().ToListAsync();
+            return await _context.Categories.AsNoTracking().OrderBy(c=>c.Name).ToListAsync();
         }
 
         public async Task<PaginationDto<Category>> GetCategoriesbyName (string name, int pageNumber, int pageSize)
@@ -45,6 +45,7 @@ namespace backend.Repositories
         {
             var res =await _context.Categories
             .AsNoTracking()
+            .OrderBy(c => c.Name)
             .Select(c=>c.Name)
             .ToListAsync();
 

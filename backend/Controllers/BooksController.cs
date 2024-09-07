@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using backend.Dtos.Account;
 using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos;
 using backend.Dtos.GetDtos.Book;
@@ -7,13 +6,9 @@ using backend.Dtos.Responses;
 using backend.Handlers;
 using backend.Interfaces;
 using backend.Models;
-using backend.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace backend.Controllers
 {

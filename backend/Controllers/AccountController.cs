@@ -9,11 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using backend.Dtos.Responses;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using AutoMapper;
 using backend.Handlers;
-using Microsoft.EntityFrameworkCore.Update.Internal;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 

@@ -16,7 +16,8 @@ namespace backend.Repositories
         public async Task<PaginationDto<ApplicationUser>> GetAllReaders(int pageSize, int pageNumber)
         {
             var query = _context.Users.AsNoTracking()
-                .Where(u => u.Type == StaticUserRoles.USER.ToString());
+                .Where(u => u.Type == StaticUserRoles.USER.ToString())
+                .OrderBy(u=>u.FullName);
 
             var data = await query
                 .Skip(pageSize * (pageNumber - 1))
@@ -59,7 +60,7 @@ namespace backend.Repositories
                .AsNoTracking()
                .Where(u => u.Type == StaticUserRoles.USER.ToString())
                .Where(u => u.FullName.Contains(name))
-               .OrderBy(u => u.UserName);
+               .OrderBy(u => u.FullName);
 
 
             var data = await query

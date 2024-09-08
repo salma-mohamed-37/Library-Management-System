@@ -83,12 +83,14 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, inp
 {
   background: var(--title);
     border: 1px solid var(--title);
+    color: var(--white)
 }
 
 .p-dialog-header-icon
 {
-  background-color: #FFFFFF;
-  border: white;
+   background-color: #FFFFFF;
+   border: white;
+   color:var(--title);
 }
 
 .loading

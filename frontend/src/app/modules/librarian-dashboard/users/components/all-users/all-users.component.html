@@ -9,9 +9,9 @@
         <th colspan="5">
           <form #userForm="ngForm" (ngSubmit)="search(userForm)">
             <div class="flex align-items-center gap-5">
-              <input type="text" name="search" [(ngModel)]="request.name" name="name"/> 
+              <input type="text" name="search" [(ngModel)]="request.name" name="name" placeholder="Enter name"/> 
               <p-triStateCheckbox label="Is Deleted" [(ngModel)]="request.isDeleted" name="IsDeleted"></p-triStateCheckbox>
-              <input type="submit" value="search"/>
+              <input type="submit" value="Search"/>
             </div>
           </form>
         </th>

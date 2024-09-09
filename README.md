@@ -1,39 +1,26 @@
-# Library-Management-System
-# Overview
-The Library Management System is a  platform for managing a library's resources, users, librarians, and operations. 
-The system provides a wide range of functionalities for different user roles, including anonymous users, members, librarians, and admins.
+# Library Management System
+## 📝 Overview
+This project is a Web-Based Library Management System designed to assist librarians in managing books, users, and borrowing processes.
 
-# The features available for each stakeholder
-Anonymous  
-sign up as member 				      
-view authors                                       
-view categories       			                                           
-view books with details                                 
-search for a book by name                              
-search for category by name                            
-search for author by name                              
-get books of specific category                       
-get books of specific author                              
+## 📚 Key Features
 
-Member  
-view his currently borrowed books with borrowing data          
-view his borrowing history                                     
+### Anonymous Readers  
+✅ Browse details of existing books.
 
-Librarian  
-add, update, delete books                                             
-add, update, delete author                            
-add, update , delete category                         
-search for book and get it is details and if it is borrowed by whom  
-get book borrow history                                
-make book return or borrow for a member                
-view books with more details                           
-view all members	                                          
-search for a member by username
-get member currently borrowed books                      
-get member borrowing history                                
+### Registered Readers  
+✅ Browse details of existing books.  
+✅ Manage their profile information.  
+✅ View their borrowing history.  
+✅ View currently borrowed books and their borrow details.  
 
-admin  
-create librarian account                             
-view librarians                                       
+### Librarians  
+✅ Manage books.  
+✅ Manage users.  
+✅ Manage authors.  
+✅ Manage genres.  
+✅ Handle borrowing and returning processes.  
+                                                   
+### Admins  
+✅ Manage librarians.                                    
 
 

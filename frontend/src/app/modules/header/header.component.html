@@ -1,0 +1,16 @@
+<nav class="flex flex-row justify-content-between">
+  <p class="flex-grow-1">Books World</p>
+
+  @if (isLoggedIn)
+  {
+    <div class="image flex m-0 align-items-center" (click)="menu.toggle($event)">
+      <img [src]=" getFullImageUrl(profile)" />
+      <p-menu [model]="items"  [popup]="true" #menu />
+    </div>
+  }
+  @else
+  {
+    <p class="flex m-0 align-items-center"><input type="button" value="Log in" (click)="login()"/></p>
+  }
+
+</nav>

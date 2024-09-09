@@ -1,0 +1,100 @@
+nav
+{
+  color: var(--title);
+  text-align: center;
+  margin:0;
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.more
+{
+  text-align: center;
+  color:#a2a0a0;
+  font-weight: 600;
+}
+
+.more:hover
+{
+  cursor: pointer;
+}
+
+// ::ng-deep .p-datepicker-title
+// {
+//   font-size: 0.75rem;
+//   z-index: 1103;
+// }
+
+// ::ng-deep .p-datepicker
+// {
+//   font-size: 0.75rem;
+//   z-index: 1103;
+//   position: absolute;
+// }
+
+// ::ng-deep .p-calender
+// {
+//   font-size: 0.75rem;
+//   z-index: 1103;
+
+// }
+
+// ::ng-deep .inputwrapper
+// {
+//   font-size: 0.75rem;
+//   z-index: 1103;
+// }
+// ::ng-deep .p-datepicker
+// {
+//   font-size: 0.75rem;
+//   z-index: 1103;
+// }
+
+// ::ng-deep .p-datepicker table
+// {
+//   font-size: 0.75rem;
+//   z-index: 1103;
+
+// }
+
+// ::ng-deep .p-datepicker table td
+// {
+//   padding: 0;
+//   z-index: 1103;
+// }
+
+// ::ng-deep .p-datepicker-calender
+// {
+
+//   z-index: 1103;
+// }
+
+// ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month,::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year
+// {
+//   font-size: 0.75rem;
+//   z-index: 1103;
+// }
+
+
+// ::ng-deep .p-button-text
+// {
+//   font-size: 0.75rem;
+//   padding:2px;
+//   height: fit-content;
+//   z-index: 1103;
+// }
+
+// .p-sidebar {
+//   z-index: 1000 !important;
+//   position: relative;
+// }
+// .p-calendar {
+//   z-index: 1100 !important;
+//   position: relative;
+// }
+
+input[type=text]
+{
+  height: 1.5rem;
+}

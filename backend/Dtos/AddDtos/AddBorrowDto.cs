@@ -6,7 +6,7 @@ namespace backend.Dtos.AddDtos
         [Required(ErrorMessage = "User id is required")]
         public string UserId { get; set; }
 
-        [Required(ErrorMessage = "Book id is required")]
-        public int BookId { get; set; }
+        [Required(ErrorMessage = "Books ids is required")]
+        public ICollection<int> BooksIds { get; set; }
     }
 }

@@ -1,0 +1,40 @@
+<section class="flex">
+  <img [src]=getFullImageUrl(book!.imagePath) alt="book cover"/>
+  <div class="flex-grow-1">
+    <p class="heading">{{book.name}}</p>
+    <div class="flex flex-row justify-content-between align-items-end" style="width: 100%;">
+      <div>
+        Genre: {{book.category_name}} <br/>
+        Author: {{book.author_name}}
+      </div>
+        <div class="more" (click)="op.toggle($event)" >
+          <span class="d"><i class="pi pi-calendar"></i> Borrow Details</span>
+      </div>
+    </div>
+    <p-overlayPanel #op>
+      <ng-template pTemplate="content">
+        <main class="flex flex-row">
+          <aside>
+            <label>Borrow Date: </label> <br/>
+            <label>Due Date: </label> <br/>
+            @if (isReturned(book.returnDate ))
+           {
+            <label>Return Date:</label> <br/>
+           }
+          </aside>
+          <aside>
+           <label>{{book.borrowDate | date:'MMMM,dd,yyyy'}}</label> <br/>
+           <label>{{book.dueDate | date:'MMMM,dd,yyyy'}}</label> <br/>
+           @if (isReturned(book.returnDate ))
+           {
+            <label>{{book.returnDate | date:'MMMM,dd,yyyy'}}</label> <br/>
+           }
+
+          </aside>
+        </main>
+      </ng-template>
+    </p-overlayPanel>
+
+
+  </div>
+</section>

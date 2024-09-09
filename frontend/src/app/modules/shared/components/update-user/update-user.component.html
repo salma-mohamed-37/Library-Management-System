@@ -1,0 +1,54 @@
+<p class="title">Update Account</p>
+<form [formGroup]="updateForm" (ngSubmit)="submit()" *ngIf="user">
+  <main class="flex flex-column gap-5" >
+    <div class="flex justify-content-between">
+      <p>
+        <p-fileUpload mode="advanced" [auto]="true"  chooseLabel="Upload Image" chooseIcon="pi pi-upload" (onSelect)="onImageSelect($event)" />
+      </p>
+      <p class="image">
+        <img [src]="imageSrc" *ngIf="imageSrc"/>
+        <img [src]="getFullImageUrl(user.imagePath)" *ngIf="!imageSrc"/>
+       </p>
+    </div>
+    <div class="flex gap-2 container">
+      <span class="header">Personal Information</span>
+      <aside>
+        <section class="flex flex-wrap gap-3">
+          <p class="name">
+            <label>First Name </label><br/>
+            <input type="text" formControlName="firstName"/><br/>
+            <span class="error" *ngIf="firstName!.invalid && firstName!.touched">First name is required and doesn't contain numbers.</span>
+          </p>
+          <p class="name">
+            <label>Last Name </label><br/>
+            <input type="text" formControlName="lastName"/><br/>
+            <span class="error"  *ngIf="lastName!.invalid && lastName!.touched">Last name is required and doesn't contain numbers.</span> <br/>
+          </p>
+        </section>
+
+        <label>Gender</label><br/>
+        <input type="radio" name="gender" value="Male" formControlName="gender"/><label>Male</label>
+        <input type="radio" name="gender" value="Female" formControlName="gender"/><label>Female</label>
+        <br/>
+        <span class="error"  *ngIf="gender!.invalid && gender!.touched">Gender is required.</span> <br/>
+
+        <label>Date of Birth</label><br/>
+        <p-calendar [showIcon]="true"  [showOnFocus]="false"  formControlName="dateOfBirth" dateFormat="dd-mm-yy" placeholder="dd-mm-yy"/><br/>
+        <span class="error" *ngIf="dateOfBirth!.invalid && dateOfBirth!.touched">Date of birth is required.</span><br/>
+      </aside>
+
+      <aside>
+        <label>City </label><br/>
+        <input type="text" formControlName="city"/><br/>
+        <span class="error" *ngIf="city!.invalid && city!.touched">City is required and doesn't contain numbers.</span><br/>
+
+        <label>Phone Number </label><br/>
+        <input type="tel" formControlName="phoneNumber"/><br/>
+        <span class="error" *ngIf="phoneNumber!.invalid && phoneNumber!.touched">Phone number is required and doesn't contain letters.</span><br/>
+      </aside>
+    </div>
+    <p style="text-align: center;">
+      <input type="submit" value="Update" />
+    </p>
+  </main>
+</form>

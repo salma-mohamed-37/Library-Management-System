@@ -1,0 +1,13 @@
+<main>
+  <app-user-info [inId]="userId"></app-user-info>
+  <p-tabMenu [model]="items"  (activeItemChange)="onActiveItemChange($event)"/>
+
+  @if (current) 
+  {
+    <app-currently-borrowed [id]="userId"></app-currently-borrowed>
+  }
+  @else if (history) 
+  {
+    <app-borrow-history [id]="userId"></app-borrow-history>
+  }
+</main>

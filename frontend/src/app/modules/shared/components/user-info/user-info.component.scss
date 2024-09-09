@@ -1,0 +1,80 @@
+main
+{
+  background-color: var(--white);
+  min-height: calc(100vh - 7.5rem);
+  padding: 6px;
+}
+
+.basic-container
+{
+  margin: 0;
+}
+
+
+img
+{
+  border-radius: 50%;
+  border: 1px solid var(--background);
+  height:12rem;
+  width: 12rem;
+}
+
+section
+{
+  border: 1px solid var(--background);
+  padding: 1.5rem;
+  position: relative;
+  border-radius: 5px;
+}
+
+.header
+{
+  position: absolute;
+  top:-0.6rem;
+  left: 0.75rem;
+  background-color: var(--white);
+  padding:2px ;
+  color:var(--label)
+}
+
+label
+{
+  color:var(--label);
+  font-size:1rem;
+}
+
+aside
+{
+  width: 50%;
+}
+
+.value
+{
+  display: inline-block;
+  margin-top: 3px;
+  margin-bottom: 6px;
+}
+
+.options-button
+{
+
+  margin: 0;
+  height: fit-content;
+  width: fit-content;
+}
+.options-button:hover
+{
+  cursor: pointer;
+}
+
+.name
+{
+  font-size: 2.5rem;
+  font-weight:500;
+  display: inline-block;
+}
+
+input[type=password]
+{
+  font-size: 1.5rem;
+}

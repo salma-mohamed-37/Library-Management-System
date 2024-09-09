@@ -1,0 +1,38 @@
+main
+{
+  height: calc(100% - 4rem);
+}
+
+section
+{
+  text-align: center;
+  height: fit-content;
+  padding: 4px;
+  margin: 0;
+
+}
+
+.card
+{
+  height: fit-content;
+  background-color: white;
+  font-size: 2rem;
+  border-radius: 5px;
+}
+
+.card:hover
+{
+  cursor: pointer;
+  border: 1px solid var(--text);
+}
+
+.pi
+{
+  font-size: 2rem;
+}
+
+.label
+{
+  color: var(--title);
+  font-weight: 500;
+}

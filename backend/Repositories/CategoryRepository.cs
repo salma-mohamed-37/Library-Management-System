@@ -14,6 +14,11 @@ namespace backend.Repositories
 
         }
 
+        public async Task<ICollection<Category>> getAllAsync()
+        {
+            return await _context.Categories.AsNoTracking().OrderBy(c=>c.Name).ToListAsync();
+        }
+
         public async Task<PaginationDto<Category>> GetCategoriesbyName (string name, int pageNumber, int pageSize)
         {
             var query = _context.Categories
@@ -33,6 +38,28 @@ namespace backend.Repositories
             };
 
             return res;
+
+        }
+
+        public async Task<ICollection<string>> GetCategoriesNames()
+        {
+            var res =await _context.Categories
+            .AsNoTracking()
+            .OrderBy(c => c.Name)
+            .Select(c=>c.Name)
+            .ToListAsync();
+
+            return res;
+        }
+
+        public async Task<bool> IsExists(int id, CancellationToken cancellationToken)
+        {
+            return await _context.Categories.AnyAsync(c => c.Id == id,cancellationToken);
+        }
+
+        public async Task<bool> IsNameExists(string name, CancellationToken cancellationToken)
+        {
+            return await _context.Categories.AnyAsync(c => c.Name == name, cancellationToken);
 
         }
     }

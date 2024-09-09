@@ -1,0 +1,77 @@
+<p class="title">Add User</p>
+<form [formGroup]="addForm" (ngSubmit)="submit()">
+  <main class="flex flex-column gap-5">
+    <div class="flex justify-content-between">
+      <p>
+        <p-fileUpload mode="advanced" [auto]="true"  chooseLabel="Upload Image" chooseIcon="pi pi-upload" (onSelect)="onImageSelect($event)" />
+        <span class="error" *ngIf="image!.invalid">Image is required.</span>
+      </p>
+      <p class="image">
+        <img [src]="imageSrc" *ngIf="imageSrc"/>
+      </p>
+    </div>
+    <div class="flex gap-2 container">
+      <span class="header">Personal Information</span>
+      <aside>
+        <section class="flex flex-wrap gap-3">
+          <p class="name">
+            <label>First Name </label><br/>
+            <input type="text" formControlName="firstName"/><br/>
+            <span class="error" *ngIf="firstName!.invalid && firstName!.touched">First name is required and doesn't contain numbers.</span>
+          </p>
+          <p class="name">
+            <label>Last Name </label><br/>
+            <input type="text" formControlName="lastName"/><br/>
+            <span class="error"  *ngIf="lastName!.invalid && lastName!.touched">Last name is required and doesn't contain numbers.</span> <br/>
+          </p>
+        </section>
+
+        <label>Gender</label><br/>
+        <input type="radio" name="gender" value="Male" formControlName="gender"/><label>Male</label>
+        <input type="radio" name="gender" value="Female" formControlName="gender"/><label>Female</label>
+        <br/>
+        <span class="error"  *ngIf="gender!.invalid && gender!.touched">Gender is required.</span> <br/>
+
+        <label>Date of Birth</label><br/>
+        <p-calendar [showIcon]="true"  [showOnFocus]="false"  formControlName="dateOfBirth" dateFormat="dd-mm-yy" placeholder="dd-mm-yy"/><br/>
+        <span class="error" *ngIf="dateOfBirth!.invalid && dateOfBirth!.touched">Date of birth is required.</span><br/>
+      </aside>
+
+      <aside>
+        <label>City </label><br/>
+        <input type="text" formControlName="city"/><br/>
+        <span class="error" *ngIf="city!.invalid && city!.touched">City is required and doesn't contain numbers.</span><br/>
+
+        <label>Phone Number </label><br/>
+        <input type="tel" formControlName="phoneNumber"/><br/>
+        <span class="error" *ngIf="phoneNumber!.invalid && phoneNumber!.touched">Phone number is required and doesn't contain letters.</span><br/>
+      </aside>
+    </div>
+    <div class="flex gap-2 container">
+      <span class="header">Account Information</span>
+      <aside>
+        <label>Email </label><br/>
+        <input type="email" formControlName="email"/> <br/>
+        <span class="error" *ngIf="email!.invalid && email!.touched">Email is required and must be a valid email.</span><br/>
+
+        <label>Password</label><br/>
+        <input type="password" formControlName="password"/><br/>
+        <span class="error" *ngIf="password!.invalid && password!.touched">Password is required.<br />It must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.</span><br/>
+      </aside>
+
+      <aside>
+        <label>Username </label><br/>
+        <input type="text" formControlName="username"/><br/>
+        <span class="error" *ngIf="username!.invalid && username!.touched">Username is required.</span><br/>
+
+        <label>Confirm Password</label> <br/>
+        <input type="password" formControlName="confirmPassword" /><br/>
+        <span class="error" *ngIf="confirmPassword!.invalid && confirmPassword!.touched">Confirm password is required.<br />It must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.</span><br/>
+      </aside>
+    </div>
+    <p style="text-align: center;">
+      <span class="error" *ngIf="addForm!.invalid && (password!.touched || confirmPassword!.touched)">Password must match confirm password.</span><br/>
+      <input type="submit" value="Add" />
+    </p>
+  </main>
+</form>

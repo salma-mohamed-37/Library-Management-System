@@ -1,0 +1,31 @@
+@if (!loading)
+{
+  <main class="flex flex-wrap justify-content-between">
+    @for (book of books.data; track $index)
+    {
+      <app-borrow-card [book]="book" style="width:48%;"></app-borrow-card>
+    }
+  </main>
+
+
+@if(books.data.length!=0)
+  {
+    <br/>
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="books.pageSize"
+      [totalRecords]="books.count"
+      [rowsPerPageOptions]="rowsPerPageOptions"/>
+  }
+  @else 
+  {
+    <p style="text-align: center;">No Borrow History.</p>
+  }
+}
+
+@else
+{
+  <p class="loading"><i class="pi pi-spin pi-spinner"></i></p>
+}
+

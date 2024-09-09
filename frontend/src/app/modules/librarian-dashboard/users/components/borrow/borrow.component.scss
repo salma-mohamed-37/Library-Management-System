@@ -1,0 +1,24 @@
+nav
+{
+  margin-top: 4px;
+}
+.p-picklist-list
+{
+  width:30%;
+}
+
+::ng-deep .p-picklist
+{
+  min-height: calc(100vh - 11.4rem);
+}
+
+
+input[type=text]
+{
+  font-size: 2rem;
+}
+
+p
+{
+  margin: 0;
+}

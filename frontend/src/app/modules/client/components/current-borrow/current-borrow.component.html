@@ -1,0 +1,24 @@
+<p class="title">Currently Borrowed Books</p>
+@if (! loading)
+{
+  @if (books.length>0)
+  {
+    <main class="flex flex-wrap justify-content-between">
+      @for (book of books; track $index)
+      {
+        <app-borrow-card [book]="book" style="width:48%;"></app-borrow-card>
+      }
+    </main>
+    <br/>
+  }
+  @else
+  {
+    <p style="text-align: center;">No Borrowed books.</p>
+  }
+}
+
+@else
+{
+   <p class="loading"><i class="pi pi-spin pi-spinner"></i></p>
+}
+

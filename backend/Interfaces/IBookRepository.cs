@@ -1,6 +1,7 @@
 ﻿using backend.Data;
 using backend.Dtos.GetDtos;
 using backend.Models;
+using System.Threading;
 
 namespace backend.Interfaces
 {
@@ -11,5 +12,12 @@ namespace backend.Interfaces
         public Task<PaginationDto<Book>> GetBooksbyNameForLibrarian(string name, int pageNumber, int pageSize);
         public Task<PaginationDto<Book>> GetBooksbyAuthor(int authorId, int pageNumber, int pageSize);
         public Task<PaginationDto<Book>> GetBooksbyCategory(int categoryId, int pageNumber, int pageSize);
+        public Task<PaginationDto<Book>> GetFilteredBooks(FilteringRequest request);
+        public Task<PaginationDto<Book>> GetAvailablebyNameForLibrarian(string name, int pageNumber, int pageSize);
+        public Task<bool> IsExists(int id, CancellationToken cancellationToken);
+        public Task<bool> IsNameExists(string name, CancellationToken cancellationToken);
+
+        public Task<PaginationDto<Book>> GetFilteredBooksForLibrarian(FilteringRequest request);
+ 
     }
 }

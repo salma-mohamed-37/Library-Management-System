@@ -1,0 +1,30 @@
+nav
+{
+  background-color: var(--white);
+  width: 100%;
+  margin: 4px 0px;
+  padding: 3px;
+}
+
+
+.item
+{
+  margin: 0.5rem;
+  font-size: 1rem;
+}
+
+input[type=text]
+{
+  font-size: 1.5rem;
+}
+
+::ng-deep .p-datatable-wrapper
+{
+  min-height: calc(100vh - 12rem);
+}
+
+img
+{
+  height: 7rem;
+  width: 6rem;
+}

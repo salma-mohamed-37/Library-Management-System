@@ -1,0 +1,55 @@
+<nav class="flex justify-content-between">
+  <input type="button" value="Add User" (click)="navigate('pages/dashboard/users/add')"/> <input type="button" value="Home" (click)="navigate('pages/dashboard')"/>
+</nav>
+
+<main *ngIf="! loading">
+  <p-table [value]="response.data"  [paginator]="true"[first]="first" [rows]="rows" [totalRecords]="response.count"  [rowsPerPageOptions]="[5, 10, 20]" dataKey="id"  [lazy]="true"(onLazyLoad)="onPageChange($event)" sortMode="single">
+    <ng-template pTemplate="header">
+      <tr>
+        <th colspan="5">
+          <form #userForm="ngForm" (ngSubmit)="search(userForm)">
+            <div class="flex align-items-center gap-5">
+              <input type="text" name="search" [(ngModel)]="request.name" name="name" placeholder="Enter name"/> 
+              <p-triStateCheckbox label="Is Deleted" [(ngModel)]="request.isDeleted" name="IsDeleted"></p-triStateCheckbox>
+              <input type="submit" value="Search"/>
+            </div>
+          </form>
+        </th>
+      </tr>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Deleted</th>
+          <th>Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+        <tr>
+          <td> <img [src]="getFullImageUrl(user.imagePath)"/></td>
+            <td>{{user.fullname}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.isDeleted}}</td>
+            <td><input type="button" value="Details" (click)="navigate('pages/dashboard/users/details/'+user.id)"/> <input type="button" value="Borrow" (click)="borrow(user.id)"/> <input type="button" value="Return" (click)="return(user.id)"/></td>
+        </tr>
+    </ng-template>
+</p-table>
+</main>
+
+<p *ngIf="loading" class="loading"><i class="pi pi-spin pi-spinner"></i></p>
+
+<p-sidebar [(visible)]="returnVisible" position="right">
+  <ng-template pTemplate="header">
+    <h2>Currently Borrowed Books</h2>
+  </ng-template>
+  @for (book of books; track $index)
+  {
+    <p class="item"><p-checkbox [(ngModel)]="returnedBooks" [label]="book.name" name="returned" [value]="book" /></p>
+  }
+  @if (books.length>0)
+  {
+    <p style="text-align: center;"><input type="button" value="Return" (click)="returnBooks()"/></p>
+  }
+</p-sidebar>
+
+

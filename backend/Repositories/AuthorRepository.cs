@@ -13,6 +13,11 @@ namespace backend.Repositories
         {
         }
 
+        public async Task<ICollection<Author>>getAllAsync()
+        {
+            return await  _context.Authors.AsNoTracking().ToListAsync();
+        }
+
         public async Task<PaginationDto<Author>>GetAuthorsbyName(string name, int pageNumber, int pageSize)
         {
             var query = _context.Authors
@@ -34,6 +39,26 @@ namespace backend.Repositories
 
             return res;
             
+        }
+
+        public async Task<bool> IsExists(int id, CancellationToken cancellationToken)
+        {
+            return await  _context.Authors.AnyAsync(c => c.Id == id, cancellationToken);  
+        }
+
+        public async Task<bool> IsNameExists(string name, CancellationToken cancellationToken)
+        {
+            return await _context.Authors.AnyAsync(c => c.Name == name, cancellationToken);
+        }
+
+        public async Task<ICollection<string>> GetAuthorsNames()
+        {
+            var res = await _context.Authors
+            .AsNoTracking()
+            .Select(c => c.Name)
+            .ToListAsync();
+
+            return res;
         }
     }
 }

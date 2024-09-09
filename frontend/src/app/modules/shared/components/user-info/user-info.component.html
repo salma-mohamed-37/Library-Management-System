@@ -1,0 +1,77 @@
+<p class="title">User Info</p>
+<main *ngIf="user">
+  <header class="flex flex-row justify-content-between basic-container">
+    <article class="flex justify-content-start align-items-center gap-2">
+      <p>
+        <img [src]="getFullImageUrl(user.imagePath)" />
+      </p>
+      <p>
+       <span class="name">{{user.fullname}}</span><br/>
+       <span>
+        {{user.username}} <br/>
+        {{user.email}}
+       </span>
+      </p>
+    </article>
+    <article *ngIf="user.isDeleted">
+      <app-deleted></app-deleted>
+    </article>
+
+    <article>
+      <span class="options-button" (click)="menu.toggle($event)">
+        <i class="pi pi-ellipsis-v"></i>
+      </span>
+      <p-menu #menu [model]="items" [popup]="true"/>
+    </article>
+
+  </header>
+
+  <section class="flex flex-row gap-2">
+    <span class="header">Personal Information</span>
+    <aside>
+      <label>Gender</label><br/>
+      <span class="value">{{user.gender}}</span>  <br/>
+      <label>Date of Birth</label><br/>
+      <span class="value">{{user.dateOfBirth| date:'MMMM,dd,YYYY'}}</span> <br/>
+
+      @if (user.isDeleted) 
+      {
+        <label>Deleted At</label><br/>
+      <span class="value">{{user.deletedAt| date:'MMMM,dd,YYYY'}}</span> <br/>
+      }
+    </aside>
+  
+    <aside>
+      <label>City</label><br/>
+      <span class="value">{{user.city}}</span> <br/>
+      <label>Phone Number</label><br/>
+      <span class="value">{{user.phoneNumber}}</span> <br/>
+    </aside>
+  </section>
+</main>
+
+<p-dialog header="Change Password" [modal]="true" [(visible)]="viewChangePassword" [style]="{ width: '20rem' }">
+  <div class="flex justify-content-center">
+    <form [formGroup]="changeForm" (ngSubmit)="submit()">
+      <label>
+        Current Password
+      </label>
+      <br/>
+      <input type="password" name="old" formControlName="oldPassword"/>
+      <br/><br/>
+      <label>
+        New Password
+      </label>
+      <br/>
+      <input type="password" name="new" formControlName="newPassword"/>
+      <br/><br/>
+      <p style="text-align: center; margin: 0;"><input type="submit" value="Change" /></p>
+
+      <span class="error" *ngIf="changeForm!.invalid && oldPassword!.touched && newPassword!.touched">Passwords are required.<br />They must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.</span><br/>
+
+    </form>
+  </div>
+
+</p-dialog>
+
+

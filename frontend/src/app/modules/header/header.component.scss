@@ -1,0 +1,44 @@
+nav
+{
+  background-color: var(--white);
+  color: var(--title);
+  text-align: center;
+  margin:0;
+  width: 100%;
+}
+p
+{
+  margin: 0;
+  padding:0;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.image, img
+{
+  border-radius:50%;
+  height: 4rem;
+  width: 4rem;
+
+}
+
+img
+{
+  border:1px solid var(--background);
+}
+
+img:hover
+{
+  cursor: pointer;
+}
+
+.image
+{
+  margin-right: 2px;
+}
+
+:host ::ng-deep .p-menu-list:focus
+{
+  outline:none;
+}
+

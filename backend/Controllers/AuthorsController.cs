@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using backend.Dtos.Account;
 using backend.Dtos.AddDtos;
 using backend.Dtos.GetDtos;
+using backend.Dtos.Responses;
 using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
@@ -9,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using static System.Reflection.Metadata.BlobBuilder;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace backend.Controllers
 {
@@ -27,53 +31,70 @@ namespace backend.Controllers
         }
 
         [HttpGet("{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetAuthorDto>>> GetAuthors( [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
+        public async Task<ActionResult<APIResponse<PaginationDto<GetAuthorDto>>>> GetAuthors( [FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 4)
         {
             var authors = await _authorRepository.GetAllAsync(pageSize, pageNumber);
             var authorDtos = _mapper.Map<PaginationDto<GetAuthorDto>>(authors);
-            return Ok(authorDtos);
+            return Ok(new APIResponse<PaginationDto<GetAuthorDto>> (200,"",authorDtos));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetAuthorDto>> GetAuthor(int id)
+        public async Task<ActionResult<APIResponse<GetAuthorDto>>> GetAuthor(int id)
         {
             var author = await _authorRepository.GetbyIdAsync(id);
             if (author is null)
-                return NotFound();
+                return NotFound(new APIResponse<PaginationDto<GetAuthorDto>>(404, "Author doesn't exist", null));
 
             var authorDto = _mapper.Map<GetAuthorDto>(author);
-            return authorDto;
+            return new APIResponse<GetAuthorDto>(200, "", authorDto);
         }
 
         [HttpGet("search/{name}/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<PaginationDto<GetAuthorDto>>> GetAuthors(string name, int pageNumber =1, int pageSize=4)
+        public async Task<ActionResult<APIResponse<PaginationDto<GetAuthorDto>>>> GetAuthors(string name, int pageNumber =1, int pageSize=4)
         {
             var authors = await _authorRepository.GetAuthorsbyName(name, pageNumber, pageSize);
             var authorDtos = _mapper.Map< PaginationDto<GetAuthorDto>>(authors);
-            return Ok(authorDtos);
-
+            return Ok(new APIResponse<PaginationDto<GetAuthorDto>>(200, "", authorDtos));
         }
 
         [Authorize(Roles = "lIBRARIAN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(int id, [FromBody] AddAuthorDto authorDto)
         {
-            var validationResult = await _validator.ValidateAsync(authorDto);
-            if (validationResult.Errors.Any())
+            if (!ModelState.IsValid)
             {
-                return BadRequest(validationResult);
-            }
-            var existingAuthor = await _authorRepository.GetbyIdAsync(id);
-            if (existingAuthor == null)
-            {
-                return NotFound();
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
             }
 
-            // Map the data from the DTO to the existing category entity
+            var validationResult = await _validator.ValidateAsync(authorDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
+
+
+            var existingAuthor = await _authorRepository.GetbyIdAsync(id);
+
+            if (existingAuthor == null)
+            {
+                return NotFound(new APIResponse<object>(404,"This author doesn't exist." , null));
+            }
+            
             _mapper.Map(authorDto, existingAuthor);
 
             await _authorRepository.UpdateAsync(existingAuthor);
-            return NoContent();
+            return Ok(new APIResponse<object> (200,"The author updated successfully.", null));
         }
 
 
@@ -81,23 +102,62 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAuthor([FromBody] AddAuthorDto authorDto)
         {
-            var validationResult = await _validator.ValidateAsync(authorDto);
-            if (validationResult.Errors.Any())
+            if (!ModelState.IsValid)
             {
-                return BadRequest(validationResult);
+                var errors = ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                var response = new APIResponse<object>(400, string.Join("\n", errors), null);
+                return BadRequest(response);
             }
+
+            var validationResult = await _validator.ValidateAsync(authorDto);
+            if (!validationResult.IsValid)
+            {
+                var fluentErrors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var response = new APIResponse<object>(400, string.Join("\n", fluentErrors), null);
+                return BadRequest(response);
+            }
+
             var author = _mapper.Map<Author>(authorDto);
             await _authorRepository.AddAsync(author);
-            return Ok();
+            return Ok(new APIResponse<object>(200, "The author added successfully.", null));
         }
 
         [Authorize(Roles = "lIBRARIAN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
+            var existingAuthor = await _authorRepository.GetbyIdAsync(id);
+
+            if (existingAuthor == null)
+            {
+                return NotFound(new APIResponse<object>(404, "This author doesn't exist.", null));
+            }
+
             await _authorRepository.DeleteAsync(id);
 
-            return NoContent();
+            return Ok(new APIResponse<object>(200, "The author deleted successfully.", null));
+        }
+
+        [HttpGet("names")]
+        public async Task<ActionResult<APIResponse<ICollection<string>>>> GetAuthorsNames()
+        {
+            var res = await _authorRepository.GetAuthorsNames();
+            return Ok(new APIResponse<ICollection<string>>(200, "", res));
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<APIResponse<ICollection<GetAuthorDto>>>> GetAll()
+        {
+            var authors = await _authorRepository.getAllAsync();
+            var res = _mapper.Map<ICollection<GetAuthorDto>>(authors);
+            return Ok(new APIResponse<ICollection<GetAuthorDto>>(200, "", res));
         }
     }
 }

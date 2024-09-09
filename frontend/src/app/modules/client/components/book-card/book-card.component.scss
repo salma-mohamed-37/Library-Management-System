@@ -1,0 +1,55 @@
+.card
+{
+  height: 20rem;
+  width: 13rem;
+  box-sizing: border-box;
+  position: relative;
+  text-align: center;
+  background-color: var(--white);
+  padding: 10px;
+  margin: 5px 0;
+}
+
+img
+{
+  height:16rem;
+  width: 100%;
+}
+
+.book-title
+{
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  margin:3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+.borrowed, .available
+{
+  position: absolute;
+  top:0;
+  right: 0;
+  height: fit-content;
+  color: var(--white);
+  margin: 0;
+  padding: 4px;
+  font-weight: 600;
+}
+
+.borrowed
+{
+  background-color: red;
+}
+.available
+{
+  background-color: green;
+}
+
+.card:hover
+{
+  cursor: pointer;
+}

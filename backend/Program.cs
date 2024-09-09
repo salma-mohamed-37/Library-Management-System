@@ -66,11 +66,11 @@ builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
     options.SignIn.RequireConfirmedEmail = false;
-    options.User.RequireUniqueEmail = true;
+    options.User.RequireUniqueEmail = false;
 });
 
 //add authentication and JwtBearer
@@ -103,10 +103,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ImageHandler>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-builder.Services.AddFluentValidationAutoValidation(opt =>
-{
-    opt.DisableDataAnnotationsValidation = true;
-});
+//builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 app.UseStaticFiles(new StaticFileOptions
@@ -123,7 +120,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+}
+);
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
